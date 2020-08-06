@@ -16,12 +16,18 @@ namespace SSIS_BOOT.Repo
             this.dbcontext = dbcontext;
         }
 
-        public bool Login(User user)
+        public User Login(User user)
         {
-            List<User> users=dbcontext.User
-                .Where(item => item.username == user.username && item.password == user.password)
-                .ToList<User>();
-            return users.Count() > 0;
+            return dbcontext.User
+                .Where(item => item.email == user.email && item.password == user.password)
+                .FirstOrDefault();
+        }
+
+        public User FindUserByEmail(string email)
+        {
+            return dbcontext.User
+                .Where(item => item.email == email)
+                .FirstOrDefault();
         }
     }
 }

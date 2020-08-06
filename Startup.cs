@@ -8,7 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SSIS_BOOT.Components.JWT.Impl;
+using SSIS_BOOT.Components.JWT.Interfaces;
 using SSIS_BOOT.DB;
+using SSIS_BOOT.Extensions;
 using SSIS_BOOT.Repo;
 using SSIS_BOOT.Service.Impl;
 using SSIS_BOOT.Service.Interfaces;
@@ -28,12 +31,14 @@ namespace SSIS_BOOT
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddTransient<IUserService, UserServiceImpl>();
+            services.AddScoped<IUserService, UserServiceImpl>();
+            services.AddScoped<IAuthService, JWTService>();
             services.AddScoped<UserRepo>();
             //inject dbcontext
             services.AddDbContext<SSISContext>(opt =>
                 opt.UseLazyLoadingProxies()
                 .UseSqlServer(Configuration.GetConnectionString("DbConn")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +57,8 @@ namespace SSIS_BOOT
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseMiddlewareExtensions();
 
             app.UseEndpoints(endpoints =>
             {

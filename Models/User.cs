@@ -18,5 +18,8 @@ namespace SSIS_BOOT.Models
 
         [Required]
         public string password { get; set; }
+
+        [Required]
+        public string email { get; set; }
     }
 }

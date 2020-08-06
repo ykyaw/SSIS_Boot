@@ -18,9 +18,14 @@ namespace SSIS_BOOT.Service.Impl
             this.userRepo = userRepo;
         }
 
-        public bool Login(User user)
+        public User Login(User user)
         {
             return userRepo.Login(user);
+        }
+
+        public User FindUserByEmail(string email)
+        {
+            return userRepo.FindUserByEmail(email);
         }
     }
 }
