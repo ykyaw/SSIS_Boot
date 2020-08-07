@@ -31,15 +31,16 @@ namespace SSIS_BOOT.Controllers
          * stored in Authorization and starts with the 'Bearer' string
          * @author WUYUDING
          */
-        public string Index([FromBody] Result result)
+        public string Index()
         {
+            string result = "";
             string authHeader = Request.Headers["Authorization"];
             if (authHeader != null && authHeader.StartsWith("Bearer"))
             {
                 string token = authHeader.Substring("Bearer ".Length).Trim();
                 if (!authService.IsTokenValid(token))
                 {
-                    result.Value = "invalid token";
+                    result = "invalid token";
                 }
                 else
                 {
@@ -49,14 +50,14 @@ namespace SSIS_BOOT.Controllers
                     user.username = claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Name)).Value;
                     user.email = claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Email)).Value;
                     string expired= claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Expired)).Value;
-                    result.Value = expired;
+                    result = expired;
                 }
             }
             else
             {
-                result.Value = "no token";
+                result = "no token";
             }
-            return System.Text.Json.JsonSerializer.Serialize(result);
+            return result;
         }
 
 
@@ -69,27 +70,27 @@ namespace SSIS_BOOT.Controllers
          * 
          * @author WUYUDING
          */
-        public string Verify([FromBody] Result result)
+         [HttpPost]
+        public string Verify([FromBody] User user)
         {
-            User user= System.Text.Json.JsonSerializer.Deserialize<User>(result.Value.ToString());
             user = userService.Login(user);
             if (user != null)
             {
                 string token = authService.GenerateToken(user);
-                result.Value = token;
                 Response.Cookies.Append("token", token);
+                return token;
             }
             else
             {
-                result.Value = null;
+                throw new Exception("email or password incorrect.");
             }
-            return System.Text.Json.JsonSerializer.Serialize(result);
         }
 
         [HttpPost]
-        public string Test([FromBody]Result result)
+        public User Test([FromBody]User user)
         {
-            return "asdf";
+            user.username = "haala";
+            return user;
         }
 
     }

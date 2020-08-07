@@ -12,6 +12,7 @@ using SSIS_BOOT.Components.JWT.Impl;
 using SSIS_BOOT.Components.JWT.Interfaces;
 using SSIS_BOOT.DB;
 using SSIS_BOOT.Extensions;
+using SSIS_BOOT.Middlewares;
 using SSIS_BOOT.Repo;
 using SSIS_BOOT.Service.Impl;
 using SSIS_BOOT.Service.Interfaces;
@@ -34,6 +35,11 @@ namespace SSIS_BOOT
             services.AddScoped<IUserService, UserServiceImpl>();
             services.AddScoped<IAuthService, JWTService>();
             services.AddScoped<UserRepo>();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(WebApiResultMiddleware));
+                options.RespectBrowserAcceptHeader = true;
+            });
             //inject dbcontext
             services.AddDbContext<SSISContext>(opt =>
                 opt.UseLazyLoadingProxies()

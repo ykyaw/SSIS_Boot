@@ -9,11 +9,15 @@ using System.Threading.Tasks;
  */
 namespace SSIS_BOOT.Components
 {
-    public class Result
-    {
+    //public class Result
+    //{
 
-        public Result() { }
+    //    public int ReturnCode { get; set; } = 200;
 
-        public Object Value { set; get; }
-    }
+    //    public object Value { get; set; }
+
+    //    public string ErrorMessage { get; set; }
+
+    //    public bool IsSuccess { get; set; } = true;
+    //}
 }

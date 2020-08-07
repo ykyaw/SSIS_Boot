@@ -29,10 +29,9 @@ namespace SSIS_BOOT.Controllers
             return View();
         }
 
-        public string InvalidToken([FromBody] Result result)
+        public string InvalidToken()
         {
-            result.Value = "invalid token, please login again.";
-            return System.Text.Json.JsonSerializer.Serialize(result);
+            return "invalid token, please login again.";
         }
     }
 }

@@ -33,7 +33,7 @@ namespace SSIS_BOOT.Middlewares
             string controller = (string)context.Request.RouteValues["controller"];
             string action = (string)context.Request.RouteValues["action"];
             //get sessionId from cookie
-            if ((controller != "Login"||action!= "Verify")&&(controller != "Home" || action != "Error") && (controller != "Login" || action != "Test"))
+            if ((controller != "Login"||action!= "Verify")&&(controller != "Home" || action != "Error") )
             {
                 string authHeader = context.Request.Headers["Authorization"];
                 if (authHeader != null && authHeader.StartsWith("Bearer"))

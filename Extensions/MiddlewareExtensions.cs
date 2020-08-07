@@ -12,6 +12,7 @@ namespace SSIS_BOOT.Extensions
         public static IApplicationBuilder UseMiddlewareExtensions(this IApplicationBuilder app)
         {
             app.UseMiddleware<AuthMiddleware>();
+            app.UseMiddleware<ExceptionMiddleWare>();
             return app;
         }
     }
