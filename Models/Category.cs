@@ -7,19 +7,12 @@ using System.Threading.Tasks;
 
 namespace SSIS_BOOT.Models
 {
-    public class User
+    public class Category
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int id { get; set; }
-
+        public int Id { get; set; }
         [Required]
-        [MaxLength(30)]
-        public string username { get; set; }
-
-        [Required]
-        public string password { get; set; }
-
-        [Required]
-        public string email { get; set; }
+        public string Name { get; set; }
+        public string BinNo { get; set; } // Same value as Id?
     }
 }

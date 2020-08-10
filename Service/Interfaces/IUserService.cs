@@ -8,8 +8,8 @@ namespace SSIS_BOOT.Service.Interfaces
 {
     public interface IUserService
     {
-        public User Login(User user);
+        public Employee Login(Employee user);
 
-        public User FindUserByEmail(string email);
+        public Employee FindUserByEmail(string email);
     }
 }

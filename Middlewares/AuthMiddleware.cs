@@ -48,10 +48,10 @@ namespace SSIS_BOOT.Middlewares
                     {
                         //decrypt token
                         List<Claim> claims = authService.GetTokenClaims(token).ToList();
-                        User user = new User();
-                        user.username = claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Name)).Value;
-                        user.email = claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Email)).Value;
-                        user= userRepo.FindUserByEmail(user.email);
+                        Employee user = new Employee();
+                        user.Name = claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Name)).Value;
+                        user.Email = claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Email)).Value;
+                        user= userRepo.FindUserByEmail(user.Email);
                         token= authService.GenerateToken(user);
                         context.Response.Cookies.Append("token", token);
                         if (user == null)

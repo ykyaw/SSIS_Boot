@@ -65,7 +65,7 @@ namespace SSIS_BOOT.Components.JWT.Impl
         //Generate token by given model.
         //Validate whether the given model is valid, then get the symmetric key.
         //Encrypt the token and return it
-        public string GenerateToken(User user)
+        public string GenerateToken(Employee user)
         {
             if (user == null)
             {
@@ -113,14 +113,14 @@ namespace SSIS_BOOT.Components.JWT.Impl
             }
         }
 
-        public JWTContainerModel GetJWTContainerModel(User user)
+        public JWTContainerModel GetJWTContainerModel(Employee user)
         {
             return new JWTContainerModel()
             {
                 Claims = new Claim[]
                 {
-                    new Claim(ClaimTypes.Name,user.username),
-                    new Claim(ClaimTypes.Email,user.email),
+                    new Claim(ClaimTypes.Name,user.Name),
+                    new Claim(ClaimTypes.Email,user.Email),
                     new Claim(ClaimTypes.Expired, DateTime.UtcNow.AddMinutes(Convert.ToInt32(ExpireMinutes)).ToString())
                 }
 

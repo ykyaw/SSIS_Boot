@@ -46,9 +46,9 @@ namespace SSIS_BOOT.Controllers
                 {
                     //decrypt the token and get the infomation store in token
                     List<Claim> claims = authService.GetTokenClaims(token).ToList();
-                    User user = new User();
-                    user.username = claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Name)).Value;
-                    user.email = claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Email)).Value;
+                    Employee user = new Employee();
+                    user.Name = claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Name)).Value;
+                    user.Email = claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Email)).Value;
                     string expired= claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Expired)).Value;
                     result = expired;
                 }
@@ -71,7 +71,7 @@ namespace SSIS_BOOT.Controllers
          * @author WUYUDING
          */
          [HttpPost]
-        public string Verify([FromBody] User user)
+        public string Verify([FromBody] Employee user)
         {
             user = userService.Login(user);
             if (user != null)
@@ -87,9 +87,9 @@ namespace SSIS_BOOT.Controllers
         }
 
         [HttpPost]
-        public User Test([FromBody]User user)
+        public Employee Test([FromBody]Employee user)
         {
-            user.username = "haala";
+            user.Name = "haala";
             return user;
         }
 
