@@ -11,9 +11,14 @@ namespace SSIS_BOOT.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
         public string Location { get; set; }
-        [Required]
         public string CollectionTime { get; set; } // 9:30AM, 11:00AM
+
+        public CollectionPoint() { }
+        public CollectionPoint(string Location, string CollectionTime)
+        {
+            this.Location = Location;
+            this.CollectionTime = CollectionTime;
+        }
     }
 }

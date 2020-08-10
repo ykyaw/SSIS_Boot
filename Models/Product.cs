@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,19 +12,18 @@ namespace SSIS_BOOT.Models
     {
         [Key]
         public string Id { get; set; }
-        [Required]
         public string Description { get; set; }
-        [Required]
-        public string CategoryId { get; set; }
-        [Required]
+        public string? CategoryId { get; set; }
         public int ReorderLvl { get; set; }
-        [Required]
         public int ReorderQty { get; set; }
-        [Required]
         public string Uom { get; set; }
-
-        // FKs
-        [ForeignKey("CategoryId")]
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
+        public Product() { }
+        public Product(string Id, string Description, string CategoryId)
+        {
+            this.Id = Id;
+            this.Description = Description;
+            this.CategoryId = CategoryId;
+        }
     }
 }

@@ -8,27 +8,25 @@ using System.Threading.Tasks;
 namespace SSIS_BOOT.Models
 {
     public class Department
-    {
-        [Key]
+    { 
+
         public string Id { get; set; }
-        [Required]
         public string Name { get; set; }
-        [Required]
         public int PhoneNo { get; set; }
         public int? FaxNo { get; set; }
-        [Required]
-        public int RepId { get; set; }
-        [Required]
-        public int HeadId { get; set; }
-        [Required]
-        public int CollectionPointId { get; set; }
-
-        // FKs
-        [ForeignKey("RepId")]
-        public Employee Rep { get; set; }
-        [ForeignKey("HeadId")]
-        public Employee Head { get; set; }
-        [ForeignKey("CollectionPointId")]
-        public CollectionPoint CollectionPoint { get; set; }
+        public int? RepId { get; set; }
+        public int? HeadId { get; set; }
+        public int? CollectionPointId { get; set; }
+        public Department(){}
+        public Department(string Id, string name, int PhoneNo)
+        {
+            this.Id = Id ;
+            this.Name = name;
+            this.PhoneNo = PhoneNo;
+        }     
+        //public virtual Employee Rep { get; set; }
+        //public virtual Employee Head { get; set; }
+        public virtual CollectionPoint CollectionPoint { get; set; }
+        public virtual List<Employee> AllEmp { get; set; }
     }
 }

@@ -11,23 +11,17 @@ namespace SSIS_BOOT.Models
     {
         [Key]
         public string Id { get; set; }
-        [Required]
         public int InitiatedClerkId { get; set; }
-        [Required]
         public long InitiatedDate { get; set; }
         public int? ApprovedSupId { get; set; }
         public long? ApprovedSupDate { get; set; }
         public int? ApprovedMgrId { get; set; }
         public long? ApprovedMgrDate { get; set; }
-        [Required]
         public string Status { get; set; }
 
-        // FKs
-        [ForeignKey("InitiatedClerkId")]
-        public Employee InitiatedClerk { get; set; }
-        [ForeignKey("ApprovedSupId")]
-        public Employee ApprovedSup { get; set; }
-        [ForeignKey("ApprovedMgrId")]
-        public Employee ApprovedMgr { get; set; }
+        public virtual Employee InitiatedClerk { get; set; }
+        public virtual Employee ApprovedSup { get; set; }
+        public virtual Employee ApprovedMgr { get; set; }
+        public virtual List<AdjustmentVoucherDetail> AdjustmentVoucherDetails { get; set; }
     }
 }

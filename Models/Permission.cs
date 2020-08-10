@@ -11,7 +11,6 @@ namespace SSIS_BOOT.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
         public string Description { get; set; }
         public string EmployeeRole { get; set; }
         public string UrlPath { get; set; } // access allowed URLs

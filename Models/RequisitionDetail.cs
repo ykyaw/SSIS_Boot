@@ -11,21 +11,22 @@ namespace SSIS_BOOT.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
-        public int RequisitionId { get; set; }
-        [Required]
-        public string ProductId { get; set; }
+        public int? RequisitionId { get; set; }
+        public string? ProductId { get; set; }
         public int QtyNeeded { get; set; }
         public int QtyDisbursed { get; set; }
         public int QtyReceived { get; set; }
         public string DisburseRemark { get; set; }
         public string RepRemark { get; set; }
         public string ClerkRemark { get; set; }
-
-        // FKs
-        [ForeignKey("RequisitionId")]
-        public Requisition Requisition { get; set; }
-        [ForeignKey("ProductId")]
-        public Product Product { get; set; }
+        public virtual Requisition Requisition { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual Retrieval Retrieval { get; set; }
+        public RequisitionDetail() { }
+        public RequisitionDetail(int RequisitionId, string ProductId)
+        {
+            this.RequisitionId = RequisitionId;
+            this.ProductId = ProductId;
+        }
     }
 }

@@ -11,20 +11,12 @@ namespace SSIS_BOOT.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
         public string SupplierId { get; set; }
-        [Required]
         public int Year { get; set; }
-        [Required]
         public string ProductId { get; set; }
-        [Required]
         public string PricePerUom { get; set; }
         public int? Rank { get ; set; }
-
-        // FKs
-        [ForeignKey("SupplierID")]
-        public Supplier Supplier { get; set; }
-        [ForeignKey("ProductID")]
-        public Product Product { get; set; }
+        public virtual Supplier Supplier { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

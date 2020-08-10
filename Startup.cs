@@ -34,6 +34,12 @@ namespace SSIS_BOOT
             services.AddControllersWithViews();
             services.AddScoped<IUserService, UserServiceImpl>();
             services.AddScoped<IAuthService, JWTService>();
+            services.AddScoped<IDepartmentEmpService, DepartmentEmpServiceImpl>();
+            services.AddScoped<IDepartmentHeadService, DepartmentHeadServiceImpl>();
+            services.AddScoped<IStoreClerkService, StoreClerkServiceImpl>();
+            services.AddScoped<IStoreManagerService, StoreManagerServiceImpl>();
+            services.AddScoped<IStoreSupService, StoreSupServiceImpl>();
+
             services.AddScoped<UserRepo>();
             services.AddMvc(options =>
             {
@@ -64,7 +70,7 @@ namespace SSIS_BOOT
 
             app.UseAuthorization();
 
-            app.UseMiddlewareExtensions();
+            //app.UseMiddlewareExtensions();
 
             app.UseEndpoints(endpoints =>
             {
@@ -73,8 +79,9 @@ namespace SSIS_BOOT
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //dbcontext.Database.EnsureDeleted();
-            //dbcontext.Database.EnsureCreated();
+            dbcontext.Database.EnsureDeleted();
+            dbcontext.Database.EnsureCreated();
+            new SSISSeeder(dbcontext);
         }
     }
 }
