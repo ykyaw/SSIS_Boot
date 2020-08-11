@@ -21,11 +21,11 @@ namespace SSIS_BOOT.DB
 
 
             //seed product
-            Product p1 = new Product("C001", "Clips Double 1", "Clip");
-            Product p2 = new Product("C002", "Clips Double 2", "Clip");
-            Product p3 = new Product("C003", "Clips Double 3/4", "Clip");
-            Product p4 = new Product("E001", "Envelop Brown (3'x6')", "Envelope");
-            Product p5 = new Product("E002", "Envelop Brown (3'x6') w/Window", "Envelope");
+            Product p1 = new Product("C001", "Clips Double 1", 1);
+            Product p2 = new Product("C002", "Clips Double 2",1);
+            Product p3 = new Product("C003", "Clips Double 3/4",1);
+            Product p4 = new Product("E001", "Envelop Brown (3'x6')",2);
+            Product p5 = new Product("E002", "Envelop Brown (3'x6') w/Window",2);
             dbcontext.Add(p1);
             dbcontext.Add(p2);
             dbcontext.Add(p3);
