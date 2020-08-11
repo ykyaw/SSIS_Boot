@@ -10,18 +10,22 @@ namespace SSIS_BOOT.Service.Impl
 {
     public class DepartmentEmpServiceImpl : IDepartmentEmpService
     {
-        private RequisitionRepo rRepo;
-        public DepartmentEmpServiceImpl(RequisitionRepo rRepo)
-        {
-            this.rRepo = rRepo;
-        }
-        
-        
-        public List<Requisition> findallreq(int empid)
-        {
-            List<Requisition> lr = rRepo.findallreqbyempid(empid);
-            return lr;
+        private RequisitionRepo rrepo;
+        private RequisitionDetailRepo rdrepo;
 
+        public DepartmentEmpServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo)
+        {
+            this.rrepo = rrepo;
+            this.rdrepo = rdrepo;
         }
+        public List<Requisition> getdeptreqlist(string deptId)
+        {
+            return rrepo.findreqformByDeptID(deptId);
+        }
+        public List<RequisitionDetail> getrfdetail(int reqId)
+        {
+            return rdrepo.getrequisitiondetail(reqId);
+        }
+
     }
 }

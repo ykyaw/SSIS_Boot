@@ -23,18 +23,21 @@ namespace SSIS_BOOT.Controllers
             return View();
         }
         [HttpGet]
+        [Route("/storeclerk/catalogue")]
         public List<Product> getcatalogue()
         {
             List<Product> pdt = scservice.getallcat();
             return pdt;
         }
         [HttpGet]
+        [Route("/storeclerk/pr")]
         public List<PurchaseRequestDetail> getallpurchasereq()
         {
             List<PurchaseRequestDetail> prdetails = scservice.getpurchasereq();
             return prdetails;
         }
         [HttpGet]
+        [Route("/storeclerk/po")]
         public List<PurchaseOrder> getallpurchaseorder()
         {
             List<PurchaseOrder> prorderlist = scservice.getpurchaseorders();
@@ -48,13 +51,14 @@ namespace SSIS_BOOT.Controllers
             return podlist;
         }
         [HttpGet]
+        [Route("/storeclerk/rf")]
         public List<Requisition> getallreqform()
         {
             List<Requisition> reqlist = scservice.getallreqform();
             return reqlist;
         }
         [HttpGet]
-        [Route("/storeclerk/reqform/{deptID}")]
+        [Route("/storeclerk/rf/{deptID}")]
         public List<Requisition> getreqformByDeptId(string deptID)
         {
             List<Requisition> reqlist = scservice.getReqformByDeptId(deptID);

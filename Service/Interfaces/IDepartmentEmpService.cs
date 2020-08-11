@@ -8,6 +8,8 @@ namespace SSIS_BOOT.Service.Interfaces
 {
     public interface IDepartmentEmpService
     {
-        List<Requisition> findallreq(int deptid);
+        public List<Requisition> getdeptreqlist(string deptId);
+
+        public List<RequisitionDetail> getrfdetail(int reqId);
     }
 }
