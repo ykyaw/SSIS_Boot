@@ -18,5 +18,16 @@ namespace SSIS_BOOT.Models
         public string Reason { get; set; }
         public virtual AdjustmentVoucher AdjustmentVoucher { get; set; }
         public virtual Product Product { get; set; }
+
+       //CONSTRUCTOR
+        public AdjustmentVoucherDetail() { }
+        public AdjustmentVoucherDetail(string AdjustmentVoucherId, string ProductId, int QtyAdjusted, double TotalPrice, string Reason)
+        {
+            this.AdjustmentVoucherId = AdjustmentVoucherId;
+            this.ProductId = ProductId;
+            this.QtyAdjusted = QtyAdjusted;
+            this.TotalPrice = TotalPrice;
+            this.Reason = Reason;
+        }
     }
 }

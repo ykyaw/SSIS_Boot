@@ -23,5 +23,36 @@ namespace SSIS_BOOT.Models
         public virtual Employee ApprovedSup { get; set; }
         public virtual Employee ApprovedMgr { get; set; }
         public virtual List<AdjustmentVoucherDetail> AdjustmentVoucherDetails { get; set; }
+
+        //constructor
+        public AdjustmentVoucher(){ }
+        public AdjustmentVoucher(string Id, int InitiatedClerkId, long InitiatedDate, string Status) {
+            this.Id = Id;
+            this.InitiatedClerkId = InitiatedClerkId;
+            this.InitiatedDate = InitiatedDate;
+            this.Status = Status;
+        }
+
+
+        public AdjustmentVoucher(string Id, int InitiatedClerkId, long InitiatedDate,
+            int? ApprovedSupId, long? ApprovedSupDate, string Status) {
+                this.Id = Id;
+                this.InitiatedClerkId = InitiatedClerkId;
+                this.InitiatedDate = InitiatedDate;
+                this.ApprovedSupId = ApprovedSupId;
+                this.ApprovedSupDate = ApprovedSupDate;
+                this.Status = Status;
+            }
+        public AdjustmentVoucher(string Id, int InitiatedClerkId, long InitiatedDate, 
+            int? ApprovedSupId, long? ApprovedSupDate, int? ApprovedMgrId, long? ApprovedMgrDate, string Status) {
+            this.Id = Id;
+            this.InitiatedClerkId = InitiatedClerkId;
+            this.InitiatedDate = InitiatedDate;
+            this.ApprovedSupId = ApprovedSupId;
+            this.ApprovedSupDate = ApprovedSupDate;
+            this.ApprovedMgrId = ApprovedMgrId;
+            this.ApprovedMgrDate = ApprovedMgrDate;
+            this.Status = Status;
+        }
     }
 }

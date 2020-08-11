@@ -17,7 +17,7 @@ namespace SSIS_BOOT.Models
         public long? RetrievedDate { get; set; }
 
         public string Status { get; set; }
-        public string? Remark { get; set; }
+        public string? RetrievalComment { get; set; }//for adjustmentd voucher
         public bool? NeedAdjustment { get; set; }
         public virtual List<RequisitionDetail> RequisitionDetails { get; set; }
         public virtual Employee Clerk { get; set; }
@@ -32,21 +32,14 @@ namespace SSIS_BOOT.Models
             this.Status = Status;
         }
 
-        public Retrieval(int ClerkId, long? DisbursedDate, long? RetrievedDate, string Status,string? Remark)
+
+        public Retrieval(int ClerkId, long? DisbursedDate, long? RetrievedDate, string Status, string? RetrievalComment, bool? NeedAdjustment)
         {
             this.ClerkId = ClerkId;
             this.DisbursedDate = DisbursedDate;
             this.RetrievedDate = RetrievedDate;
             this.Status = Status;
-            this.Remark = Remark;
-        }
-        public Retrieval(int ClerkId, long? DisbursedDate, long? RetrievedDate, string Status, string? Remark, bool? NeedAdjustment)
-        {
-            this.ClerkId = ClerkId;
-            this.DisbursedDate = DisbursedDate;
-            this.RetrievedDate = RetrievedDate;
-            this.Status = Status;
-            this.Remark = Remark;
+            this.RetrievalComment = RetrievalComment;
             this.NeedAdjustment = NeedAdjustment;
         }
     }
