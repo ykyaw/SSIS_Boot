@@ -21,5 +21,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public List<Transaction> retrievestockcard(string productId);
 
         public Retrieval genretrievalform(long date, int clerkid);
+        public List<TenderQuotation> gettop3suppliers(string productId);
+
     }
 }

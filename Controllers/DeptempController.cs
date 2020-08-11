@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Service.Interfaces;
@@ -16,23 +17,26 @@ namespace SSIS_BOOT.Controllers
             this.deservice = deservice;
         }
 
-
         public IActionResult Index()
         {
             return View();
         }
-
-        public string test()
+        [HttpGet]
+        [Route("/deptemp/rfl")]
+        public List<Requisition> getdeptreqlist()
         {
-            return "Hello world!";
+            //to be replaced by session of the user's departmentId
+            //string deptid = "CPSC";
+            string deptid = HttpContext.Session.GetString("DeptId");
+            List<Requisition> reqlist = deservice.getdeptreqlist(deptid);
+            return reqlist;
         }
-
-        public List<Requisition> getallreqbyrequester() //TK's sample, delete if not required
+        [HttpGet]
+        [Route("/deptemp/rfld")]
+        public List<RequisitionDetail> GetRequisitionDetails(int reqId)
         {
-            //Block of code to extract employee ID from session
-            int empid = 6;
-            List<Requisition> lr = deservice.findallreq(empid);
-            return lr;
+            List<RequisitionDetail> rdlist = deservice.getrfdetail(reqId);
+            return rdlist;
         }
 
     }

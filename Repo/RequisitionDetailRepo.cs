@@ -15,11 +15,17 @@ namespace SSIS_BOOT.Repo
             this.dbcontext = dbcontext;
         }
 
+
         public RequisitionDetail updateretrievalid(RequisitionDetail rd)
         {
             dbcontext.RequisitionDetails.Update(rd);
             dbcontext.SaveChanges();
             return dbcontext.RequisitionDetails.Find(rd.Id);
+        }
+        public List<RequisitionDetail> getrequisitiondetail(int reqid)
+        {
+            List<RequisitionDetail> rd = dbcontext.RequisitionDetails.Where(m => m.RequisitionId == reqid).ToList();
+            return rd;
         }
 
     }

@@ -43,6 +43,7 @@ namespace SSIS_BOOT
             services.AddScoped<PurchaseOrderDetailRepo>();
             services.AddScoped<TransactionRepo>();
             services.AddScoped<RetrievalRepo>();
+            services.AddScoped<TenderQuotationRepo>();
             services.AddScoped<IDepartmentEmpService, DepartmentEmpServiceImpl>();
             services.AddScoped<IDepartmentHeadService, DepartmentHeadServiceImpl>();
             services.AddScoped<IStoreClerkService, StoreClerkServiceImpl>();

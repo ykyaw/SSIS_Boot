@@ -20,9 +20,11 @@ namespace SSIS_BOOT.Service.Impl
         public RequisitionDetailRepo rdrepo;
         public TransactionRepo trepo;
         public RetrievalRepo retrivrepo;
+        public TenderQuotationRepo tqrepo;
 
+        public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo, 
+            RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, TransactionRepo trepo, TenderQuotationRepo tqrepo, RetrievalRepo retrivrepo)
 
-        public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo, RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, TransactionRepo trepo, RetrievalRepo retrivrepo)
         {
             this.prepo = prepo;
             this.purreqrepo = purreqrepo;
@@ -32,7 +34,7 @@ namespace SSIS_BOOT.Service.Impl
             this.rdrepo = rdrepo;
             this.trepo = trepo;
             this.retrivrepo = retrivrepo;
-
+            this.tqrepo = tqrepo;
         }
 
         public List<Product> getallcat()
@@ -68,6 +70,7 @@ namespace SSIS_BOOT.Service.Impl
             return trepo.retrievestockcard(productId);
         }
 
+
         public Retrieval genretrievalform(long date, int clerkid)
         {
             Retrieval r1 = new Retrieval();
@@ -89,6 +92,11 @@ namespace SSIS_BOOT.Service.Impl
             }
             r2.RequisitionDetails = rd.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
             return r2;
+        }
+
+        public List<TenderQuotation> gettop3suppliers(string productId)
+        {
+            return tqrepo.gettop3suppliers(productId);
         }
     }
 }
