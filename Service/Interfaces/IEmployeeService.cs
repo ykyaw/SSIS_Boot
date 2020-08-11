@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SSIS_BOOT.Service.Interfaces
 {
-    public interface IUserService
+    public interface IEmployeeService
     {
         public Employee Login(Employee user);
 

@@ -65,13 +65,13 @@ namespace SSIS_BOOT.Components.JWT.Impl
         //Generate token by given model.
         //Validate whether the given model is valid, then get the symmetric key.
         //Encrypt the token and return it
-        public string GenerateToken(Employee user)
+        public string GenerateToken(Employee emp)
         {
-            if (user == null)
+            if (emp == null)
             {
                 return null;
             }
-            IAuthContainerModel model = GetJWTContainerModel(user);
+            IAuthContainerModel model = GetJWTContainerModel(emp);
             if (model == null || model.Claims == null || model.Claims.Length == 0)
             {
                 throw new ArgumentException("Arguments to create token are not valid.");
@@ -113,18 +113,19 @@ namespace SSIS_BOOT.Components.JWT.Impl
             }
         }
 
-        public JWTContainerModel GetJWTContainerModel(Employee user)
+        public JWTContainerModel GetJWTContainerModel(Employee emp)
         {
             return new JWTContainerModel()
             {
                 Claims = new Claim[]
                 {
-                    new Claim(ClaimTypes.Name,user.Name),
-                    new Claim(ClaimTypes.Email,user.Email),
+                    new Claim(ClaimTypes.Name,emp.Name),
+                    new Claim(ClaimTypes.Email,emp.Email),
                     new Claim(ClaimTypes.Expired, DateTime.UtcNow.AddMinutes(Convert.ToInt32(ExpireMinutes)).ToString())
                 }
 
             };
         }
+
     }
 }

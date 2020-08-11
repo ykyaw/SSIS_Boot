@@ -28,7 +28,7 @@ namespace SSIS_BOOT.Middlewares
         }
 
 
-        public async Task Invoke(HttpContext context, IAuthService authService, UserRepo userRepo)
+        public async Task Invoke(HttpContext context, IAuthService authService, EmployeeRepo userRepo)
         {
             string controller = (string)context.Request.RouteValues["controller"];
             string action = (string)context.Request.RouteValues["action"];
@@ -54,6 +54,10 @@ namespace SSIS_BOOT.Middlewares
                         user= userRepo.FindUserByEmail(user.Email);
                         token= authService.GenerateToken(user);
                         context.Response.Cookies.Append("token", token);
+                        context.Session.SetInt32("Id", user.Id);
+                        context.Session.SetString("Name", user.Name);
+                        context.Session.SetString("DeptId", user.DepartmentId);
+                        context.Session.SetString("DeptName", user.Department.Name);
                         if (user == null)
                         {
                             context.Response.StatusCode = CommonConstant.ErrorCode.INVALID_TOKEN;
