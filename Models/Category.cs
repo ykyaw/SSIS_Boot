@@ -9,6 +9,7 @@ namespace SSIS_BOOT.Models
 {
     public class Category
     {
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
@@ -20,5 +21,6 @@ namespace SSIS_BOOT.Models
             this.Name = Name;
             this.BinNo = BinNo;
         }
+        public virtual List<Product> Products { get; set; }
     }
 }
