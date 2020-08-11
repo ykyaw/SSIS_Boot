@@ -11,15 +11,11 @@ namespace SSIS_BOOT.Models
     {
         [Key]
         public string Id { get; set; }
-        [Required]
         public string Name { get; set; }
         public string ContactPersonName { get; set; }
-        [Required]
         public int PhoneNo { get; set; }
         public int? FaxNo { get; set; }
-        [Required]
         public string Address { get; set; }
-        [Required]
         public string GstRegNo { get; set; }
     }
 }

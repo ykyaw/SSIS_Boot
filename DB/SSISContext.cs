@@ -18,13 +18,16 @@ namespace SSIS_BOOT.DB
         }
         protected override void OnModelCreating(ModelBuilder model)
         {
-            //// unique name within a column
-            //model.Entity<Cinema>().HasIndex(tbl => tbl.Name).IsUnique();
+            model.Entity<Employee>().HasMany(e => e.Employees).WithOne(e => e.Manager).HasForeignKey(e => e.ManagerId); // this fix the self referencing in Employee
+            //model.Entity<Department>().Ignore(x => x.Rep).Ignore(x => x.Head);
+            //model.Entity<Employee>().Ignore(x => x.Manager);
+            //model.Entity<Requisition>().Ignore(x => x.ReqByEmp).Ignore(x => x.ApprovedBy).Ignore(x => x.ProcessedByClerk).Ignore(x => x.ReceivedByRep).Ignore(x => x.AckByClerk);
+            //model.Entity<AdjustmentVoucher>().Ignore(x => x.InitiatedClerk).Ignore(x => x.ApprovedSup).Ignore(x => x.ApprovedMgr);
+            //model.Entity<PurchaseOrder>().Ignore(x => x.Supplier).Ignore(x => x.OrderedByClerk).Ignore(x => x.ApprovedBySup).Ignore(x => x.ReceivedByClerk);
+            //model.Entity<PurchaseRequestDetail>().Ignore(x => x.CreatedByClerk).Ignore(x => x.Supplier).Ignore(x => x.ApprovedBySup);
+            //model.Entity<Retrieval>().Ignore(x => x.Clerk);
+            //model.Entity<Transaction>().Ignore(x => x.Product).Ignore(x => x.UpdatedByEmp);
 
-            //// composite keys
-            //model.Entity<Seat>().HasAlternateKey(tbl =>
-            //    new { tbl.ScreeningId, tbl.Row, tbl.Col }
-            //);
         }
 
         public DbSet<AdjustmentVoucher> AdjustmentVouchers { get; set; }

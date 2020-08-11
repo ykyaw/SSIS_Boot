@@ -11,38 +11,40 @@ namespace SSIS_BOOT.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
-        public string DepartmentId { get; set; }
-        [Required]
+        public string? DepartmentId { get; set; }
+        [ForeignKey("ReqByEmp")]
         public int ReqByEmpId { get; set; }
+        [ForeignKey("ApprovedBy")]
         public int? ApprovedById { get; set; }
+        [ForeignKey("ProcessedByClerk")]
         public int? ProcessedByClerkId { get; set; }
         public long CreatedDate { get; set; }
-        [Required]
         public string Status { get; set; }
         public int? CollectionPointId { get; set; }
         public long? CollectionDate { get; set; }
+        [ForeignKey("ReceivedByRep")]
         public int? ReceivedByRepId { get; set; }
         public long? ReceivedDate { get; set; }
+        [ForeignKey("AckByClerk")]
         public int? AckByClerkId { get; set; }
         public long? AckDate { get; set; }
+        public virtual Department Department { get; set; }
+        public virtual Employee ReqByEmp { get; set; }
+        public virtual Employee ApprovedBy { get; set; }
+        public virtual Employee ProcessedByClerk { get; set; }
+        public virtual Employee ReceivedByRep { get; set; }
+        public virtual Employee AckByClerk { get; set; }
+        public virtual CollectionPoint CollectionPoint { get; set; }
+        public virtual List<RequisitionDetail> RequisitionDetails { get; set; }
 
-        // FKs
-        [ForeignKey("DepartmentId")]
-        public Department Department { get; set; }
-        [ForeignKey("ReqByEmpId")]
-        public Employee ReqByEmp { get; set; }
-        [ForeignKey("ApprovedById")]
-        public Employee ApprovedBy { get; set; }
-        [ForeignKey("ProcessedByClerkId")]
-        public Employee ProcessedByClerk { get; set; }
-        [ForeignKey("CollectionPointId")]
-        public CollectionPoint CollectionPoint { get; set; }
-        [ForeignKey("ReceivedByRepId")]
-        public Employee ReceivedByRep { get; set; }
-        [ForeignKey("AckByClerkId")]
-        public Employee AckByClerk { get; set; }
+        public Requisition() { }
+        public Requisition(string DepartmentId, int ReqByEmpId, int ApprovedById, int ProcessedByClerkId)
+        {
+            this.DepartmentId = DepartmentId;
+            this.ReqByEmpId = ReqByEmpId;
+            this.ApprovedById = ApprovedById;
+            this.ProcessedByClerkId = ProcessedByClerkId;
+        }
 
-        //public virtual List<RequisitionDetail> RequisitionDetails { get; set; }
     }
 }

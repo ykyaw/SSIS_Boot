@@ -11,8 +11,14 @@ namespace SSIS_BOOT.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
         public string Name { get; set; }
         public string BinNo { get; set; } // Same value as Id?
+
+        public Category() { }
+        public Category(string Name, string BinNo)
+        {
+            this.Name = Name;
+            this.BinNo = BinNo;
+        }
     }
 }
