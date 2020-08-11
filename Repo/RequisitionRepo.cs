@@ -20,6 +20,11 @@ namespace SSIS_BOOT.Repo
             List<Requisition> lr = dbcontext.Requisitions.Where(m => m.ReqByEmpId == empid).ToList();
             return lr;
         }
+        public List<Requisition> findallreqform()
+        {
+            List<Requisition> lr = dbcontext.Requisitions.ToList();
+            return lr;
+        }
 
     }
 }

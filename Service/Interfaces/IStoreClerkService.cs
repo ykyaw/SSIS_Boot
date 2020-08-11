@@ -13,5 +13,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public List<PurchaseOrder> getpurchaseorders();
 
         public List<PurchaseOrderDetail> getpoddetails(int poId);
+
+        public List<Requisition> getallreqform();
     }
 }

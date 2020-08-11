@@ -46,6 +46,11 @@ namespace SSIS_BOOT.Controllers
             return podlist;
         }
 
+        public List<Requisition> getallreqform()
+        {
+            List<Requisition> reqlist = scservice.getallreqform();
+            return reqlist;
+        }
 
     }
 }
