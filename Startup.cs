@@ -38,6 +38,8 @@ namespace SSIS_BOOT
             services.AddScoped<RequisitionRepo>();
             services.AddScoped<ProductRepo>();
             services.AddScoped<PurchaseRequestRepo>();
+            services.AddScoped<PurchaseOrderRepo>();
+            services.AddScoped<PurchaseOrderDetailRepo>();
             services.AddScoped<IDepartmentEmpService, DepartmentEmpServiceImpl>();
             services.AddScoped<IDepartmentHeadService, DepartmentHeadServiceImpl>();
             services.AddScoped<IStoreClerkService, StoreClerkServiceImpl>();
@@ -88,9 +90,9 @@ namespace SSIS_BOOT
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            dbcontext.Database.EnsureDeleted();
-            dbcontext.Database.EnsureCreated();
-            new SSISSeeder(dbcontext);
+            //dbcontext.Database.EnsureDeleted();
+            //dbcontext.Database.EnsureCreated();
+            //new SSISSeeder(dbcontext);
         }
     }
 }

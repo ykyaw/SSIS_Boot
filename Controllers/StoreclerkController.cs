@@ -28,11 +28,24 @@ namespace SSIS_BOOT.Controllers
             return pdt;
         }
 
-        //public List<PurchaseRequestDetail> getpurchasereq()
-        //{
-        //    List<PurchaseRequestDetail> prdetails = scservice.getpurchasereq();
-        //    return prdetails;
-        //}
+        public List<PurchaseRequestDetail> getallpurchasereq()
+        {
+            List<PurchaseRequestDetail> prdetails = scservice.getpurchasereq();
+            return prdetails;
+        }
+
+        public List<PurchaseOrder> getallpurchaseorder()
+        {
+            List<PurchaseOrder> prorderlist = scservice.getpurchaseorders();
+            return prorderlist;
+        }
+
+        public List<PurchaseOrderDetail> getpodetails(int poId)
+        {
+            List<PurchaseOrderDetail> podlist = scservice.getpoddetails(poId);
+            return podlist;
+        }
+
 
     }
 }

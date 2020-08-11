@@ -12,16 +12,30 @@ namespace SSIS_BOOT.Service.Impl
     {
         public ProductRepo prepo;
         public PurchaseRequestRepo purreqrepo;
+        public PurchaseOrderRepo porepo;
+        public PurchaseOrderDetailRepo podrepo;
 
-        public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo)
+        public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo)
         {
             this.prepo = prepo;
             this.purreqrepo = purreqrepo;
+            this.porepo = porepo;
+            this.podrepo = podrepo;
         }
 
         public List<Product> getallcat()
         {
             return prepo.findallcat();
+        }
+
+        public List<PurchaseOrderDetail> getpoddetails(int poId)
+        {
+            return podrepo.findpodetails(poId);
+        }
+
+        public List<PurchaseOrder> getpurchaseorders()
+        {
+            return porepo.findallpurchaseorder();
         }
 
         public List<PurchaseRequestDetail> getpurchasereq()

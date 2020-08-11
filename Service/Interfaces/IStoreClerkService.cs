@@ -10,5 +10,8 @@ namespace SSIS_BOOT.Service.Interfaces
     {
         public List<Product> getallcat();
         public List<PurchaseRequestDetail> getpurchasereq();
+        public List<PurchaseOrder> getpurchaseorders();
+
+        public List<PurchaseOrderDetail> getpoddetails(int poId);
     }
 }
