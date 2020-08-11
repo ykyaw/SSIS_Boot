@@ -35,6 +35,7 @@ namespace SSIS_BOOT
             services.AddScoped<IEmployeeService, EmployeeServiceImpl>();
             services.AddScoped<IAuthService, JWTService>();
             services.AddScoped<EmployeeRepo>();
+            services.AddScoped<RequisitionRepo>();
             services.AddScoped<IDepartmentEmpService, DepartmentEmpServiceImpl>();
             services.AddScoped<IDepartmentHeadService, DepartmentHeadServiceImpl>();
             services.AddScoped<IStoreClerkService, StoreClerkServiceImpl>();
@@ -74,7 +75,7 @@ namespace SSIS_BOOT
 
             app.UseAuthorization();
 
-            app.UseMiddlewareExtensions();
+            //app.UseMiddlewareExtensions();
 
             app.UseSession();
 
