@@ -36,6 +36,8 @@ namespace SSIS_BOOT
             services.AddScoped<IAuthService, JWTService>();
             services.AddScoped<EmployeeRepo>();
             services.AddScoped<RequisitionRepo>();
+            services.AddScoped<ProductRepo>();
+            services.AddScoped<PurchaseRequestRepo>();
             services.AddScoped<IDepartmentEmpService, DepartmentEmpServiceImpl>();
             services.AddScoped<IDepartmentHeadService, DepartmentHeadServiceImpl>();
             services.AddScoped<IStoreClerkService, StoreClerkServiceImpl>();
