@@ -21,8 +21,10 @@ namespace SSIS_BOOT.Models
         public long? DelegateFromDate { get; set; }
         public long? DelegateToDate { get; set; }
 
-        public virtual Department Department { get; set; }
+        public string Role { get; set; }
 
+        public virtual Department Department { get; set; }
+ 
 
         /*One manager multiple employee relationship*/
         public virtual Employee Manager { get; set; }
@@ -47,12 +49,17 @@ namespace SSIS_BOOT.Models
         [InverseProperty("AckByClerk")]
         public virtual ICollection<Requisition> Acknowledgedrequsition { get; set; }
 
+        public virtual ICollection<Transaction> Transactions { get; set; }
 
         public Employee() { }
-        public Employee(string Name, string DepartmentId )
+        public Employee(string Name, string Email, string Password,string DepartmentId,string Role )
         {
             this.Name = Name;
+            this.Email = Email;
+            this.Password = Password;
             this.DepartmentId = DepartmentId;
+            this.Role = Role;
+            
         }
     }
 }

@@ -18,5 +18,16 @@ namespace SSIS_BOOT.Models
         public int? Rank { get ; set; }
         public virtual Supplier Supplier { get; set; }
         public virtual Product Product { get; set; }
+
+        public TenderQuotation() { }
+
+        public TenderQuotation(string SupplierId, int Year, string ProductId, string PricePerUom,int? Rank)
+        {
+            this.Supplier = Supplier;
+            this.Year = Year;
+            this.ProductId = ProductId;
+            this.PricePerUom = PricePerUom;
+            this.Rank = Rank;
+        }
     }
 }

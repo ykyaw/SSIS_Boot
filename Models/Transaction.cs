@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,9 +17,24 @@ namespace SSIS_BOOT.Models
         public string Description { get; set; }
         public int Qty { get; set; }
         public int Balance { get; set; }
+        
         public int UpdatedByEmpId { get; set; }
-        public string RefCode { get; set; }
+        public string? RefCode { get; set; }
         public virtual Product Product { get; set; }
         public virtual Employee UpdatedByEmp { get; set; }
+
+        public Transaction() { }
+
+        public Transaction(string ProductId, long Date, string Description, int Qty, int Balance, int UpdatedByEmpId, string? RefCode) {
+            this.ProductId = ProductId;
+            this.Date = Date;
+            this.Description = Description;
+            this.Qty = Qty;
+            this.Balance = Balance;
+            this.UpdatedByEmpId = UpdatedByEmpId;
+            this.RefCode = RefCode;
+            
+        }
+
     }
 }

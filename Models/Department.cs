@@ -15,6 +15,7 @@ namespace SSIS_BOOT.Models
         public int PhoneNo { get; set; }
         public int? FaxNo { get; set; }
         public int? RepId { get; set; }
+        
         public int? HeadId { get; set; }
         public int? CollectionPointId { get; set; }
         public Department(){}
@@ -28,5 +29,7 @@ namespace SSIS_BOOT.Models
         //public virtual Employee Head { get; set; }
         public virtual CollectionPoint CollectionPoint { get; set; }
         public virtual List<Employee> AllEmp { get; set; }
+
+
     }
 }

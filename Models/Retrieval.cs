@@ -17,9 +17,37 @@ namespace SSIS_BOOT.Models
         public long? RetrievedDate { get; set; }
 
         public string Status { get; set; }
-        public string Remark { get; set; }
-        public bool NeedAdjustment { get; set; }
+        public string? Remark { get; set; }
+        public bool? NeedAdjustment { get; set; }
         public virtual List<RequisitionDetail> RequisitionDetails { get; set; }
         public virtual Employee Clerk { get; set; }
+
+        public Retrieval() { }
+
+        public Retrieval(int ClerkId, long? DisbursedDate, long? RetrievedDate, string Status)
+        {
+            this.ClerkId = ClerkId;
+            this.DisbursedDate = DisbursedDate;
+            this.RetrievedDate = RetrievedDate;
+            this.Status = Status;
+        }
+
+        public Retrieval(int ClerkId, long? DisbursedDate, long? RetrievedDate, string Status,string? Remark)
+        {
+            this.ClerkId = ClerkId;
+            this.DisbursedDate = DisbursedDate;
+            this.RetrievedDate = RetrievedDate;
+            this.Status = Status;
+            this.Remark = Remark;
+        }
+        public Retrieval(int ClerkId, long? DisbursedDate, long? RetrievedDate, string Status, string? Remark, bool? NeedAdjustment)
+        {
+            this.ClerkId = ClerkId;
+            this.DisbursedDate = DisbursedDate;
+            this.RetrievedDate = RetrievedDate;
+            this.Status = Status;
+            this.Remark = Remark;
+            this.NeedAdjustment = NeedAdjustment;
+        }
     }
 }

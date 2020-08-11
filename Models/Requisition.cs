@@ -16,6 +16,8 @@ namespace SSIS_BOOT.Models
         public int ReqByEmpId { get; set; }
         [ForeignKey("ApprovedBy")]
         public int? ApprovedById { get; set; }
+        public string? Remarks { get; set; }
+
         [ForeignKey("ProcessedByClerk")]
         public int? ProcessedByClerkId { get; set; }
         public long CreatedDate { get; set; }
@@ -38,6 +40,13 @@ namespace SSIS_BOOT.Models
         public virtual List<RequisitionDetail> RequisitionDetails { get; set; }
 
         public Requisition() { }
+
+        public Requisition(string DepartmentId, int ReqByEmpId, string Status)
+        {
+            this.DepartmentId = DepartmentId;
+            this.ReqByEmpId = ReqByEmpId;
+            this.Status = Status;
+        }
         public Requisition(string DepartmentId, int ReqByEmpId, int ApprovedById, int ProcessedByClerkId)
         {
             this.DepartmentId = DepartmentId;
@@ -45,6 +54,21 @@ namespace SSIS_BOOT.Models
             this.ApprovedById = ApprovedById;
             this.ProcessedByClerkId = ProcessedByClerkId;
         }
-
+        public Requisition(string DepartmentId, int ReqByEmpId, int ApprovedById, string? Remarks,int ProcessedByClerkId, long CreatedDate, string Status,
+            int? CollectionPointId, long? CollectionDate, int? ReceivedByRepId, long? ReceivedDate, int? AckByClerkId, long? AckDate)
+        {
+            this.DepartmentId = DepartmentId;
+            this.ReqByEmpId = ReqByEmpId;
+            this.ApprovedById = ApprovedById;
+            this.ProcessedByClerkId = ProcessedByClerkId;
+            this.CreatedDate = CreatedDate;
+            this.Status = Status;
+            this.CollectionPointId = CollectionPointId;
+            this.CollectionDate = CollectionDate;
+            this.ReceivedByRepId = ReceivedByRepId;
+            this.ReceivedDate = ReceivedDate;
+            this.AckByClerkId = AckByClerkId;
+            this.AckDate = AckDate;
+        }
     }
 }
