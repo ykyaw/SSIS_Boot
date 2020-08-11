@@ -15,24 +15,23 @@ namespace SSIS_BOOT.Service.Impl
         public PurchaseOrderRepo porepo;
         public PurchaseOrderDetailRepo podrepo;
         public RequisitionRepo rrepo;
+        public RequisitionDetailRepo rdrepo;
+        public TransactionRepo trepo;
 
-        public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo, RequisitionRepo rrepo)
+        public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo, RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, TransactionRepo trepo)
         {
             this.prepo = prepo;
             this.purreqrepo = purreqrepo;
             this.porepo = porepo;
             this.podrepo = podrepo;
             this.rrepo = rrepo;
+            this.rdrepo = rdrepo;
+            this.trepo = trepo;
         }
 
         public List<Product> getallcat()
         {
             return prepo.findallcat();
-        }
-
-        public List<Requisition> getallreqform()
-        {
-            return rrepo.findallreqform();
         }
 
         public List<PurchaseOrderDetail> getpoddetails(int poId)
@@ -48,6 +47,19 @@ namespace SSIS_BOOT.Service.Impl
         public List<PurchaseRequestDetail> getpurchasereq()
         {
             return purreqrepo.findallpurchasereq();
+        }
+        public List<Requisition> getallreqform()
+        {
+            return rrepo.findallreqform();
+        }
+        public List<Requisition> getReqformByDeptId(string deptID)
+        {
+            return rrepo.findreqformByDeptID(deptID);
+        }
+
+        public List<Transaction> retrievestockcard(string productId)
+        {
+            return trepo.retrievestockcard(productId);
         }
     }
 }

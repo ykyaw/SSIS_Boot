@@ -25,6 +25,11 @@ namespace SSIS_BOOT.Repo
             List<Requisition> lr = dbcontext.Requisitions.ToList();
             return lr;
         }
-
+        public List<Requisition> findreqformByDeptID(string deptID)
+        {
+            List<Requisition> lr = dbcontext.Requisitions.Where(m => m.DepartmentId == deptID).ToList();
+            return lr;
+        }
+        
     }
 }

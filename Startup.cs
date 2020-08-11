@@ -36,10 +36,12 @@ namespace SSIS_BOOT
             services.AddScoped<IAuthService, JWTService>();
             services.AddScoped<EmployeeRepo>();
             services.AddScoped<RequisitionRepo>();
+            services.AddScoped<RequisitionDetailRepo>();
             services.AddScoped<ProductRepo>();
             services.AddScoped<PurchaseRequestRepo>();
             services.AddScoped<PurchaseOrderRepo>();
             services.AddScoped<PurchaseOrderDetailRepo>();
+            services.AddScoped<TransactionRepo>();
             services.AddScoped<IDepartmentEmpService, DepartmentEmpServiceImpl>();
             services.AddScoped<IDepartmentHeadService, DepartmentHeadServiceImpl>();
             services.AddScoped<IStoreClerkService, StoreClerkServiceImpl>();
