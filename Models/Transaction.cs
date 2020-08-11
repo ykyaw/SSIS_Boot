@@ -10,8 +10,8 @@ namespace SSIS_BOOT.Models
     public class Transaction
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
-        public string ProductID { get; set; }
+        public int Id { get; set; }
+        public string ProductId { get; set; }
         public long Date { get; set; }
         public string Description { get; set; }
         public int Qty { get; set; }
