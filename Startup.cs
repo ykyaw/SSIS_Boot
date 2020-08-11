@@ -83,7 +83,7 @@ namespace SSIS_BOOT
 
             app.UseAuthorization();
 
-            //app.UseMiddlewareExtensions();
+            app.UseMiddlewareExtensions();
 
             app.UseSession();
 
