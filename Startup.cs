@@ -40,6 +40,8 @@ namespace SSIS_BOOT
             services.AddScoped<IStoreManagerService, StoreManagerServiceImpl>();
             services.AddScoped<IStoreSupService, StoreSupServiceImpl>();
 
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddScoped<UserRepo>();
             services.AddMvc(options =>
             {
