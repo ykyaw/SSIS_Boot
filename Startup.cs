@@ -42,6 +42,7 @@ namespace SSIS_BOOT
             services.AddScoped<IStoreSupService, StoreSupServiceImpl>();
 
             services.AddSession();
+
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddMvc(options =>
@@ -84,9 +85,9 @@ namespace SSIS_BOOT
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //dbcontext.Database.EnsureDeleted();
-            //dbcontext.Database.EnsureCreated();
-            //new SSISSeeder(dbcontext);
+            dbcontext.Database.EnsureDeleted();
+            dbcontext.Database.EnsureCreated();
+            new SSISSeeder(dbcontext);
         }
     }
 }
