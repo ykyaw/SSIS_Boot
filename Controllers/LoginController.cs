@@ -16,12 +16,12 @@ namespace SSIS_BOOT.Controllers
     public class LoginController : Controller
     {
 
-        private readonly IUserService userService;
+        private readonly IEmployeeService employeeService;
         private readonly IAuthService authService;
 
-        public LoginController(IUserService userService, IAuthService authService)
+        public LoginController(IEmployeeService employeeService, IAuthService authService)
         {
-            this.userService = userService;
+            this.employeeService = employeeService;
             this.authService = authService;
         }
 
@@ -71,12 +71,12 @@ namespace SSIS_BOOT.Controllers
          * @author WUYUDING
          */
          [HttpPost]
-        public string Verify([FromBody] Employee user)
+        public string Verify([FromBody] Employee employee)
         {
-            user = userService.Login(user);
-            if (user != null)
+            employee = employeeService.Login(employee);
+            if (employee != null)
             {
-                string token = authService.GenerateToken(user);
+                string token = authService.GenerateToken(employee);
                 Response.Cookies.Append("token", token);
                 return token;
             }

@@ -18,8 +18,8 @@ namespace SSIS_BOOT.Components.JWT.Interfaces
         public int ExpireMinutes { get; set; }
 
         public bool IsTokenValid(string token);
-        public string GenerateToken(Employee user);
+        public string GenerateToken(Employee emp);
         public IEnumerable<Claim> GetTokenClaims(string token);
-        public JWTContainerModel GetJWTContainerModel(Employee user);
+        public JWTContainerModel GetJWTContainerModel(Employee emp);
     }
 }

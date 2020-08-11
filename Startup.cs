@@ -32,9 +32,9 @@ namespace SSIS_BOOT
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddScoped<IUserService, UserServiceImpl>();
+            services.AddScoped<IEmployeeService, EmployeeServiceImpl>();
             services.AddScoped<IAuthService, JWTService>();
-            services.AddScoped<UserRepo>();
+            services.AddScoped<EmployeeRepo>();
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(WebApiResultMiddleware));
@@ -65,6 +65,8 @@ namespace SSIS_BOOT
             app.UseAuthorization();
 
             app.UseMiddlewareExtensions();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

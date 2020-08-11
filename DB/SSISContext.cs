@@ -43,6 +43,6 @@ namespace SSIS_BOOT.DB
         public DbSet<Retrieval> Retrievals { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<TenderQuotation> TenderQuotations { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }//a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3
     }
 }
