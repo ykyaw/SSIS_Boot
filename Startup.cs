@@ -34,17 +34,14 @@ namespace SSIS_BOOT
             services.AddControllersWithViews();
             services.AddScoped<IEmployeeService, EmployeeServiceImpl>();
             services.AddScoped<IAuthService, JWTService>();
-<<<<<<< HEAD
             services.AddScoped<EmployeeRepo>();
-=======
             services.AddScoped<IDepartmentEmpService, DepartmentEmpServiceImpl>();
             services.AddScoped<IDepartmentHeadService, DepartmentHeadServiceImpl>();
             services.AddScoped<IStoreClerkService, StoreClerkServiceImpl>();
             services.AddScoped<IStoreManagerService, StoreManagerServiceImpl>();
             services.AddScoped<IStoreSupService, StoreSupServiceImpl>();
 
-            services.AddScoped<UserRepo>();
->>>>>>> b676f1f26b70af3f5d83bffcbdbbde331b9e9f2d
+            services.AddSession();
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(WebApiResultMiddleware));
@@ -74,7 +71,7 @@ namespace SSIS_BOOT
 
             app.UseAuthorization();
 
-            //app.UseMiddlewareExtensions();
+            app.UseMiddlewareExtensions();
 
             app.UseSession();
 
@@ -85,9 +82,9 @@ namespace SSIS_BOOT
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            dbcontext.Database.EnsureDeleted();
-            dbcontext.Database.EnsureCreated();
-            new SSISSeeder(dbcontext);
+            //dbcontext.Database.EnsureDeleted();
+            //dbcontext.Database.EnsureCreated();
+            //new SSISSeeder(dbcontext);
         }
     }
 }
