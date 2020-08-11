@@ -42,6 +42,8 @@ namespace SSIS_BOOT
             services.AddScoped<IStoreSupService, StoreSupServiceImpl>();
 
             services.AddSession();
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(WebApiResultMiddleware));
