@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace SSIS_BOOT.Repo
 {
-    public class UserRepo
+    public class EmployeeRepo
     {
         private SSISContext dbcontext;
 
-        public UserRepo(SSISContext dbcontext)
+        public EmployeeRepo(SSISContext dbcontext)
         {
             this.dbcontext = dbcontext;
         }
 
-        public Employee Login(Employee user)
+        public Employee Login(Employee emp)
         {
             return dbcontext.Employees
-                .Where(item => item.Email == user.Email && item.Password == user.Password)
+                .Where(item => item.Email == emp.Email && item.Password == emp.Password)
                 .FirstOrDefault();
         }
 

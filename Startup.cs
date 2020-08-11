@@ -32,8 +32,11 @@ namespace SSIS_BOOT
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddScoped<IUserService, UserServiceImpl>();
+            services.AddScoped<IEmployeeService, EmployeeServiceImpl>();
             services.AddScoped<IAuthService, JWTService>();
+<<<<<<< HEAD
+            services.AddScoped<EmployeeRepo>();
+=======
             services.AddScoped<IDepartmentEmpService, DepartmentEmpServiceImpl>();
             services.AddScoped<IDepartmentHeadService, DepartmentHeadServiceImpl>();
             services.AddScoped<IStoreClerkService, StoreClerkServiceImpl>();
@@ -43,6 +46,7 @@ namespace SSIS_BOOT
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddScoped<UserRepo>();
+>>>>>>> b676f1f26b70af3f5d83bffcbdbbde331b9e9f2d
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(WebApiResultMiddleware));
@@ -73,6 +77,8 @@ namespace SSIS_BOOT
             app.UseAuthorization();
 
             //app.UseMiddlewareExtensions();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
