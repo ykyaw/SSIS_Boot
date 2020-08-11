@@ -19,5 +19,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public List<Requisition> getReqformByDeptId(string deptID);
 
         public List<Transaction> retrievestockcard(string productId);
+
+        public List<TenderQuotation> gettop3suppliers(string productId);
     }
 }

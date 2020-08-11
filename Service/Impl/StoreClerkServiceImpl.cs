@@ -17,8 +17,10 @@ namespace SSIS_BOOT.Service.Impl
         public RequisitionRepo rrepo;
         public RequisitionDetailRepo rdrepo;
         public TransactionRepo trepo;
+        public TenderQuotationRepo tqrepo;
 
-        public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo, RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, TransactionRepo trepo)
+        public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo, 
+            RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, TransactionRepo trepo, TenderQuotationRepo tqrepo)
         {
             this.prepo = prepo;
             this.purreqrepo = purreqrepo;
@@ -27,6 +29,7 @@ namespace SSIS_BOOT.Service.Impl
             this.rrepo = rrepo;
             this.rdrepo = rdrepo;
             this.trepo = trepo;
+            this.tqrepo = tqrepo;
         }
 
         public List<Product> getallcat()
@@ -60,6 +63,11 @@ namespace SSIS_BOOT.Service.Impl
         public List<Transaction> retrievestockcard(string productId)
         {
             return trepo.retrievestockcard(productId);
+        }
+
+        public List<TenderQuotation> gettop3suppliers(string productId)
+        {
+            return tqrepo.gettop3suppliers(productId);
         }
     }
 }

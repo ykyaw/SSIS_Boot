@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SSIS_BOOT.Models;
@@ -70,6 +71,13 @@ namespace SSIS_BOOT.Controllers
         {
             List<Transaction> plist = scservice.retrievestockcard(productId);
             return plist;
+        }
+        [HttpGet]
+        [Route("/storeclerk/supplier/{productId}")]
+        public List<TenderQuotation> gettop3supplier (string productId)
+        { 
+            List<TenderQuotation> slist = scservice.gettop3suppliers(productId);
+            return slist;
         }
     }
 }
