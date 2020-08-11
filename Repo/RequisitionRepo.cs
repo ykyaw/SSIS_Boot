@@ -30,6 +30,11 @@ namespace SSIS_BOOT.Repo
             List<Requisition> lr = dbcontext.Requisitions.Where(m => m.DepartmentId == deptID).ToList();
             return lr;
         }
+        public List<Requisition> findrequsitionbycollectiondate(long date)
+        {
+            List<Requisition> lr = dbcontext.Requisitions.Where(m => m.CollectionDate == date).ToList();
+            return lr;
+        }
         
     }
 }

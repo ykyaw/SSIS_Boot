@@ -1,4 +1,6 @@
-﻿using SSIS_BOOT.Models;
+﻿using Microsoft.AspNetCore.Http;
+using SSIS_BOOT.Common;
+using SSIS_BOOT.Models;
 using SSIS_BOOT.Repo;
 using SSIS_BOOT.Service.Interfaces;
 using System;
@@ -17,8 +19,10 @@ namespace SSIS_BOOT.Service.Impl
         public RequisitionRepo rrepo;
         public RequisitionDetailRepo rdrepo;
         public TransactionRepo trepo;
+        public RetrievalRepo retrivrepo;
 
-        public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo, RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, TransactionRepo trepo)
+
+        public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo, RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, TransactionRepo trepo, RetrievalRepo retrivrepo)
         {
             this.prepo = prepo;
             this.purreqrepo = purreqrepo;
@@ -27,6 +31,8 @@ namespace SSIS_BOOT.Service.Impl
             this.rrepo = rrepo;
             this.rdrepo = rdrepo;
             this.trepo = trepo;
+            this.retrivrepo = retrivrepo;
+
         }
 
         public List<Product> getallcat()
@@ -60,6 +66,29 @@ namespace SSIS_BOOT.Service.Impl
         public List<Transaction> retrievestockcard(string productId)
         {
             return trepo.retrievestockcard(productId);
+        }
+
+        public Retrieval genretrievalform(long date, int clerkid)
+        {
+            Retrieval r1 = new Retrieval();
+            r1.ClerkId = clerkid;
+            r1.DisbursedDate = date;
+            r1.Status = Status.RetrievalStatus.created;
+            Retrieval r2 = retrivrepo.genretrievalandreturn(r1, clerkid); //checks if retrieval form already exists based on date. if no, creates a new retrieval form and returns the newly created form. if yes, return previously created form  
+
+            List<RequisitionDetail> rd = new List<RequisitionDetail>();
+            List<Requisition> req1 = rrepo.findrequsitionbycollectiondate(date);
+            foreach (Requisition r in req1)
+            {
+                foreach (RequisitionDetail detail in r.RequisitionDetails)
+                {
+                    detail.RetrievalId = r2.Id; //assign the retrieval Id to each requsitiondetail 
+                    RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back
+                    rd.Add(x);
+                }
+            }
+            r2.RequisitionDetails = rd.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
+            return r2;
         }
     }
 }

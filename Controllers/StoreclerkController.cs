@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Service.Interfaces;
@@ -66,6 +67,21 @@ namespace SSIS_BOOT.Controllers
         {
             List<Transaction> plist = scservice.retrievestockcard(productId);
             return plist;
+        }
+
+
+        [HttpPost]
+        [Route("/storeclerk/ret")]
+        public Retrieval genretrievalform(long date)
+        {
+            /*              //for testing purposes only, delete when unused
+            long date2 = 1597852800000;
+            int clerkid = 1;
+            Retrieval r1 = scservice.genretrievalform(/date2, clerkid); //artifically seed with this time and clerk id for testing
+            return r1; */
+            int clerkid = (int)HttpContext.Session.GetInt32("Id");
+            Retrieval r1 = scservice.genretrievalform(date, clerkid);
+            return r1;
         }
     }
 }
