@@ -211,8 +211,9 @@ namespace SSIS_BOOT.DB
             Employee e14 = new Employee("Adeline Yee (de)", "Adeline@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "ENGL", "de");
             dbcontext.Add(e14);
             dbcontext.SaveChanges();
-            Employee e15 = new Employee("Nicole Chone(de)", "Nicole@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "CPSC", "de");
+            Employee e15 = new Employee("Nicole Chong(de)", "Nicole@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "CPSC", "de");
             dbcontext.Add(e15);
+            dbcontext.SaveChanges();
             Employee e16 = new Employee("Fel (sc)", "Fel@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "STOR", "sc");
             dbcontext.Add(e16);
             dbcontext.SaveChanges();
@@ -293,21 +294,21 @@ namespace SSIS_BOOT.DB
             //seed transaction
             //public Transaction(string ProductId, DateTime Date, string Description, int Qty, int Balance, int UpdatedByEmpId, string? RefCode)
             Transaction trans1 = new Transaction("P043", 1596441600, "supply from supplier Bane", +500, 550, 1, null);//3/8 / 2020 @ 8:00am(UTC)
-            Transaction trans2 = new Transaction("P043", 1596443400, "supply to English Departmen", -20, 530, 1, null); //3/8/2020 @ 8:300am (UTC)
-            Transaction trans3 = new Transaction("C001", 1596443400, "stock adjustment 001/008/2020", -2, 182, 1, null); //3/8/2020 @ 8:300am (UTC)
+            Transaction trans2 = new Transaction("C001", 1596443400, "stock adjustment 031/007/2020", -2, 182, 1, null); //3/8/2020 @ 8:300am (UTC)
+            Transaction trans3 = new Transaction("P043", 1596447000, "supply to English Departmen", -20, 530, 1, null); //3/8/2020 @ 9:300am (UTC)
 
-
-            Transaction trans4 = new Transaction("P043", 1597060800, "Supply to Computing Department", -30, 504, 15, null); //10/8/2020 @ 12:00pm (UTC)
-            Transaction trans5 = new Transaction("P043", 1597060800, "Supply to English Department", -50, 454, 15, null);//10/8/2020 @ 12:00pm (UTC)
+            //corr/to retr3
+            Transaction trans4 = new Transaction("P043", 1597060800, "Supply to Computing Department", -30, 504, 16, null); //10/8/2020 @ 12:00pm (UTC)
+            Transaction trans5 = new Transaction("P043", 1597060800, "Supply to English Department", -50, 454, 16, null);//10/8/2020 @ 12:00pm (UTC)
             Transaction trans6 = new Transaction("C001", 1597060800, "Supply to Computing Department", -10, 8, 1, null); //10/8/2020 @ 12:00pm (UTC)
-            Transaction trans7 = new Transaction("C001", 1597060800, "supply to English Department", -8, 0, 15, null);//10/8/2020 @ 12:00pm (UTC)
+            Transaction trans7 = new Transaction("C001", 1597060800, "supply to English Department", -8, 0, 16, null);//10/8/2020 @ 12:00pm (UTC)
 
 
-
-            Transaction trans8 = new Transaction("C001", 1594724400, "supply from ALPA", 50, 75, 1, null); //14/7/2020 @ 11:00am (UTC)
-            Transaction trans9 = new Transaction("C001", 1595237400, "Supply to Computing Department", -10, 65, 1, null); //20/7/2020@9:30am
-            Transaction trans10 = new Transaction("C001", 1595237400, "supply to English Department",-50,15, 15, null);//20/7/2020 @ 9:30am (UTC)
-            Transaction trans11 = new Transaction("C001", 1595926800, "Supply from ALPA", 15, 18, 15, null);//29/7/2020 @ 9:30am (UTC)
+            //corr/to retr1
+            Transaction trans8 = new Transaction("C001", 1594724400, "supply from ALPA", 50,65, 1, null); //14/7/2020 @ 11:00am (UTC)
+            Transaction trans9 = new Transaction("C001", 1595237400, "Supply to Computing Department", -10, 55, 1, null); //20/7/2020@9:30am
+            Transaction trans10 = new Transaction("C001", 1595237400, "supply to English Department",-50,3, 1, null);//"2 spoilt in stock"; 20/7/2020 @ 9:30am (UTC)
+            Transaction trans11 = new Transaction("C001", 1595926800, "Supply from ALPA", 15, 18, 16, null);//29/7/2020 @ 9:30am (UTC)
 
             dbcontext.Add(trans1);
             dbcontext.Add(trans2);
@@ -323,9 +324,23 @@ namespace SSIS_BOOT.DB
             dbcontext.SaveChanges();
 
             //seed retrieval(Fri)
+            //public Retrieval(int ClerkId, long? DisbursedDate, long? RetrievedDate, string Status,
+            //    string? RetrievalComment, bool? NeedAdjustment)
 
+            //Fri 17/7/2020 @2:00pm to retrieve, disbursement on 20/7, item C001 to both ENGL and CPSC
+            //(cover 2 rows in ReqDet)
+            Retrieval retr1 = new Retrieval(1, 1595237400, 1594994400, "retrieved");
+            dbcontext.Add(retr1);
+            dbcontext.SaveChanges();
+            //Fri 31/7/2020 @3:00 to retrive, disbursement on 3/8,item "P043" to ENGL (cover 1 rows in ReqDet)
+            Retrieval retr2 = new Retrieval(1, 1596447000, 1596207600, "retrieved");
+            dbcontext.Add(retr2);
+            dbcontext.SaveChanges();
+            //Fri 7//8/2020 @3:00 to retrive, disbursement on 10/8,item "P043" and "C001" to ENGL and CPSC(cover 4 rows in ReqDet)
+            Retrieval retr3 = new Retrieval(1, 1597060800, 1596812400, "retrieved","2 clips in inventory found rusty, spoilt", true);
+            dbcontext.Add(retr3);
+            dbcontext.SaveChanges();
 
-            //3/8/2020 
 
 
             //seed requsition
@@ -358,12 +373,13 @@ namespace SSIS_BOOT.DB
                                                4, 1596447000,1, 1596447000);
 
             //created-05 /8/ 2020 09:00:00 (UTC); collection-date-10/8/2020 @930am; received-10/8/2020 @11/:00am; confirmed -10/8/2020@12:00pm
-            Requisition r6 = new Requisition("ENGL", 4, 5, null,1, 1596618000, "completed",
+            Requisition r6 = new Requisition("ENGL", 4, 5, null,16, 1596618000, "completed",
                                                1, 1597060800,
                                                4, 1597059000, 1, 1597060800);
+            //created-05 /8/ 2020 09:00:00 (UTC); collection-date-10/8/2020 @930am; received-10/8/2020 @11/:00am; confirmed -10/8/2020@12:00pm
             Requisition r7 = new Requisition("CPSC", 6, 7,null, 16, 1596618000, "completed",
                                                1, 1597060800,
-                                               4, 1597059000, 1, 1597060800);//created-05 /8/ 2020 09:00:00 (UTC); collection-date-10/8/2020 @930am; received-10/8/2020 @11/:00am; confirmed -10/8/2020@12:00pm
+                                               4, 1597059000, 1, 1597060800);
 
             dbcontext.Add(r3);
             dbcontext.Add(r4);
@@ -382,34 +398,47 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(rd1);
             RequisitionDetail rd2 = new RequisitionDetail(2, "C001",15);
             dbcontext.Add(rd2);
-            RequisitionDetail rd3 = new RequisitionDetail(5, "C001", 10, 10, 10, null, null, null, null);//left retrival list
+            RequisitionDetail rd3 = new RequisitionDetail(5, "C001", 10, 10, 10, null, null, null, 1);//refer to retr1
             dbcontext.Add(rd3);
-            RequisitionDetail rd4 = new RequisitionDetail(5, "C001", 50, 50, 50, null, null, null, null);//left retrival list
+            RequisitionDetail rd4 = new RequisitionDetail(5, "C001", 50, 50, 50, null, null, null, 1);//retr1
             dbcontext.Add(rd4);
-            RequisitionDetail rd5 = new RequisitionDetail(5, "P043",20,20,20,null,null,null,null);//left retrival list
+            RequisitionDetail rd5 = new RequisitionDetail(5, "P043",20,20,20,null,null,null,2);//retr2
             dbcontext.Add(rd5);
-            RequisitionDetail rd6 = new RequisitionDetail(6, "P043",50,50,50, null, null, null, null);
+            RequisitionDetail rd6 = new RequisitionDetail(6, "P043",50,50,50, null, null, null, 3);//retr3
             dbcontext.Add(rd6);
-            RequisitionDetail rd7 = new RequisitionDetail(6, "C001",10,8,8,"only 8 left","noted",null,null);
+            RequisitionDetail rd7 = new RequisitionDetail(6, "C001",10,8,8,"only 8 left","noted",null,3);//retr3
             dbcontext.Add(rd7);
-            RequisitionDetail rd8 = new RequisitionDetail(7, "P043",30,30,28, null, "2 spoilt", "confirmed", null); //sub need to raise 2 in voucher
+            RequisitionDetail rd8 = new RequisitionDetail(7, "P043",30,30,28, null, "2 spoilt during delivery", "confirmed", 3); //sub need to raise 2 in voucher
             dbcontext.Add(rd8);
-            RequisitionDetail rd9 = new RequisitionDetail(7, "C001",10,10,10, null, null, null, null);
+            RequisitionDetail rd9 = new RequisitionDetail(7, "C001",10,10,10, null, null, null, 3);
             dbcontext.Add(rd9);
             dbcontext.SaveChanges();
 
             //seed adjustment voucher
+            //public AdjustmentVoucher(string Id, int InitiatedClerkId, long InitiatedDate, 
+            //int? ApprovedSupId, long? ApprovedSupDate, int? ApprovedMgrId, long? ApprovedMgrDate, string Status)
+            //Adjustment voucher raised on 31/7; due to 2 rusty clips found on 17/7/2020 retrival, approved by sup on 3/8/2020
+            AdjustmentVoucher adj1 = new AdjustmentVoucher("031/007/2020", 1, 1596207600, 2, 1596447000, "approved");
+            dbcontext.Add(adj1);
+            dbcontext.SaveChanges();
+
+
+
+
 
             //seed adjustment voucher detail
-
+            //public AdjustmentVoucherDetail(string AdjustmentVoucherId, string ProductId, int QtyAdjusted, double TotalPrice, string Reason)
             //seed purchase request detail
+            AdjustmentVoucherDetail adjdet1 = new AdjustmentVoucherDetail("031/007/2020", "C001", 2, 4.0, "2 clips in inventory found rusty, spoilt");
+            dbcontext.Add(adjdet1);
+            dbcontext.SaveChanges();
 
             //seed purchase order
 
             //seed purchase order detail
 
         }
-        
+
 
     }
 }
