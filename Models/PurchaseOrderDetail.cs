@@ -18,9 +18,35 @@ namespace SSIS_BOOT.Models
         public int? QtyReceived { get; set; }
         public double TotalPrice { get; set; }
         public int? SupplierDeliveryNo { get; set; }
-        public string Remark { get; set; }
+        public string? Remark { get; set; }
         public  PurchaseOrder PurchaseOrder { get; set; }
         public  PurchaseRequestDetail PurchaseRequestDetail { get; set; }
         public  Product Product { get; set; }
+
+        //constructor
+        public PurchaseOrderDetail() { }
+
+        public PurchaseOrderDetail(int? PurchaseOrderId, int? PurchaseRequestDetailId, string ProductId, int QtyPurchased, int? QtyReceived,
+            double TotalPrice) {
+            this.PurchaseOrderId = PurchaseOrderId;
+            this.PurchaseRequestDetailId = PurchaseRequestDetailId;
+            this.ProductId = ProductId;
+            this.QtyPurchased = QtyPurchased;
+            this.QtyReceived = QtyReceived;
+            this.TotalPrice = TotalPrice;
+
+        }
+
+        public PurchaseOrderDetail(int? PurchaseOrderId, int? PurchaseRequestDetailId, string ProductId, int QtyPurchased, int? QtyReceived, 
+            double TotalPrice, int? SupplierDeliveryNo, string? Remark) {
+            this.PurchaseOrderId = PurchaseOrderId;
+            this.PurchaseRequestDetailId = PurchaseRequestDetailId;
+            this.ProductId = ProductId;
+            this.QtyPurchased = QtyPurchased;
+            this.QtyReceived = QtyReceived;
+            this.TotalPrice = TotalPrice;
+            this.SupplierDeliveryNo = SupplierDeliveryNo;
+            this.Remark = Remark;
+        }
     }
 }

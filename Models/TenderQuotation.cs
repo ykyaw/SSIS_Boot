@@ -13,6 +13,7 @@ namespace SSIS_BOOT.Models
         public int Id { get; set; }
         public string SupplierId { get; set; }
         public int Year { get; set; }
+        
         public string ProductId { get; set; }
         public string PricePerUom { get; set; }
         public int? Rank { get ; set; }
@@ -23,7 +24,7 @@ namespace SSIS_BOOT.Models
 
         public TenderQuotation(string SupplierId, int Year, string ProductId, string PricePerUom,int? Rank)
         {
-            this.Supplier = Supplier;
+            this.SupplierId = SupplierId;
             this.Year = Year;
             this.ProductId = ProductId;
             this.PricePerUom = PricePerUom;
