@@ -60,6 +60,12 @@ namespace SSIS_BOOT.Service.Impl
         {
             return rrepo.findallreqform();
         }
+
+        public List<Requisition> getallreqformbydate(long date)
+        {
+            return rrepo.findrequsitionbycollectiondate(date);
+        }
+
         public List<Requisition> getReqformByDeptId(string deptID)
         {
             return rrepo.findreqformByDeptID(deptID);
@@ -73,6 +79,7 @@ namespace SSIS_BOOT.Service.Impl
 
         public Retrieval genretrievalform(long date, int clerkid)
         {
+
             Retrieval r1 = new Retrieval();
             r1.ClerkId = clerkid;
             r1.DisbursedDate = date;

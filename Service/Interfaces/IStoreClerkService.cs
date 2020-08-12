@@ -24,6 +24,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public List<TenderQuotation> gettop3suppliers(string productId);
 
         public bool updateretrieval(Retrieval r1);
+        public List<Requisition> getallreqformbydate(long date);
 
     }
 }
