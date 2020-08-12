@@ -86,7 +86,7 @@ namespace SSIS_BOOT.Controllers
             //Retrieval r1 = scservice.genretrievalform(date2, clerkid); //artifically seed with this time and clerk id for testing
             //return r1;
             List<Requisition> rq = scservice.getallreqformbydate(date);
-            if (rq == null)
+            if (rq == null||rq.Count==0)
             {
                 throw new Exception("Sorry, there is no Requisition matching the provided date. Please try again");
             }
