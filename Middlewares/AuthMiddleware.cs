@@ -54,10 +54,16 @@ namespace SSIS_BOOT.Middlewares
                         user= userRepo.FindUserByEmail(user.Email);
                         token= authService.GenerateToken(user);
                         context.Response.Cookies.Append("token", token);
-                        context.Session.SetInt32("Id", user.Id);
-                        context.Session.SetString("Name", user.Name);
-                        context.Session.SetString("DeptId", user.DepartmentId);
-                        context.Session.SetString("DeptName", user.Department.Name);
+                        try
+                        {
+                            context.Session.SetInt32("Id", user.Id);
+                            context.Session.SetString("Name", user.Name);
+                            context.Session.SetString("DeptId", user.DepartmentId);
+                            context.Session.SetString("DeptName", user.Department.Name);
+                        }catch(Exception e)
+                        {
+                            Debug.WriteLine(e.Message);
+                        }
                         if (user == null)
                         {
                             context.Response.StatusCode = CommonConstant.ErrorCode.INVALID_TOKEN;
