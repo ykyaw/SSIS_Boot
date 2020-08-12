@@ -15,7 +15,6 @@ namespace SSIS_BOOT.Models
         public string ProductId { get; set; }
         public int QtyAdjusted { get; set; }
         public double TotalPrice { get; set; }
-        public string Reason { get; set; }
 
         public  AdjustmentVoucher AdjustmentVoucher { get; set; }
         public  Product Product { get; set; }

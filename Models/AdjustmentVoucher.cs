@@ -18,6 +18,7 @@ namespace SSIS_BOOT.Models
         public int? ApprovedMgrId { get; set; }
         public long? ApprovedMgrDate { get; set; }
         public string Status { get; set; }
+        public string Reason { get; set; }
 
         public  Employee InitiatedClerk { get; set; }
         public  Employee ApprovedSup { get; set; }
