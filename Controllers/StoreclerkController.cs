@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SSIS_BOOT.Common;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Service.Interfaces;
 
@@ -97,5 +98,76 @@ namespace SSIS_BOOT.Controllers
             List<TenderQuotation> slist = scservice.gettop3suppliers(productId);
             return slist;
         }
+        [HttpPost]
+        [Route("/storeclerk/disbursement")]
+        public List<RequisitionDetail> retrievedisbursementlist([FromBody]Requisition r1)
+        {
+
+            string deptId = r1.DepartmentId;
+            long collectiondate = (long)r1.CollectionDate;
+            //string deptId = "CPSC";
+            //long collectiondate = 1597060800;
+            List<RequisitionDetail> dlist = scservice.retrievedisbursementlist(deptId, collectiondate);
+            return dlist;
+        }
+
+        [HttpPost]
+        //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPOST] and pass in from body
+        [Route("/storeclerk/updatesc")]
+        public bool updatestockcard ([FromBody] Transaction t1)
+        {
+            //for testing purpose 
+            //Transaction t1 = new Transaction("C001", 1597211000, "supply to Math Department", -20, 530, 1, null); //August 12, 2020 13:43:20
+            scservice.savetransaction(t1);
+            return true;
+        }
+        [HttpPost]
+        //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPOST] and pass in from body
+        [Route("/storeclerk/createpr")]
+        public List<PurchaseRequestDetail> generatepurchaserequest([FromBody]List<String> productId)
+        {
+            //testing 
+            //List<String> productid = new List<string> {"C001", "E002", "H031" };
+            int currentpurchaserequestid = (int) DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
+            foreach (String id in productId)
+            {
+                PurchaseRequestDetail prd1 = new PurchaseRequestDetail();
+                prd1.ProductId = id;
+                prd1.Status = Status.PurchaseRequestStatus.created;
+                prd1.PurchaseRequestId = currentpurchaserequestid;
+                //prd1.CreatedByClerkId = 1;
+                prd1.CreatedByClerkId = (int) HttpContext.Session.GetInt32("Id");
+                scservice.addpurchaserequest(prd1);
+            }
+            List<PurchaseRequestDetail> prlist = scservice.getcurrentpurchaserequest(currentpurchaserequestid);
+            return prlist;
+
+        }
+        [HttpPut]
+        //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPUT] and pass in from body
+        [Route("/storeclerk/updatepr")]
+        public bool Updatepurchaserequest([FromBody] List<PurchaseRequestDetail> prdlist)
+        {
+            //testing 
+            //List<PurchaseRequestDetail> prdetails = scservice.getpurchasereq();
+            //PurchaseRequestDetail prd1 = prdetails.Find(item => item.Id == 6);
+            //prd1.ReorderQty = 5000;
+            //prd1.VenderQuote = "QUO03";
+            //prd1.SupplierId = "ALPA";
+            //PurchaseRequestDetail prd2 = prdetails.Find(item => item.Id == 4);
+            //prd2.ReorderQty = 100;
+            //prd2.VenderQuote = "QUO04";
+            //prd2.SupplierId = "ALPA";
+            //List<PurchaseRequestDetail> prdlist = new List<PurchaseRequestDetail> { prd1, prd2 };
+
+            foreach (PurchaseRequestDetail prd in prdlist)
+            {
+                scservice.updatepurchaserequestitem(prd);
+            }
+            //List<PurchaseRequestDetail> prdetailsfinal = scservice.getpurchasereq();
+            return true;
+        }
+
     }
 }

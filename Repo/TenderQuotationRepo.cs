@@ -24,7 +24,7 @@ namespace SSIS_BOOT.Repo
             int year = now.Year;
 
             IEnumerable<TenderQuotation> tqlist = (from tq in dbcontext.TenderQuotations
-                                              where tq.ProductId == pdtId && tq.Year == year
+                                              where tq.ProductId == pdtId && tq.Year == year && tq.Rank !=null
                                               orderby tq.Rank ascending
                                               select tq).Include(m => m.Product).Include(m => m.Supplier).Take(3);
 

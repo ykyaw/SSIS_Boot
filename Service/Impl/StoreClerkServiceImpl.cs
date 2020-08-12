@@ -106,5 +106,28 @@ namespace SSIS_BOOT.Service.Impl
         {
             return tqrepo.gettop3suppliers(productId);
         }
+
+        public List<RequisitionDetail> retrievedisbursementlist(string deptId, long collectiondate)
+        {
+            return rdrepo.retrievedisbursementlist(deptId, collectiondate);
+        }
+
+        public bool savetransaction(Transaction t1)
+        {
+            return trepo.savenewtransaction(t1);
+        }
+
+        public bool addpurchaserequest(PurchaseRequestDetail prd1)
+        {
+            return purreqrepo.addnewpurchaserequestdetail(prd1);
+        }
+        public List<PurchaseRequestDetail> getcurrentpurchaserequest(int purchaserequestId)
+        {
+            return purreqrepo.getcurrentpurchaserequest(purchaserequestId);
+        }
+        public bool updatepurchaserequestitem(PurchaseRequestDetail prd)
+        {
+            return purreqrepo.updatepurchaserequestitem(prd);
+        }
     }
 }

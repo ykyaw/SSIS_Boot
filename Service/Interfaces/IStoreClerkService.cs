@@ -23,5 +23,12 @@ namespace SSIS_BOOT.Service.Interfaces
         public Retrieval genretrievalform(long date, int clerkid);
         public List<TenderQuotation> gettop3suppliers(string productId);
 
+        public List<RequisitionDetail> retrievedisbursementlist(string deptId, long collectiondate);
+
+        public bool savetransaction(Transaction t1);
+
+        public bool addpurchaserequest(PurchaseRequestDetail prd1);
+        public List<PurchaseRequestDetail> getcurrentpurchaserequest(int purchaserequestId);
+        public bool updatepurchaserequestitem(PurchaseRequestDetail prd);
     }
 }

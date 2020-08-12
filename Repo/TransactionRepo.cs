@@ -21,5 +21,11 @@ namespace SSIS_BOOT.Repo
             List<Transaction> lr = dbcontext.Transactions.Include(m=>m.Product).Include(m=>m.UpdatedByEmp).Where(m => m.ProductId == productId).ToList();
             return lr;
         }
+        public bool savenewtransaction(Transaction t1)
+        {
+            dbcontext.Transactions.Add(t1);
+            dbcontext.SaveChanges();
+            return true;            
+        }
     }
 }

@@ -18,17 +18,15 @@ namespace SSIS_BOOT.Repo
 
         public List<Requisition> findallreqform()
         {
-            List<Requisition> lr = dbcontext.Requisitions.Include(m=>m.Department).Include(m => m.ReqByEmp)
-                .Include(m => m.ApprovedBy).Include(m => m.ProcessedByClerk).Include(m => m.ReceivedByRep).Include(m => m.AckByClerk)
-                .Include(m => m.CollectionPoint).Include(m => m.RequisitionDetails).ToList();
+            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department).ToList();
             return lr;
+            // .Include(m => m.ReqByEmp).Include(m => m.ApprovedBy).Include(m => m.ProcessedByClerk).Include(m => m.RequisitionDetails).
         }
         public List<Requisition> findreqformByDeptID(string deptID)
         {
-            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department).Include(m => m.ReqByEmp)
-                .Include(m => m.ApprovedBy).Include(m => m.ProcessedByClerk).Include(m => m.ReceivedByRep).Include(m => m.AckByClerk)
-                .Include(m => m.CollectionPoint).Include(m => m.RequisitionDetails).Where(m => m.DepartmentId == deptID).ToList();
+            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department).Where(m => m.DepartmentId == deptID).ToList();
             return lr;
+            // .Include(m => m.ReqByEmp).Include(m => m.ApprovedBy).Include(m => m.ProcessedByClerk).Include(m => m.RequisitionDetails)
         }
         public List<Requisition> findrequsitionbycollectiondate(long date)
         {

@@ -15,8 +15,6 @@ namespace SSIS_BOOT.Repo
         {
             this.dbcontext = dbcontext;
         }
-
-
         public RequisitionDetail updateretrievalid(RequisitionDetail rd)
         {
             dbcontext.RequisitionDetails.Update(rd);
@@ -32,6 +30,13 @@ namespace SSIS_BOOT.Repo
             List<RequisitionDetail> rd = dbcontext.RequisitionDetails.Include(m=>m.Requisition).Include(m => m.Product)
                 .Include(m => m.Retrieval).Where(m => m.RequisitionId == reqid).ToList();
             return rd;
+        }
+
+        public List<RequisitionDetail> retrievedisbursementlist(string deptId, long collectiondate)
+        {
+            List<RequisitionDetail> dlist = dbcontext.RequisitionDetails.Include(m => m.Requisition).Include(m => m.Product)
+                .Include(m => m.Retrieval).Where(m => m.Requisition.DepartmentId == deptId && m.Requisition.CollectionDate == collectiondate).ToList();
+            return dlist;
         }
 
     }
