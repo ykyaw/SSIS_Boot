@@ -29,7 +29,6 @@ namespace SSIS_BOOT.Models
             this.ProductId = ProductId;
             this.QtyAdjusted = QtyAdjusted;
             this.TotalPrice = TotalPrice;
-            this.Reason = Reason;
         }
 
     }
