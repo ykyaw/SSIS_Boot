@@ -38,6 +38,20 @@ namespace SSIS_BOOT.Repo
                 .Include(m => m.Retrieval).Where(m => m.Requisition.DepartmentId == deptId && m.Requisition.CollectionDate == collectiondate).ToList();
             return dlist;
         }
+        public bool updaterequsitiondetail(RequisitionDetail rd)
+        {
+            try
+            {
+                dbcontext.RequisitionDetails.Update(rd);
+                dbcontext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                throw new Exception("Error saving Requsition Detail");
+            }
+
+        }
 
     }
 }

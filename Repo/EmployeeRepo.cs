@@ -1,4 +1,5 @@
-﻿using SSIS_BOOT.DB;
+﻿using Microsoft.EntityFrameworkCore;
+using SSIS_BOOT.DB;
 using SSIS_BOOT.Models;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,14 @@ namespace SSIS_BOOT.Repo
 
         public Employee Login(Employee emp)
         {
-            return dbcontext.Employees
+            return dbcontext.Employees.Include(m=>m.Department)
                 .Where(item => item.Email == emp.Email && item.Password == emp.Password)
                 .FirstOrDefault();
         }
 
-        public Employee FindUserByEmail(string email)
+    public Employee FindUserByEmail(string email)
         {
-            return dbcontext.Employees
+            return dbcontext.Employees.Include(m => m.Department)
                 .Where(item => item.Email == email)
                 .FirstOrDefault();
         }

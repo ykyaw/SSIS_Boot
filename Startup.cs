@@ -79,13 +79,13 @@ namespace SSIS_BOOT
             }
             app.UseStaticFiles();
 
+            app.UseSession();
+
             app.UseRouting();
 
             app.UseAuthorization();
 
             app.UseMiddlewareExtensions();
-
-            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

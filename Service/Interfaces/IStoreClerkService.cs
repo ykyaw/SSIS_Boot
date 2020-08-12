@@ -30,5 +30,10 @@ namespace SSIS_BOOT.Service.Interfaces
         public bool addpurchaserequest(PurchaseRequestDetail prd1);
         public List<PurchaseRequestDetail> getcurrentpurchaserequest(int purchaserequestId);
         public bool updatepurchaserequestitem(PurchaseRequestDetail prd);
+
+        public bool updateretrieval(Retrieval r1);
+        public List<Requisition> getallreqformbydate(long date);
+
+
     }
 }
