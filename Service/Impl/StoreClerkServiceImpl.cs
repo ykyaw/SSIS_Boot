@@ -79,34 +79,28 @@ namespace SSIS_BOOT.Service.Impl
 
         public Retrieval genretrievalform(long date, int clerkid)
         {
-
+            Retrieval r_exist = retrivrepo.GetRetrieval(date);
+            if (r_exist != null)
+            {
+                return r_exist;
+            }
             Retrieval r1 = new Retrieval();
             r1.ClerkId = clerkid;
             r1.DisbursedDate = date;
             r1.Status = Status.RetrievalStatus.created;
-            try
+            Retrieval r2 = retrivrepo.genretrievalandreturn(r1); //creates retrieval form and returns it
+            List<Requisition> req1 = rrepo.findrequsitionbycollectiondate(date);
+            foreach (Requisition re in req1)
             {
-                Retrieval r2 = retrivrepo.genretrievalandreturn(r1); //checks if retrieval form already exists based on date. if yes, go to catch. if no, create retrieval form
-                List<RequisitionDetail> rd = new List<RequisitionDetail>();
-                List<Requisition> req1 = rrepo.findrequsitionbycollectiondate(date);
-                foreach (Requisition r in req1)
+                foreach (RequisitionDetail detail in re.RequisitionDetails)
                 {
-                    foreach (RequisitionDetail detail in r.RequisitionDetails)
-                    {
-                        detail.RetrievalId = r2.Id; //assign the newly created retrieval Id to each requsitiondetail 
-                        RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
-                        rd.Add(x);
-                    }
+                    detail.RetrievalId = r2.Id; //assign the newly created retrieval Id to each requsitiondetail 
+                    RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
                 }
-                rd = rd.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
-                r2.RequisitionDetails = rd;
-                return r2;
             }
-            catch(Exception)
-            {
-                Retrieval r2 = retrivrepo.GetRetrieval(r1);
-                return r2;
-            }
+            Retrieval r3 = retrivrepo.GetRetrieval(date);
+            r3.RequisitionDetails = r3.RequisitionDetails.GroupBy(m=>m.Product.Description).SelectMany(r => r).ToList();
+            return r3;
         }
 
         public List<TenderQuotation> gettop3suppliers(string productId)
