@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Web.CodeGeneration.Utils;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGeneration.Utils;
 using SSIS_BOOT.DB;
 using SSIS_BOOT.Models;
 using System;
@@ -19,7 +20,7 @@ namespace SSIS_BOOT.Repo
 
         public List<Product> findallcat()
         {
-            List<Product> plist = dbcontext.Products.ToList();
+            List<Product> plist = dbcontext.Products.Include(m=>m.Category).ToList();
             return plist;
         }
 
