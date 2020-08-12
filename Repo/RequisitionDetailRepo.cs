@@ -33,5 +33,19 @@ namespace SSIS_BOOT.Repo
             return rd;
         }
 
+        public bool updaterequsitiondetail(RequisitionDetail rd)
+        {
+            try
+            {
+                dbcontext.RequisitionDetails.Update(rd);
+                dbcontext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                throw new Exception("Error saving Requsition Detail");
+            }
+        }
+
     }
 }
