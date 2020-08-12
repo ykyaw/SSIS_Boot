@@ -1,4 +1,5 @@
-﻿using SSIS_BOOT.DB;
+﻿using Microsoft.EntityFrameworkCore;
+using SSIS_BOOT.DB;
 using SSIS_BOOT.Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace SSIS_BOOT.Repo
 
         public List<Transaction> retrievestockcard(string productId)
         {
-            List<Transaction> lr = dbcontext.Transactions.Where(m => m.ProductId == productId).ToList();
+            List<Transaction> lr = dbcontext.Transactions.Include(m=>m.Product).Include(m=>m.UpdatedByEmp).Where(m => m.ProductId == productId).ToList();
             return lr;
         }
     }

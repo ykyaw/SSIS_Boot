@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using SSIS_BOOT.DB;
 using SSIS_BOOT.Models;
 using System;
@@ -18,24 +19,32 @@ namespace SSIS_BOOT.Repo
             this.dbcontext = dbcontext;
         }
 
-        public Retrieval genretrievalandreturn(Retrieval r1, int clerkid)
+        public Retrieval genretrievalandreturn(Retrieval r1)
         {
             try //check whether retrieval has already been created. if yes, return earlier retrieval. else create new
             {
-                if (dbcontext.Retrievals.FirstOrDefault(x => x.DisbursedDate == r1.DisbursedDate) != null)
+                if (dbcontext.Retrievals.FirstOrDefault(x => x.DisbursedDate == r1.DisbursedDate) != null) //if i already has a retrieval with this date, throw exception
                 {
                     throw new Exception();
                 }
                 dbcontext.Retrievals.Add(r1);
                 dbcontext.SaveChanges();
-                return dbcontext.Retrievals.FirstOrDefault(x => x.DisbursedDate == r1.DisbursedDate);
-
+                return dbcontext.Retrievals.Include(m => m.Clerk).FirstOrDefault(x => x.DisbursedDate == r1.DisbursedDate);
             }
-            catch (Exception)
+            catch (Exception) //propagate the exception out 
             {
-                return dbcontext.Retrievals.FirstOrDefault(x => x.DisbursedDate == r1.DisbursedDate);
+                throw new Exception();
+                //return dbcontext.Retrievals.Include(m => m.Clerk).FirstOrDefault(x => x.DisbursedDate == r1.DisbursedDate);
             }
+        }
 
+        public Retrieval GetRetrieval(Retrieval r1)
+        {
+            return dbcontext.Retrievals.Include(m => m.Clerk)
+                .Include(m=>m.RequisitionDetails).ThenInclude(m=>m.Product)
+                .Include(m=> m.RequisitionDetails).ThenInclude(m => m.Requisition)
+                .Include(m=>m.RequisitionDetails).ThenInclude(m=>m.Retrieval)
+                .FirstOrDefault(x => x.DisbursedDate == r1.DisbursedDate);
         }
     }
 }

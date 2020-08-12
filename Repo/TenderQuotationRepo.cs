@@ -26,9 +26,9 @@ namespace SSIS_BOOT.Repo
             IEnumerable<TenderQuotation> tqlist = (from tq in dbcontext.TenderQuotations
                                               where tq.ProductId == pdtId && tq.Year == year
                                               orderby tq.Rank ascending
-                                              select tq).Take(3);
+                                              select tq).Include(m => m.Product).Include(m => m.Supplier).Take(3);
 
-            List <TenderQuotation> tqlist2 = tqlist.ToList();
+            List<TenderQuotation> tqlist2 = tqlist.ToList();
 
             return tqlist2;
         }

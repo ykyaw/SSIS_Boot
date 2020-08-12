@@ -1,4 +1,5 @@
-﻿using SSIS_BOOT.DB;
+﻿using Microsoft.EntityFrameworkCore;
+using SSIS_BOOT.DB;
 using SSIS_BOOT.Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,8 @@ namespace SSIS_BOOT.Repo
 
         public List<PurchaseOrder> findallpurchaseorder()
         {
-            List<PurchaseOrder> polist = dbcontext.PurchaseOrders.ToList();
+            List<PurchaseOrder> polist = dbcontext.PurchaseOrders.Include(m=>m.CollectionPoint).Include(m=>m.Supplier).Include(m=>m.OrderedByClerk)
+                .Include(m=>m.ApprovedBySup).Include(m=>m.ReceivedByClerk).Include(m=> m.PurchaseOrderDetails).ToList();
             return polist;
         }
 

@@ -21,7 +21,11 @@ namespace SSIS_BOOT.Repo
         {
             dbcontext.RequisitionDetails.Update(rd);
             dbcontext.SaveChanges();
-            return dbcontext.RequisitionDetails.Find(rd.Id);
+            //dbcontext.RequisitionDetails.Find(rd.Id);
+            return dbcontext.RequisitionDetails.Include(m => m.Requisition)
+                .Include(m => m.Product)
+                .Include(m => m.Retrieval)
+                .Include(m=>m.Retrieval).FirstOrDefault(x => x.Id == rd.Id);
         }
         public List<RequisitionDetail> getrequisitiondetail(int reqid)
         {
