@@ -1,4 +1,5 @@
-﻿using SSIS_BOOT.DB;
+﻿using Microsoft.EntityFrameworkCore;
+using SSIS_BOOT.DB;
 using SSIS_BOOT.Models;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,8 @@ namespace SSIS_BOOT.Repo
         }
         public List<Requisition> findrequsitionbycollectiondate(long date)
         {
-            List<Requisition> lr = dbcontext.Requisitions.Where(m => m.CollectionDate == date).ToList();
+            //List<Requisition> lr = dbcontext.Requisitions.Where(m => m.CollectionDate == date).ToList();
+            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product).Include(m => m.Department).Where(m => m.CollectionDate == date).ToList();
             return lr;
         }
         
