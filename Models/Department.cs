@@ -27,8 +27,8 @@ namespace SSIS_BOOT.Models
         }     
         //public virtual Employee Rep { get; set; }
         //public virtual Employee Head { get; set; }
-        public virtual CollectionPoint CollectionPoint { get; set; }
-        public virtual List<Employee> AllEmp { get; set; }
+        public  CollectionPoint CollectionPoint { get; set; }
+        public  List<Employee> AllEmp { get; set; }
 
 
     }

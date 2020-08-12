@@ -21,10 +21,10 @@ namespace SSIS_BOOT.Models
         public long? ReceivedDate { get; set; }
         public string Status { get; set; }
 
-        public virtual Supplier Supplier { get; set; }
-        public virtual Employee OrderedByClerk { get; set; }
-        public virtual Employee ApprovedBySup { get; set; }
-        public virtual Employee ReceivedByClerk { get; set; }
-        public virtual List<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
+        public  Supplier Supplier { get; set; }
+        public  Employee OrderedByClerk { get; set; }
+        public  Employee ApprovedBySup { get; set; }
+        public  Employee ReceivedByClerk { get; set; }
+        public  List<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
     }
 }

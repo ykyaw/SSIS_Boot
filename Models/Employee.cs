@@ -23,33 +23,33 @@ namespace SSIS_BOOT.Models
 
         public string Role { get; set; }
 
-        public virtual Department Department { get; set; }
+        public  Department Department { get; set; }
  
 
         /*One manager multiple employee relationship*/
-        public virtual Employee Manager { get; set; }
-        public virtual ICollection<Employee> Employees { get; set; }
+        public  Employee Manager { get; set; }
+        public  ICollection<Employee> Employees { get; set; }
 
 
 
         /* The InverseProperty attribute is used when two entities have more than one relationship, in this case is Requsition and Employee */
 
         [InverseProperty("ReqByEmp")]
-        public virtual ICollection<Requisition> Requestedrequsition { get; set; }
+        public  ICollection<Requisition> Requestedrequsition { get; set; }
 
         [InverseProperty("ApprovedBy")]
-        public virtual ICollection<Requisition> Approvedrequsition { get; set; }
+        public  ICollection<Requisition> Approvedrequsition { get; set; }
 
         [InverseProperty("ProcessedByClerk")]
-        public virtual ICollection<Requisition> Processedrequsition { get; set; }
+        public  ICollection<Requisition> Processedrequsition { get; set; }
 
         [InverseProperty("ReceivedByRep")]
-        public virtual ICollection<Requisition> Receivedrequsitions { get; set; }
+        public  ICollection<Requisition> Receivedrequsitions { get; set; }
 
         [InverseProperty("AckByClerk")]
-        public virtual ICollection<Requisition> Acknowledgedrequsition { get; set; }
+        public  ICollection<Requisition> Acknowledgedrequsition { get; set; }
 
-        public virtual ICollection<Transaction> Transactions { get; set; }
+        public  ICollection<Transaction> Transactions { get; set; }
 
         public Employee() { }
         public Employee(string Name, string Email, string Password,string DepartmentId,string Role )

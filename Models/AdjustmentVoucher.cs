@@ -19,9 +19,9 @@ namespace SSIS_BOOT.Models
         public long? ApprovedMgrDate { get; set; }
         public string Status { get; set; }
 
-        public virtual Employee InitiatedClerk { get; set; }
-        public virtual Employee ApprovedSup { get; set; }
-        public virtual Employee ApprovedMgr { get; set; }
-        public virtual List<AdjustmentVoucherDetail> AdjustmentVoucherDetails { get; set; }
+        public  Employee InitiatedClerk { get; set; }
+        public  Employee ApprovedSup { get; set; }
+        public  Employee ApprovedMgr { get; set; }
+        public  List<AdjustmentVoucherDetail> AdjustmentVoucherDetails { get; set; }
     }
 }

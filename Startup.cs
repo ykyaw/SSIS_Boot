@@ -61,7 +61,7 @@ namespace SSIS_BOOT
             });
             //inject dbcontext
             services.AddDbContext<SSISContext>(opt =>
-                opt.UseLazyLoadingProxies()
+                opt.UseLazyLoadingProxies(false)
                 .UseSqlServer(Configuration.GetConnectionString("DbConn")));
 
         }

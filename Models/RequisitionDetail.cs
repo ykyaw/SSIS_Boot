@@ -20,9 +20,9 @@ namespace SSIS_BOOT.Models
         public string? RepRemark { get; set; }
         public string? ClerkRemark { get; set; }
         public int? RetrievalId { get; set; }
-        public virtual Requisition Requisition { get; set; }
-        public virtual Product Product { get; set; }
-        public virtual Retrieval Retrieval { get; set; }
+        public  Requisition Requisition { get; set; }
+        public  Product Product { get; set; }
+        public  Retrieval Retrieval { get; set; }
         public RequisitionDetail() { }
         public RequisitionDetail(int RequisitionId, string ProductId)
         {

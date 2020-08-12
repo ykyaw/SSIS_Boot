@@ -19,8 +19,8 @@ namespace SSIS_BOOT.Models
         public string Status { get; set; }
         public string? Remark { get; set; }
         public bool? NeedAdjustment { get; set; }
-        public virtual List<RequisitionDetail> RequisitionDetails { get; set; }
-        public virtual Employee Clerk { get; set; }
+        public  List<RequisitionDetail> RequisitionDetails { get; set; }
+        public  Employee Clerk { get; set; }
 
         public Retrieval() { }
 

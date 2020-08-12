@@ -20,8 +20,8 @@ namespace SSIS_BOOT.Models
         
         public int UpdatedByEmpId { get; set; }
         public string? RefCode { get; set; }
-        public virtual Product Product { get; set; }
-        public virtual Employee UpdatedByEmp { get; set; }
+        public  Product Product { get; set; }
+        public  Employee UpdatedByEmp { get; set; }
 
         public Transaction() { }
 

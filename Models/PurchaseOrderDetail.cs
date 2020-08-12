@@ -19,8 +19,8 @@ namespace SSIS_BOOT.Models
         public double TotalPrice { get; set; }
         public int? SupplierDeliveryNo { get; set; }
         public string Remark { get; set; }
-        public virtual PurchaseOrder PurchaseOrder { get; set; }
-        public virtual PurchaseRequestDetail PurchaseRequestDetail { get; set; }
-        public virtual Product Product { get; set; }
+        public  PurchaseOrder PurchaseOrder { get; set; }
+        public  PurchaseRequestDetail PurchaseRequestDetail { get; set; }
+        public  Product Product { get; set; }
     }
 }

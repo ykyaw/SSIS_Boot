@@ -30,14 +30,14 @@ namespace SSIS_BOOT.Models
         [ForeignKey("AckByClerk")]
         public int? AckByClerkId { get; set; }
         public long? AckDate { get; set; }
-        public virtual Department Department { get; set; }
-        public virtual Employee ReqByEmp { get; set; }
-        public virtual Employee ApprovedBy { get; set; }
-        public virtual Employee ProcessedByClerk { get; set; }
-        public virtual Employee ReceivedByRep { get; set; }
-        public virtual Employee AckByClerk { get; set; }
-        public virtual CollectionPoint CollectionPoint { get; set; }
-        public virtual List<RequisitionDetail> RequisitionDetails { get; set; }
+        public  Department Department { get; set; }
+        public  Employee ReqByEmp { get; set; }
+        public  Employee ApprovedBy { get; set; }
+        public  Employee ProcessedByClerk { get; set; }
+        public  Employee ReceivedByRep { get; set; }
+        public  Employee AckByClerk { get; set; }
+        public  CollectionPoint CollectionPoint { get; set; }
+        public  List<RequisitionDetail> RequisitionDetails { get; set; }
 
         public Requisition() { }
 
