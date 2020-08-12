@@ -46,5 +46,19 @@ namespace SSIS_BOOT.Repo
                 .Include(m=>m.RequisitionDetails).ThenInclude(m=>m.Retrieval)
                 .FirstOrDefault(x => x.DisbursedDate == r1.DisbursedDate);
         }
+        public bool UpdateRetrieval(Retrieval r1)
+        {
+            try
+            {
+                dbcontext.Retrievals.Update(r1);
+                dbcontext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                throw new Exception("Error updating retrieval form");
+            }
+
+        }
     }
 }

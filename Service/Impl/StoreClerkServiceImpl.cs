@@ -106,5 +106,23 @@ namespace SSIS_BOOT.Service.Impl
         {
             return tqrepo.gettop3suppliers(productId);
         }
+
+        public bool updateretrieval(Retrieval r1)
+        {
+            try
+            {
+                foreach (RequisitionDetail rd in r1.RequisitionDetails)
+                {
+                    rdrepo.updaterequsitiondetail(rd);
+                }
+                retrivrepo.UpdateRetrieval(r1);
+                return true;
+            }
+            catch(Exception exception)
+            {
+                throw exception;
+            }
+
+        }
     }
 }

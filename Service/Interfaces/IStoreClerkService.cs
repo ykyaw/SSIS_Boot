@@ -23,5 +23,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public Retrieval genretrievalform(long date, int clerkid);
         public List<TenderQuotation> gettop3suppliers(string productId);
 
+        public bool updateretrieval(Retrieval r1);
+
     }
 }

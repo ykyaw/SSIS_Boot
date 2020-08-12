@@ -89,6 +89,23 @@ namespace SSIS_BOOT.Controllers
             Retrieval r1 = scservice.genretrievalform(date, clerkid);
             return r1;
         }
+        [HttpPut]
+        [Route("/storeclerk/ret")]
+        public bool updateretrieval([FromBody] Retrieval r1)
+        {
+            try
+            {
+                Retrieval r = r1;
+                scservice.updateretrieval(r);
+                return true;
+            }
+            catch (Exception m)
+            {
+                string msg = m.Message;
+                throw new Exception(msg);
+            }
+
+        }
 
         [HttpGet]
         [Route("/storeclerk/supplier/{productId}")]
