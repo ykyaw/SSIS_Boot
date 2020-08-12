@@ -1,4 +1,5 @@
-﻿using SSIS_BOOT.DB;
+﻿using Microsoft.EntityFrameworkCore;
+using SSIS_BOOT.DB;
 using SSIS_BOOT.Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,9 @@ namespace SSIS_BOOT.Repo
 
         public List<PurchaseOrderDetail> findpodetails(int poId)
         {
-            List<PurchaseOrderDetail> podlist = dbcontext.PurchaseOrderDetails.Where(m => m.PurchaseOrderId == poId).ToList();
+            List<PurchaseOrderDetail> podlist = dbcontext.PurchaseOrderDetails.Include(m=>m.PurchaseOrder).ThenInclude(m=>m.Supplier)
+                .Include(m => m.PurchaseOrder).ThenInclude(m=>m.CollectionPoint)
+                .Include(m=> m.PurchaseRequestDetail).Include(m => m.Product).Where(m => m.PurchaseOrderId == poId).ToList();
             return podlist;
         }
     }

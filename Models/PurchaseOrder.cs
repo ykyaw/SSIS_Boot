@@ -20,6 +20,8 @@ namespace SSIS_BOOT.Models
         public int? ReceivedByClerkId { get; set; }
         public long? ReceivedDate { get; set; }
         public string Status { get; set; }
+        public int? CollectionPointId { get; set; }
+        public CollectionPoint CollectionPoint { get; set; }
 
         public  Supplier Supplier { get; set; }
         public  Employee OrderedByClerk { get; set; }

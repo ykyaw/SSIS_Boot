@@ -25,13 +25,13 @@ namespace SSIS_BOOT.Controllers
         public List<Requisition> getdeptreqlist()
         {
             //to be replaced by session of the user's departmentId
-            string deptid = "CPSC";
-            //string deptid = HttpContext.Session.GetString("DeptId");
+            //string deptid = "CPSC";
+            string deptid = HttpContext.Session.GetString("DeptId");
             List <Requisition> reqlist = dhservice.getdeptreqlist(deptid);
             return reqlist;
         }
         [HttpGet]
-        [Route("/depthead/rfld")]
+        [Route("/depthead/rfld/{reqId}")]
         public List<RequisitionDetail> GetRequisitionDetails(int reqId)
         {
             List < RequisitionDetail > rdlist = dhservice.getrfdetail(reqId);
