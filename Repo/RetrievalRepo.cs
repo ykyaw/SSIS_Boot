@@ -21,30 +21,18 @@ namespace SSIS_BOOT.Repo
 
         public Retrieval genretrievalandreturn(Retrieval r1)
         {
-            try //check whether retrieval has already been created. if yes, return earlier retrieval. else create new
-            {
-                if (dbcontext.Retrievals.FirstOrDefault(x => x.DisbursedDate == r1.DisbursedDate) != null) //if i already has a retrieval with this date, throw exception
-                {
-                    throw new Exception();
-                }
-                dbcontext.Retrievals.Add(r1);
-                dbcontext.SaveChanges();
-                return dbcontext.Retrievals.Include(m => m.Clerk).FirstOrDefault(x => x.DisbursedDate == r1.DisbursedDate);
-            }
-            catch (Exception) //propagate the exception out 
-            {
-                throw new Exception();
-                //return dbcontext.Retrievals.Include(m => m.Clerk).FirstOrDefault(x => x.DisbursedDate == r1.DisbursedDate);
-            }
+            dbcontext.Retrievals.Add(r1);
+            dbcontext.SaveChanges();
+            Retrieval r = dbcontext.Retrievals.Include(m => m.Clerk).OrderByDescending(m=>m.Id).FirstOrDefault(x => x.DisbursedDate == r1.DisbursedDate);
+            return r;
         }
 
-        public Retrieval GetRetrieval(Retrieval r1)
+        public Retrieval GetRetrieval(long date)
         {
             return dbcontext.Retrievals.Include(m => m.Clerk)
                 .Include(m=>m.RequisitionDetails).ThenInclude(m=>m.Product)
                 .Include(m=> m.RequisitionDetails).ThenInclude(m => m.Requisition)
-                .Include(m=>m.RequisitionDetails).ThenInclude(m=>m.Retrieval)
-                .FirstOrDefault(x => x.DisbursedDate == r1.DisbursedDate);
+                .FirstOrDefault(x => x.DisbursedDate == date);
         }
         public bool UpdateRetrieval(Retrieval r1)
         {

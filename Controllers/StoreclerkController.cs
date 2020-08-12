@@ -75,25 +75,40 @@ namespace SSIS_BOOT.Controllers
             return plist;
         }
 
-        [HttpPost] 
-        //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPOST] and pass in from body long
+        [HttpPost]
         [Route("/storeclerk/ret")]
         public Retrieval genretrievalform([FromBody] long date)
         {
-            ////for testing purposes only, delete when unused
-            //long date2 = 1595237400;
-            //int clerkid = 1;
-            //Retrieval r1 = scservice.genretrievalform(date2, clerkid); //artifically seed with this time and clerk id for testing
-            //return r1;
+            int clerkid = (int)HttpContext.Session.GetInt32("Id");
             List<Requisition> rq = scservice.getallreqformbydate(date);
-            if (rq == null)
+            if (rq == null || rq.Count == 0)
             {
                 throw new Exception("Sorry, there is no Requisition matching the provided date. Please try again");
             }
-            int clerkid = (int)HttpContext.Session.GetInt32("Id");
             Retrieval r1 = scservice.genretrievalform(date, clerkid);
             return r1;
         }
+
+        /*      FOR TESTING ONLY
+        [HttpGet] 
+        [Route("/storeclerk/ret")]
+        public Retrieval genretrievalform()
+        {
+            //long date = 99; //check for invalid date
+            long date = 1596447000; // for creating of new
+            //long date = 1595237400; // check for existing
+            int clerkid = 1;
+            List<Requisition> rq = scservice.getallreqformbydate(date);
+            if (rq == null || rq.Count == 0)
+            {
+                throw new Exception("Sorry, there is no Requisition matching the provided date. Please try again");
+            }
+            Retrieval r1 = scservice.genretrievalform(date, clerkid);
+            return r1;
+        }*/
+
+
+
         [HttpPut]
         [Route("/storeclerk/ret")]
         public bool updateretrieval([FromBody] Retrieval r1)
