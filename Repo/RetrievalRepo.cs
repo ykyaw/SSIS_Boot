@@ -30,7 +30,7 @@ namespace SSIS_BOOT.Repo
         public Retrieval GetRetrieval(long date)
         {
             return dbcontext.Retrievals.Include(m => m.Clerk)
-                .Include(m=>m.RequisitionDetails).ThenInclude(m=>m.Product)
+                .Include(m=>m.RequisitionDetails).ThenInclude(m=>m.Product).ThenInclude(m=>m.Category)
                 .Include(m=> m.RequisitionDetails).ThenInclude(m => m.Requisition)
                 .FirstOrDefault(x => x.DisbursedDate == date);
         }
