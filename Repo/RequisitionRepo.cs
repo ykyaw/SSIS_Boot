@@ -1,4 +1,5 @@
-﻿using SSIS_BOOT.DB;
+﻿using Microsoft.EntityFrameworkCore;
+using SSIS_BOOT.DB;
 using SSIS_BOOT.Models;
 using System;
 using System.Collections.Generic;
@@ -15,24 +16,23 @@ namespace SSIS_BOOT.Repo
             this.dbcontext = dbcontext;
         }
 
-        public List<Requisition> findallreqbyempid(int empid)
-        {
-            List<Requisition> lr = dbcontext.Requisitions.Where(m => m.ReqByEmpId == empid).ToList();
-            return lr;
-        }
         public List<Requisition> findallreqform()
         {
-            List<Requisition> lr = dbcontext.Requisitions.ToList();
+            List<Requisition> lr = dbcontext.Requisitions.Include(m=>m.Department).Include(m => m.ReqByEmp)
+                .Include(m => m.ApprovedBy).Include(m => m.ProcessedByClerk).Include(m => m.ReceivedByRep).Include(m => m.AckByClerk)
+                .Include(m => m.CollectionPoint).Include(m => m.RequisitionDetails).ToList();
             return lr;
         }
         public List<Requisition> findreqformByDeptID(string deptID)
         {
-            List<Requisition> lr = dbcontext.Requisitions.Where(m => m.DepartmentId == deptID).ToList();
+            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department).Include(m => m.ReqByEmp)
+                .Include(m => m.ApprovedBy).Include(m => m.ProcessedByClerk).Include(m => m.ReceivedByRep).Include(m => m.AckByClerk)
+                .Include(m => m.CollectionPoint).Include(m => m.RequisitionDetails).Where(m => m.DepartmentId == deptID).ToList();
             return lr;
         }
         public List<Requisition> findrequsitionbycollectiondate(long date)
         {
-            List<Requisition> lr = dbcontext.Requisitions.Where(m => m.CollectionDate == date).ToList();
+            List<Requisition> lr = dbcontext.Requisitions.Include(m=>m.RequisitionDetails).ThenInclude(m=>m.Product).Include(m=>m.Department).Where(m => m.CollectionDate == date).ToList();
             return lr;
         }
         

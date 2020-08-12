@@ -1,4 +1,5 @@
-﻿using SSIS_BOOT.DB;
+﻿using Microsoft.EntityFrameworkCore;
+using SSIS_BOOT.DB;
 using SSIS_BOOT.Models;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,8 @@ namespace SSIS_BOOT.Repo
         }
         public List<RequisitionDetail> getrequisitiondetail(int reqid)
         {
-            List<RequisitionDetail> rd = dbcontext.RequisitionDetails.Where(m => m.RequisitionId == reqid).ToList();
+            List<RequisitionDetail> rd = dbcontext.RequisitionDetails.Include(m=>m.Requisition).Include(m => m.Product)
+                .Include(m => m.Retrieval).Where(m => m.RequisitionId == reqid).ToList();
             return rd;
         }
 
