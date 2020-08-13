@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using SSIS_BOOT.Components.JWT.Impl;
 using SSIS_BOOT.Components.JWT.Interfaces;
 using SSIS_BOOT.DB;
+using SSIS_BOOT.Email;
 using SSIS_BOOT.Extensions;
 using SSIS_BOOT.Middlewares;
 using SSIS_BOOT.Repo;
@@ -32,6 +33,8 @@ namespace SSIS_BOOT
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.AddTransient<IMailer, MailerImpl>();
             services.AddScoped<IEmployeeService, EmployeeServiceImpl>();
             services.AddScoped<IAuthService, JWTService>();
             services.AddScoped<EmployeeRepo>();
@@ -44,6 +47,7 @@ namespace SSIS_BOOT
             services.AddScoped<TransactionRepo>();
             services.AddScoped<RetrievalRepo>();
             services.AddScoped<TenderQuotationRepo>();
+            services.AddScoped<SupplierRepo>();
             services.AddScoped<IDepartmentEmpService, DepartmentEmpServiceImpl>();
             services.AddScoped<IDepartmentHeadService, DepartmentHeadServiceImpl>();
             services.AddScoped<IStoreClerkService, StoreClerkServiceImpl>();

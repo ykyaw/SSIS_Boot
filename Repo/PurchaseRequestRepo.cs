@@ -18,8 +18,15 @@ namespace SSIS_BOOT.Repo
 
         public List<PurchaseRequestDetail> findallpurchasereq()
         {
-            List<PurchaseRequestDetail> purreqlist = dbcontext.PurchaseRequestDetails.Include(m=>m.CreatedByClerk)
+            List<PurchaseRequestDetail> purreqlist = dbcontext.PurchaseRequestDetails.Include(m=>m.Product).Include(m=>m.CreatedByClerk)
                 .Include(m => m.Supplier).Include(m => m.ApprovedBySup).ToList();
+            return purreqlist;
+        }
+
+        public List<PurchaseRequestDetail> findpurchasereq(long prid)
+        {
+            List<PurchaseRequestDetail> purreqlist = dbcontext.PurchaseRequestDetails.Include(m => m.Product).Include(m => m.CreatedByClerk)
+                .Include(m => m.Supplier).Include(m => m.ApprovedBySup).Where(m=>m.PurchaseRequestId == prid).ToList();
             return purreqlist;
         }
 
@@ -32,14 +39,19 @@ namespace SSIS_BOOT.Repo
 
         public List<PurchaseRequestDetail> getcurrentpurchaserequest (long purchaserequestId)
         {
-            List<PurchaseRequestDetail> prrequest = dbcontext.PurchaseRequestDetails.Include(m => m.CreatedByClerk)
+            List<PurchaseRequestDetail> prrequest = dbcontext.PurchaseRequestDetails.Include(m => m.CreatedByClerk).Include(m => m.Product)
                 .Include(m => m.Supplier).Include(m => m.ApprovedBySup).Where(m => m.PurchaseRequestId == purchaserequestId).ToList();
             return prrequest;
         }
 
         public bool updatepurchaserequestitem(PurchaseRequestDetail prd)
         {
-            dbcontext.PurchaseRequestDetails.Update(prd);
+            var original = dbcontext.PurchaseRequestDetails.Find(prd.Id);
+            if (original == null)
+            {
+                throw new Exception();
+            }
+            dbcontext.Entry(original).CurrentValues.SetValues(prd);
             dbcontext.SaveChanges();
             return true;
         }

@@ -41,6 +41,14 @@ namespace SSIS_BOOT.Controllers
             return prdetails;
         }
         [HttpGet]
+        [Route("/storeclerk/prdetails/{prid}")]
+        public List<PurchaseRequestDetail> getprdetails(long prid)
+        {
+            List<PurchaseRequestDetail> prdetails = scservice.getprdetails(prid);
+            return prdetails;
+        }
+
+        [HttpGet]
         [Route("/storeclerk/po")]
         public List<PurchaseOrder> getallpurchaseorder()
         {
@@ -90,23 +98,23 @@ namespace SSIS_BOOT.Controllers
             return r1;
         }
 
-        /*      FOR TESTING ONLY
-        [HttpGet] 
-        [Route("/storeclerk/ret")]
-        public Retrieval genretrievalform()
-        {
-            //long date = 99; //check for invalid date
-            long date = 1596447000; // for creating of new
-            //long date = 1595237400; // check for existing
-            int clerkid = 1;
-            List<Requisition> rq = scservice.getallreqformbydate(date);
-            if (rq == null || rq.Count == 0)
-            {
-                throw new Exception("Sorry, there is no Requisition matching the provided date. Please try again");
-            }
-            Retrieval r1 = scservice.genretrievalform(date, clerkid);
-            return r1;
-        }*/
+        ////FOR TESTING ONLY
+        //[HttpGet]
+        //[Route("/storeclerk/ret")]
+        //public Retrieval genretrievalform()
+        //{
+        //    //long date = 99; //check for invalid date
+        //    long date = 1597060800000; // for creating of new
+        //    //long date = 1595237400; // check for existing
+        //    int clerkid = 1;
+        //    List<Requisition> rq = scservice.getallreqformbydate(date);
+        //    if (rq == null || rq.Count == 0)
+        //    {
+        //        throw new Exception("Sorry, there is no Requisition matching the provided date. Please try again");
+        //    }
+        //    Retrieval r1 = scservice.genretrievalform(date, clerkid);
+        //    return r1;
+        //}
 
 
 
@@ -158,27 +166,17 @@ namespace SSIS_BOOT.Controllers
             scservice.savetransaction(t1);
             return true;
         }
-        //[HttpPost]
-        [HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPOST] and pass in from body
+        [HttpPost]
+        //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPOST] and pass in from body
         [Route("/storeclerk/createpr")]
-        public List<PurchaseRequestDetail> generatepurchaserequest()
+        public List<PurchaseRequestDetail> generatepurchaserequest([FromBody]List<String> productId)
         {
-            //testing [FromBody]List<String> productId
-            List<String> productid = new List<string> {"C004", "F021" };
-
-            long currentpurchaserequestid = (long) DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            //testing 
+            //List<String> productId = new List<string> {"C004", "F021" };
             
-            foreach (String id in productid)
-            {
-                PurchaseRequestDetail prd1 = new PurchaseRequestDetail();
-                prd1.ProductId = id;
-                prd1.Status = Status.PurchaseRequestStatus.created;
-                prd1.PurchaseRequestId = currentpurchaserequestid;
-                prd1.CreatedByClerkId = (int) 2;
-                //prd1.CreatedByClerkId = (int) HttpContext.Session.GetInt32("Id");
-                scservice.addpurchaserequest(prd1);
-            }
-            List<PurchaseRequestDetail> prlist = scservice.getcurrentpurchaserequest(currentpurchaserequestid);
+            int clerkid = (int)HttpContext.Session.GetInt32("Id");
+            List<PurchaseRequestDetail> prlist = scservice.addpurchaserequest(productId,clerkid);
+
             return prlist;
 
         }
@@ -193,19 +191,49 @@ namespace SSIS_BOOT.Controllers
             //prd1.ReorderQty = 5000;
             //prd1.VenderQuote = "QUO03";
             //prd1.SupplierId = "ALPA";
-            //PurchaseRequestDetail prd2 = prdetails.Find(item => item.Id == 4);
+            //PurchaseRequestDetail prd2 = prdetails.Find(item => item.Id == 7);
             //prd2.ReorderQty = 100;
             //prd2.VenderQuote = "QUO04";
             //prd2.SupplierId = "ALPA";
             //List<PurchaseRequestDetail> prdlist = new List<PurchaseRequestDetail> { prd1, prd2 };
 
-            foreach (PurchaseRequestDetail prd in prdlist)
-            {
-                scservice.updatepurchaserequestitem(prd);
-            }
+             scservice.updatepurchaserequestitem(prdlist);
             //List<PurchaseRequestDetail> prdetailsfinal = scservice.getpurchasereq();
             return true;
         }
+
+        [HttpGet] 
+        [Route("/storeclerk/generatequote")]
+        public bool generatequotefrompr(List<PurchaseRequestDetail> prdlist)
+        {
+            
+                scservice.generatequotefrompr(prdlist);
+            
+            return true;
+        }
+
+        [HttpPut]
+        //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPUT] and pass in from body
+        [Route("/storeclerk/updatepod")]
+        public bool updateitemreceived([FromBody]List<PurchaseOrderDetail> podlist)
+        {
+            //testing 
+            //int poid = 3;
+            //List<PurchaseOrderDetail> podlist1 = scservice.getpoddetails(poid);
+            //PurchaseOrderDetail pod1 = podlist1.Find(item => item.Id == 2);
+            //pod1.QtyReceived = 5;
+            //pod1.SupplierDeliveryNo = 111111;
+            //pod1.Remark = "Pending 10 more";
+            //pod1.PurchaseOrder.ReceivedDate = 1594724400000;
+            //List<PurchaseOrderDetail> podlist = new List<PurchaseOrderDetail> { pod1 };
+
+            foreach (PurchaseOrderDetail podid in podlist)
+            {
+                scservice.updatepurchaseorderdetailitem(podid);
+            }
+            return true;
+        }
+        
 
     }
 }

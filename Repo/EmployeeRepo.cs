@@ -24,11 +24,15 @@ namespace SSIS_BOOT.Repo
                 .FirstOrDefault();
         }
 
-    public Employee FindUserByEmail(string email)
+        public Employee FindUserByEmail(string email)
         {
             return dbcontext.Employees.Include(m => m.Department)
                 .Where(item => item.Email == email)
                 .FirstOrDefault();
+        }
+        public Employee findempById(int empid)
+        {
+            return dbcontext.Employees.Where(item => item.Id == empid).FirstOrDefault();
         }
     }
 }

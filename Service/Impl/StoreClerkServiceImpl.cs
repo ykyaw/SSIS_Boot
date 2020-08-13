@@ -6,6 +6,7 @@ using SSIS_BOOT.Service.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 
 namespace SSIS_BOOT.Service.Impl
@@ -21,9 +22,12 @@ namespace SSIS_BOOT.Service.Impl
         public TransactionRepo trepo;
         public RetrievalRepo retrivrepo;
         public TenderQuotationRepo tqrepo;
+        public EmployeeRepo erepo;
+        public SupplierRepo srepo;
 
         public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo, 
-            RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, TransactionRepo trepo, TenderQuotationRepo tqrepo, RetrievalRepo retrivrepo)
+            RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, TransactionRepo trepo, TenderQuotationRepo tqrepo, RetrievalRepo retrivrepo,
+            EmployeeRepo erepo, SupplierRepo srepo)
 
         {
             this.prepo = prepo;
@@ -35,6 +39,8 @@ namespace SSIS_BOOT.Service.Impl
             this.trepo = trepo;
             this.retrivrepo = retrivrepo;
             this.tqrepo = tqrepo;
+            this.erepo = erepo;
+            this.srepo = srepo;
         }
 
         public List<Product> getallcat()
@@ -55,6 +61,60 @@ namespace SSIS_BOOT.Service.Impl
         public List<PurchaseRequestDetail> getpurchasereq()
         {
             return purreqrepo.findallpurchasereq();
+        }
+
+        public List<PurchaseRequestDetail> getprdetails(long prid)
+        {
+            return purreqrepo.findpurchasereq(prid);
+        }
+
+        //to run this mtd as async
+        public bool generatequotefrompr(List<PurchaseRequestDetail> prdlist)
+        {
+            List<PurchaseRequestDetail> prdlistwithnull = new List<PurchaseRequestDetail>();
+            
+            foreach(PurchaseRequestDetail prd in prdlist)
+            {
+                if (prd.VenderQuote == null)
+                {
+                    prdlistwithnull.Add(prd);
+                }
+            }
+            if (prdlistwithnull.Count() < 1)
+            {
+                return true;
+            }
+            else //(prdlistwithnull.Count() > 0)
+            {
+                List<PurchaseRequestDetail> pnull = prdlistwithnull.GroupBy(m => m.SupplierId).SelectMany(m => m).ToList();
+                Dictionary<string, List<PurchaseRequestDetail>> pdict = new Dictionary<string, List<PurchaseRequestDetail>>();
+
+                foreach(PurchaseRequestDetail prd in pnull)
+                {
+                    if (!pdict.ContainsKey(prd.SupplierId))
+                    {
+                        List<PurchaseRequestDetail> prdlist1 = new List<PurchaseRequestDetail>();
+                        prdlist1.Add(prd);
+                        pdict.Add(prd.SupplierId, prdlist1);
+                    }
+                    else
+                    {
+                        //List<PurchaseRequestDetail> prdlist2 = pdict[prd.SupplierId];
+                        pdict[prd.SupplierId].Add(prd);
+                        //pdict[prd.SupplierId] = prdlist2;
+                    }
+                }
+                foreach(var r in pdict)
+                {
+                    foreach(PurchaseRequestDetail i in pdict[r.Key])
+                    {
+                        Supplier supplier = srepo.findsupplierbyId(i.SupplierId);
+                        Employee clerk = erepo.findempById(i.CreatedByClerkId);
+                        //send email for each supplier (PENDING)
+                    }
+                }
+            }     
+            return true;
         }
         public List<Requisition> getallreqform()
         {
@@ -118,31 +178,63 @@ namespace SSIS_BOOT.Service.Impl
             return trepo.savenewtransaction(t1);
         }
 
-        public bool addpurchaserequest(PurchaseRequestDetail prd1)
+        public List<PurchaseRequestDetail> addpurchaserequest(List<String> productid,int clerkId)
         {
-            return purreqrepo.addnewpurchaserequestdetail(prd1);
+            long currentpurchaserequestid = (long)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 42;
+
+            foreach (String id in productid)
+            {
+                PurchaseRequestDetail prd1 = new PurchaseRequestDetail();
+                prd1.ProductId = id;
+                prd1.Status = Status.PurchaseRequestStatus.created;
+                prd1.PurchaseRequestId = currentpurchaserequestid;
+                //prd1.CreatedByClerkId = (int)2;
+                prd1.CreatedByClerkId = clerkId;
+                purreqrepo.addnewpurchaserequestdetail(prd1);
+            }
+            List<PurchaseRequestDetail> prlist = purreqrepo.getcurrentpurchaserequest(currentpurchaserequestid);
+
+            return prlist;
         }
-        public List<PurchaseRequestDetail> getcurrentpurchaserequest(long purchaserequestId)
+
+        public bool updatepurchaserequestitem(List<PurchaseRequestDetail> prdlist)
         {
-            return purreqrepo.getcurrentpurchaserequest(purchaserequestId);
-        }
-        public bool updatepurchaserequestitem(PurchaseRequestDetail prd)
-        {
-            return purreqrepo.updatepurchaserequestitem(prd);
+            foreach (PurchaseRequestDetail prd in prdlist)
+            {
+                return purreqrepo.updatepurchaserequestitem(prd);
+            }
+            //if (status is pending approval)
+            //{
+            //    scservice.sendsupervisoremail();
+            //}
+            return true;
+
         }
 
         public bool updateretrieval(Retrieval r1)
         {
             try
             {
+                retrivrepo.UpdateRetrieval(r1);
                 foreach (RequisitionDetail rd in r1.RequisitionDetails)
                 {
                     rdrepo.updaterequsitiondetail(rd);
                 }
-                retrivrepo.UpdateRetrieval(r1);
                 return true;
             }
             catch(Exception exception)
+            {
+                throw exception;
+            }
+        }
+        public bool updatepurchaseorderdetailitem(PurchaseOrderDetail pod)
+        {
+            try
+            {
+                podrepo.Updatepurchaseorderdetail(pod);
+                return true;
+            }
+            catch (Exception exception)
             {
                 throw exception;
             }
