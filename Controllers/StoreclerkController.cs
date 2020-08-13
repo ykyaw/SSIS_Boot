@@ -288,6 +288,14 @@ namespace SSIS_BOOT.Controllers
             return true;
         }
 
+        [HttpGet]
+        [Route("/storeclerk/adv")]
+        public List<AdjustmentVoucher> getAllAdjustmentVoucher()
+        {
+            List<AdjustmentVoucher> advlist = scservice.getAllAdjustmentVoucher();
+            return advlist;
+        }
+
 
     }
 }

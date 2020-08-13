@@ -42,6 +42,6 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public bool generatequotefrompr(List<PurchaseRequestDetail> prd);
 
-
+        public List<AdjustmentVoucher> getAllAdjustmentVoucher();
     }
 }
