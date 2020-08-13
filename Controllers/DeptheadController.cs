@@ -32,10 +32,10 @@ namespace SSIS_BOOT.Controllers
         }
         [HttpGet]
         [Route("/depthead/rfld/{reqId}")]
-        public List<RequisitionDetail> GetRequisitionDetails(int reqId)
+        public Requisition GetRequisitionDetails(int reqId)
         {
-            List < RequisitionDetail > rdlist = dhservice.getrfdetail(reqId);
-            return rdlist;
+            Requisition req = dhservice.getrfdetail(reqId);
+            return req;
         }
 
 

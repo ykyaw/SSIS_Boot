@@ -13,21 +13,22 @@ namespace SSIS_BOOT.Models
         public int Id { get; set; }
         public string SupplierId { get; set; }
         public int Year { get; set; }
-        
+
         public string ProductId { get; set; }
-        public string PricePerUom { get; set; }
+        public double unitprice { get; set; }
+        public string uom { get; set; }
         public int? Rank { get ; set; }
         public  Supplier Supplier { get; set; }
         public  Product Product { get; set; }
 
         public TenderQuotation() { }
 
-        public TenderQuotation(string SupplierId, int Year, string ProductId, string PricePerUom,int? Rank)
+        public TenderQuotation(string SupplierId, int Year, string ProductId, string uom, int? Rank)
         {
             this.SupplierId = SupplierId;
             this.Year = Year;
             this.ProductId = ProductId;
-            this.PricePerUom = PricePerUom;
+            this.uom = uom;
             this.Rank = Rank;
         }
     }

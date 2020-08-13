@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SSIS_BOOT.DB;
 using SSIS_BOOT.Models;
 using System;
@@ -33,6 +34,17 @@ namespace SSIS_BOOT.Repo
         public Employee findempById(int empid)
         {
             return dbcontext.Employees.Where(item => item.Id == empid).FirstOrDefault();
+        }
+        
+        public Employee findSupervisorByEmpId(int empId)
+        {
+            Employee emp= dbcontext.Employees.FirstOrDefault(x => x.Id == empId);
+            if (emp.ManagerId != null)
+            {
+                int supervisorid = (int)emp.ManagerId;
+                return dbcontext.Employees.Where(item => item.Id == supervisorid).FirstOrDefault();
+            }
+            return null;
         }
     }
 }

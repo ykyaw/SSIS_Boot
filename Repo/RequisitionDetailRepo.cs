@@ -23,13 +23,7 @@ namespace SSIS_BOOT.Repo
             return dbcontext.RequisitionDetails.Include(m => m.Requisition)
                 .Include(m => m.Product)
                 .Include(m => m.Retrieval)
-                .Include(m=>m.Retrieval).FirstOrDefault(x => x.Id == rd.Id);
-        }
-        public List<RequisitionDetail> getrequisitiondetail(int reqid)
-        {
-            List<RequisitionDetail> rd = dbcontext.RequisitionDetails.Include(m=>m.Requisition).Include(m => m.Product)
-                .Include(m => m.Retrieval).Where(m => m.RequisitionId == reqid).ToList();
-            return rd;
+                .Include(m => m.Retrieval).FirstOrDefault(x => x.Id == rd.Id);
         }
 
         public List<RequisitionDetail> retrievedisbursementlist(string deptId, long collectiondate)

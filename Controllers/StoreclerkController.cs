@@ -153,6 +153,8 @@ namespace SSIS_BOOT.Controllers
             //string deptId = "CPSC";
             //long collectiondate = 1597060800;
             List<RequisitionDetail> dlist = scservice.retrievedisbursementlist(deptId, collectiondate);
+
+            // send email to the department rep (PENDING)
             return dlist;
         }
 
@@ -185,19 +187,21 @@ namespace SSIS_BOOT.Controllers
         [Route("/storeclerk/updatepr")]
         public bool Updatepurchaserequest([FromBody] List<PurchaseRequestDetail> prdlist)
         {
-            //testing 
+            //testing  
             //List<PurchaseRequestDetail> prdetails = scservice.getpurchasereq();
-            //PurchaseRequestDetail prd1 = prdetails.Find(item => item.Id == 6);
+            //PurchaseRequestDetail prd1 = prdetails.Find(item => item.Id == 8);
             //prd1.ReorderQty = 5000;
             //prd1.VenderQuote = "QUO03";
             //prd1.SupplierId = "ALPA";
-            //PurchaseRequestDetail prd2 = prdetails.Find(item => item.Id == 7);
+            //prd1.Status = Status.PurchaseRequestStatus.pendapprov;
+            //PurchaseRequestDetail prd2 = prdetails.Find(item => item.Id == 9);
             //prd2.ReorderQty = 100;
             //prd2.VenderQuote = "QUO04";
             //prd2.SupplierId = "ALPA";
+            //prd2.Status = Status.PurchaseRequestStatus.pendapprov;
             //List<PurchaseRequestDetail> prdlist = new List<PurchaseRequestDetail> { prd1, prd2 };
 
-             scservice.updatepurchaserequestitem(prdlist);
+            scservice.updatepurchaserequestitem(prdlist);
             //List<PurchaseRequestDetail> prdetailsfinal = scservice.getpurchasereq();
             return true;
         }
@@ -206,8 +210,7 @@ namespace SSIS_BOOT.Controllers
         [Route("/storeclerk/generatequote")]
         public bool generatequotefrompr(List<PurchaseRequestDetail> prdlist)
         {
-            
-                scservice.generatequotefrompr(prdlist);
+            scservice.generatequotefrompr(prdlist);
             
             return true;
         }

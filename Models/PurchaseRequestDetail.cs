@@ -30,7 +30,6 @@ namespace SSIS_BOOT.Models
         public  Supplier Supplier { get; set; }
         public  Employee ApprovedBySup { get; set; }
 
-
         public PurchaseRequestDetail() { }
 
         public PurchaseRequestDetail(long PurchaseRequestId, int CreatedByClerkId, string ProductId, string SupplierId, int CurrentStock,

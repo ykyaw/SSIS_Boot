@@ -34,6 +34,12 @@ namespace SSIS_BOOT.Repo
             List<Requisition> lr = dbcontext.Requisitions.Include(m=>m.RequisitionDetails).ThenInclude(m=>m.Product).Include(m=>m.Department).Where(m => m.CollectionDate == date).ToList();
             return lr;
         }
+
+        public Requisition findreqByReqId(int reqId)
+        {
+            Requisition req = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product).Include(m => m.Department).FirstOrDefault(m => m.Id == reqId);
+            return req;
+        }
         
     }
 }

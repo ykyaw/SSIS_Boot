@@ -33,10 +33,10 @@ namespace SSIS_BOOT.Controllers
         }
         [HttpGet]
         [Route("/deptemp/rfld/{reqId}")]
-        public List<RequisitionDetail> GetRequisitionDetails(int reqId)
+        public Requisition GetRequisitionDetails(int reqId)
         {
-            List<RequisitionDetail> rdlist = deservice.getrfdetail(reqId);
-            return rdlist;
+            Requisition req = deservice.getrfdetail(reqId);
+            return req;
         }
 
     }

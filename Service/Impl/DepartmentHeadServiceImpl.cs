@@ -1,4 +1,5 @@
-﻿using SSIS_BOOT.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SSIS_BOOT.Models;
 using SSIS_BOOT.Repo;
 using SSIS_BOOT.Service.Interfaces;
 using System;
@@ -23,9 +24,12 @@ namespace SSIS_BOOT.Service.Impl
         {
             return rrepo.findreqformByDeptID(deptId);
         }
-        public List<RequisitionDetail> getrfdetail(int reqId)
+        public Requisition getrfdetail(int reqId)
         {
-            return rdrepo.getrequisitiondetail(reqId);
+
+            Requisition req = rrepo.findreqByReqId(reqId);
+            return req;
+
         }
     }
 }

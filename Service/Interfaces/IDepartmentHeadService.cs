@@ -10,6 +10,6 @@ namespace SSIS_BOOT.Service.Interfaces
     {
         public List<Requisition> getdeptreqlist(string deptId);
 
-        public List<RequisitionDetail> getrfdetail(int reqId);
+        public Requisition getrfdetail(int reqId);
     }
 }

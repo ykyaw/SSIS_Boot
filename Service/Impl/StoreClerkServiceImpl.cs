@@ -4,6 +4,7 @@ using SSIS_BOOT.Models;
 using SSIS_BOOT.Repo;
 using SSIS_BOOT.Service.Interfaces;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -84,7 +85,7 @@ namespace SSIS_BOOT.Service.Impl
             {
                 return true;
             }
-            else //(prdlistwithnull.Count() > 0)
+            else 
             {
                 List<PurchaseRequestDetail> pnull = prdlistwithnull.GroupBy(m => m.SupplierId).SelectMany(m => m).ToList();
                 Dictionary<string, List<PurchaseRequestDetail>> pdict = new Dictionary<string, List<PurchaseRequestDetail>>();
@@ -201,12 +202,25 @@ namespace SSIS_BOOT.Service.Impl
         {
             foreach (PurchaseRequestDetail prd in prdlist)
             {
-                return purreqrepo.updatepurchaserequestitem(prd);
+                purreqrepo.updatepurchaserequestitem(prd);
             }
-            //if (status is pending approval)
-            //{
-            //    scservice.sendsupervisoremail();
-            //}
+
+            //retrieve the current status of prd
+            IEnumerable<string> status = from prd in prdlist
+                                       select prd.Status;
+            string prdstatus = status.First();
+
+            if (prdstatus == Status.PurchaseRequestStatus.pendapprov)
+            {
+                IEnumerable <int> clerkid = from prd in prdlist
+                              select prd.CreatedByClerkId;
+                int clerkId = clerkid.First();
+
+                Employee supervisor = erepo.findSupervisorByEmpId(clerkId);
+                //send email to supervisor(PENDING)
+                // if (supervisor !=null){}
+
+            }
             return true;
 
         }
