@@ -270,5 +270,24 @@ namespace SSIS_BOOT.Service.Impl
                 throw exception;
             }
         }
+
+
+        public bool updaterequisitioncollectiontime(Requisition r1)
+        {
+            try
+            {
+                rrepo.updaterequisitioncollectiontime(r1);
+
+
+                //IMPLEMENT EMAIL SERVICE TO INFORM REP OF COLLECTION TIME
+
+                return true;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+        }
     }
 }

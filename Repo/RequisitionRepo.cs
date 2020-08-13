@@ -47,6 +47,25 @@ namespace SSIS_BOOT.Repo
             Requisition req = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product).Include(m => m.Department).FirstOrDefault(m => m.Id == reqId);
             return req;
         }
-        
+
+        public bool updaterequisitioncollectiontime(Requisition r1)
+        {
+            try
+            {
+                var original = dbcontext.Requisitions.Find(r1.Id);
+                if (original == null)
+                {
+                    throw new Exception();
+                }
+                dbcontext.Entry(original).CurrentValues.SetValues(r1);
+                dbcontext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                throw new Exception("Error updating collection time for retrieval");
+            }
+        }
+
     }
 }
