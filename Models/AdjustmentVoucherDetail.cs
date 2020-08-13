@@ -15,8 +15,8 @@ namespace SSIS_BOOT.Models
         public string ProductId { get; set; }
         public int QtyAdjusted { get; set; }
         public double TotalPrice { get; set; }
-        public double unitprice { get; set; }
-        public string reason { get; set; }
+        public double Unitprice { get; set; }
+        public string Reason { get; set; }
         public  AdjustmentVoucher AdjustmentVoucher { get; set; }
         public  Product Product { get; set; }
 
@@ -24,12 +24,14 @@ namespace SSIS_BOOT.Models
 
        //CONSTRUCTOR
         public AdjustmentVoucherDetail() { }
-        public AdjustmentVoucherDetail(string AdjustmentVoucherId, string ProductId, int QtyAdjusted, double TotalPrice, string Reason)
+        public AdjustmentVoucherDetail(string AdjustmentVoucherId, string ProductId, int QtyAdjusted, double Unitprice, double TotalPrice, string Reason)
         {
             this.AdjustmentVoucherId = AdjustmentVoucherId;
             this.ProductId = ProductId;
             this.QtyAdjusted = QtyAdjusted;
+            this.Unitprice = Unitprice;
             this.TotalPrice = TotalPrice;
+            this.Reason = Reason;
         }
 
     }
