@@ -56,6 +56,12 @@ namespace SSIS_BOOT.Service.Impl
         {
             return purreqrepo.findallpurchasereq();
         }
+
+        public Requisition getReqByReqId(int reqid)
+        {
+            return rrepo.findreqformByReqID(reqid);
+        }
+
         public List<Requisition> getallreqform()
         {
             return rrepo.findallreqform();
@@ -128,6 +134,10 @@ namespace SSIS_BOOT.Service.Impl
         }
         public bool updatepurchaserequestitem(PurchaseRequestDetail prd)
         {
+            if(prd.Status == Status.PurchaseRequestStatus.pendapprov)
+            {
+                //send email to supervisor
+            }
             return purreqrepo.updatepurchaserequestitem(prd);
         }
 

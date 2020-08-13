@@ -68,6 +68,28 @@ namespace SSIS_BOOT.Controllers
             List<Requisition> reqlist = scservice.getReqformByDeptId(deptID);
             return reqlist;
         }
+
+        [HttpGet]
+        [Route("/storeclerk/rfld/{reqId}")]
+        public Requisition getreqformByReqId(int reqId)
+        {
+            Requisition req = scservice.getReqByReqId(reqId);
+            return req;
+        }
+
+        [HttpPut]
+        [Route("/storeclerk/rfld/{reqId}")]
+        public bool updatereqcollectiontime(Requisition req)
+        {
+            
+            //To be followed up. Also include email service to rep
+            Requisition req = scservice.getReqByReqId(reqId);
+            return req;
+        }
+
+
+
+
         [HttpGet]
         [Route("/storeclerk/sc/{productId}")]
         public List<Transaction> retrievestockcard(string productId)
