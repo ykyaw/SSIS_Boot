@@ -21,7 +21,7 @@ namespace SSIS_BOOT.Models
 
         public Supplier() { }
 
-        public Supplier(string Id, string Name, string ContactPersonName, int PhoneNo, int? FaxNo, string Address, string? GstRegNo)
+        public Supplier(string Id, string Name, string ContactPersonName, int PhoneNo, int? FaxNo, string Address, string? GstRegNo, string Email)
         {
             this.Id = Id;
             this.Name = Name;
@@ -29,6 +29,7 @@ namespace SSIS_BOOT.Models
             this.FaxNo = FaxNo;
             this.Address = Address;
             this.GstRegNo = GstRegNo;
+            this.Email = Email;
         }
 
     }

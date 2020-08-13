@@ -51,10 +51,9 @@ namespace SSIS_BOOT.Email.EmailTemplates
         public class RequestQuoteTemplate
         {
             public string name;
-            public string email;
             public string body;
-            public string subject = "New Request for Quote";
-            public RequestQuoteTemplate(Employee clerk, Employee u, List<PurchaseRequestDetail> req) 
+            public string subject = "New Request for Quote from LU Staionary Store";
+            public RequestQuoteTemplate(Employee clerk, Supplier S, List<PurchaseRequestDetail> req) 
             {
                 StringBuilder builder = new StringBuilder();
                 foreach (PurchaseRequestDetail r in req)
@@ -62,10 +61,9 @@ namespace SSIS_BOOT.Email.EmailTemplates
                     builder.Append(r.Product.Description).Append(":").Append("  ").Append(r.ReorderQty).Append(System.Environment.NewLine); 
                 }
                 string result = builder.ToString();
-                this.name = u.Name;
-                this.email = u.Email;
+                this.name = S.Name;
                 this.body =
-                    "Dear " + u.Name + System.Environment.NewLine + System.Environment.NewLine +
+                    "Dear " + S.Name + System.Environment.NewLine + System.Environment.NewLine +
                     "We are looking to procure the following items: " + System.Environment.NewLine + System.Environment.NewLine +
                     result + System.Environment.NewLine +
                     "Please provide a quotation based on your existing stock and send to " + clerk.Email + "." + System.Environment.NewLine + System.Environment.NewLine +
