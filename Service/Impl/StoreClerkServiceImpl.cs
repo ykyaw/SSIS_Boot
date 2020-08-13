@@ -27,11 +27,13 @@ namespace SSIS_BOOT.Service.Impl
         public TenderQuotationRepo tqrepo;
         public EmployeeRepo erepo;
         public SupplierRepo srepo;
+        public AdjustmentVoucherRepo advrepo;
         protected IMailer mailservice;
+        
 
         public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo, 
             RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, TransactionRepo trepo, TenderQuotationRepo tqrepo, RetrievalRepo retrivrepo,
-            EmployeeRepo erepo, SupplierRepo srepo, IMailer mailservice)
+            EmployeeRepo erepo, SupplierRepo srepo, AdjustmentVoucherRepo advrepo,IMailer mailservice)
 
         {
             this.prepo = prepo;
@@ -46,6 +48,7 @@ namespace SSIS_BOOT.Service.Impl
             this.erepo = erepo;
             this.srepo = srepo;
             this.mailservice = mailservice;
+            this.advrepo = advrepo;
         }
 
         public List<Product> getallcat()
@@ -269,6 +272,12 @@ namespace SSIS_BOOT.Service.Impl
             {
                 throw exception;
             }
+        }
+
+        public List<AdjustmentVoucher> getAllAdjustmentVoucher()
+        {
+            return advrepo.findAllAdjustmentVoucher();
+            
         }
     }
 }
