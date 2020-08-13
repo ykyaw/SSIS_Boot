@@ -122,7 +122,7 @@ namespace SSIS_BOOT.Service.Impl
         {
             return purreqrepo.addnewpurchaserequestdetail(prd1);
         }
-        public List<PurchaseRequestDetail> getcurrentpurchaserequest(int purchaserequestId)
+        public List<PurchaseRequestDetail> getcurrentpurchaserequest(long purchaserequestId)
         {
             return purreqrepo.getcurrentpurchaserequest(purchaserequestId);
         }

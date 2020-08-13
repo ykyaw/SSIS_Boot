@@ -30,7 +30,7 @@ namespace SSIS_BOOT.Repo
             return true;
         }
 
-        public List<PurchaseRequestDetail> getcurrentpurchaserequest (int purchaserequestId)
+        public List<PurchaseRequestDetail> getcurrentpurchaserequest (long purchaserequestId)
         {
             List<PurchaseRequestDetail> prrequest = dbcontext.PurchaseRequestDetails.Include(m => m.CreatedByClerk)
                 .Include(m => m.Supplier).Include(m => m.ApprovedBySup).Where(m => m.PurchaseRequestId == purchaserequestId).ToList();

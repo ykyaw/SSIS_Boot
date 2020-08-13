@@ -28,7 +28,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public bool savetransaction(Transaction t1);
 
         public bool addpurchaserequest(PurchaseRequestDetail prd1);
-        public List<PurchaseRequestDetail> getcurrentpurchaserequest(int purchaserequestId);
+        public List<PurchaseRequestDetail> getcurrentpurchaserequest(long purchaserequestId);
         public bool updatepurchaserequestitem(PurchaseRequestDetail prd);
 
         public bool updateretrieval(Retrieval r1);

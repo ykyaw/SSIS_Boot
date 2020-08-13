@@ -158,23 +158,24 @@ namespace SSIS_BOOT.Controllers
             scservice.savetransaction(t1);
             return true;
         }
-        [HttpPost]
-        //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPOST] and pass in from body
+        //[HttpPost]
+        [HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPOST] and pass in from body
         [Route("/storeclerk/createpr")]
-        public List<PurchaseRequestDetail> generatepurchaserequest([FromBody]List<String> productId)
+        public List<PurchaseRequestDetail> generatepurchaserequest()
         {
-            //testing 
-            //List<String> productid = new List<string> {"C001", "E002", "H031" };
-            int currentpurchaserequestid = (int) DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            //testing [FromBody]List<String> productId
+            List<String> productid = new List<string> {"C004", "F021" };
 
-            foreach (String id in productId)
+            long currentpurchaserequestid = (long) DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            
+            foreach (String id in productid)
             {
                 PurchaseRequestDetail prd1 = new PurchaseRequestDetail();
                 prd1.ProductId = id;
                 prd1.Status = Status.PurchaseRequestStatus.created;
                 prd1.PurchaseRequestId = currentpurchaserequestid;
-                //prd1.CreatedByClerkId = 1;
-                prd1.CreatedByClerkId = (int) HttpContext.Session.GetInt32("Id");
+                prd1.CreatedByClerkId = (int) 2;
+                //prd1.CreatedByClerkId = (int) HttpContext.Session.GetInt32("Id");
                 scservice.addpurchaserequest(prd1);
             }
             List<PurchaseRequestDetail> prlist = scservice.getcurrentpurchaserequest(currentpurchaserequestid);
