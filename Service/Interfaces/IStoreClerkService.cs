@@ -10,6 +10,7 @@ namespace SSIS_BOOT.Service.Interfaces
     {
         public List<Product> getallcat();
         public List<PurchaseRequestDetail> getpurchasereq();
+        public List<PurchaseRequestDetail> getprdetails(long prid);
         public List<PurchaseOrder> getpurchaseorders();
 
         public List<PurchaseOrderDetail> getpoddetails(int poId);
@@ -29,13 +30,15 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public bool savetransaction(Transaction t1);
 
-        public bool addpurchaserequest(PurchaseRequestDetail prd1);
-        public List<PurchaseRequestDetail> getcurrentpurchaserequest(int purchaserequestId);
-        public bool updatepurchaserequestitem(PurchaseRequestDetail prd);
+        public List<PurchaseRequestDetail> addpurchaserequest(List<String> productId,int clerkid);
+        public bool updatepurchaserequestitem(List<PurchaseRequestDetail> prdlist);
 
         public bool updateretrieval(Retrieval r1);
         public List<Requisition> getallreqformbydate(long date);
 
+        public bool updatepurchaseorderdetailitem(PurchaseOrderDetail pod);
+
+        public bool generatequotefrompr(List<PurchaseRequestDetail> prd);
 
 
     }

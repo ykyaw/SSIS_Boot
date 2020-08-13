@@ -16,6 +16,7 @@ namespace SSIS_BOOT.Models
         public int PhoneNo { get; set; }
         public int? FaxNo { get; set; }
         public string Address { get; set; }
+        public string? Email { get; set; }
         public string? GstRegNo { get; set; }
 
         public Supplier() { }

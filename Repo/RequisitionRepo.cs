@@ -16,6 +16,13 @@ namespace SSIS_BOOT.Repo
             this.dbcontext = dbcontext;
         }
 
+        public Requisition findreqformByReqID (int reqId)
+        {
+            Requisition req = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product)
+                .Include(m => m.Department).Where(m => m.Id == reqId).FirstOrDefault();
+            return req;
+        }
+
         public List<Requisition> findallreqform() //not loading properly. maybe too much info. need to relook
         {
             List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department).ToList();

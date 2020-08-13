@@ -23,5 +23,17 @@ namespace SSIS_BOOT.Repo
                 .Include(m=> m.PurchaseRequestDetail).Include(m => m.Product).Where(m => m.PurchaseOrderId == poId).ToList();
             return podlist;
         }
+
+        public bool Updatepurchaseorderdetail(PurchaseOrderDetail pod)
+        {
+            var original = dbcontext.PurchaseOrderDetails.Find(pod.Id);
+            if (original == null)
+            {
+                throw new Exception();
+            }
+            dbcontext.Entry(original).CurrentValues.SetValues(pod);
+            dbcontext.SaveChanges();
+            return true;
+        }
     }
 }

@@ -42,15 +42,19 @@ namespace SSIS_BOOT.Repo
         {
             try
             {
-                dbcontext.RequisitionDetails.Update(rd);
+                var original = dbcontext.RequisitionDetails.Find(rd.Id);
+                if(original == null)
+                {
+                    throw new Exception();
+                }
+                dbcontext.Entry(original).CurrentValues.SetValues(rd);
                 dbcontext.SaveChanges();
                 return true;
             }
             catch
             {
-                throw new Exception("Error saving Requsition Detail");
+                throw new Exception("Error saving Requsition Detail for " + rd.Product.Description);
             }
-
         }
 
     }

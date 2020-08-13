@@ -41,6 +41,14 @@ namespace SSIS_BOOT.Controllers
             return prdetails;
         }
         [HttpGet]
+        [Route("/storeclerk/prdetails/{prid}")]
+        public List<PurchaseRequestDetail> getprdetails(long prid)
+        {
+            List<PurchaseRequestDetail> prdetails = scservice.getprdetails(prid);
+            return prdetails;
+        }
+
+        [HttpGet]
         [Route("/storeclerk/po")]
         public List<PurchaseOrder> getallpurchaseorder()
         {
@@ -77,14 +85,15 @@ namespace SSIS_BOOT.Controllers
             return req;
         }
 
-        [HttpPut]
+        [HttpPut] //TO FOLLOW UP
         [Route("/storeclerk/rfld/{reqId}")]
         public bool updatereqcollectiontime(Requisition req)
         {
-            
-            //To be followed up. Also include email service to rep
-            Requisition req = scservice.getReqByReqId(reqId);
-            return req;
+
+            ////To be followed up. Also include email service to rep
+            //Requisition req = scservice.getReqByReqId(reqId);
+            //return req;
+            return true;
         }
 
 
@@ -186,20 +195,11 @@ namespace SSIS_BOOT.Controllers
         public List<PurchaseRequestDetail> generatepurchaserequest([FromBody]List<String> productId)
         {
             //testing 
-            //List<String> productid = new List<string> {"C001", "E002", "H031" };
-            int currentpurchaserequestid = (int) DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            //List<String> productId = new List<string> {"C004", "F021" };
+            
+            int clerkid = (int)HttpContext.Session.GetInt32("Id");
+            List<PurchaseRequestDetail> prlist = scservice.addpurchaserequest(productId,clerkid);
 
-            foreach (String id in productId)
-            {
-                PurchaseRequestDetail prd1 = new PurchaseRequestDetail();
-                prd1.ProductId = id;
-                prd1.Status = Status.PurchaseRequestStatus.created;
-                prd1.PurchaseRequestId = currentpurchaserequestid;
-                //prd1.CreatedByClerkId = 1;
-                prd1.CreatedByClerkId = (int) HttpContext.Session.GetInt32("Id");
-                scservice.addpurchaserequest(prd1);
-            }
-            List<PurchaseRequestDetail> prlist = scservice.getcurrentpurchaserequest(currentpurchaserequestid);
             return prlist;
 
         }
@@ -214,19 +214,49 @@ namespace SSIS_BOOT.Controllers
             //prd1.ReorderQty = 5000;
             //prd1.VenderQuote = "QUO03";
             //prd1.SupplierId = "ALPA";
-            //PurchaseRequestDetail prd2 = prdetails.Find(item => item.Id == 4);
+            //PurchaseRequestDetail prd2 = prdetails.Find(item => item.Id == 7);
             //prd2.ReorderQty = 100;
             //prd2.VenderQuote = "QUO04";
             //prd2.SupplierId = "ALPA";
             //List<PurchaseRequestDetail> prdlist = new List<PurchaseRequestDetail> { prd1, prd2 };
 
-            foreach (PurchaseRequestDetail prd in prdlist)
-            {
-                scservice.updatepurchaserequestitem(prd);
-            }
+             scservice.updatepurchaserequestitem(prdlist);
             //List<PurchaseRequestDetail> prdetailsfinal = scservice.getpurchasereq();
             return true;
         }
+
+        [HttpGet] 
+        [Route("/storeclerk/generatequote")]
+        public bool generatequotefrompr(List<PurchaseRequestDetail> prdlist)
+        {
+            
+                scservice.generatequotefrompr(prdlist);
+            
+            return true;
+        }
+
+        [HttpPut]
+        //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPUT] and pass in from body
+        [Route("/storeclerk/updatepod")]
+        public bool updateitemreceived([FromBody]List<PurchaseOrderDetail> podlist)
+        {
+            //testing 
+            //int poid = 3;
+            //List<PurchaseOrderDetail> podlist1 = scservice.getpoddetails(poid);
+            //PurchaseOrderDetail pod1 = podlist1.Find(item => item.Id == 2);
+            //pod1.QtyReceived = 5;
+            //pod1.SupplierDeliveryNo = 111111;
+            //pod1.Remark = "Pending 10 more";
+            //pod1.PurchaseOrder.ReceivedDate = 1594724400000;
+            //List<PurchaseOrderDetail> podlist = new List<PurchaseOrderDetail> { pod1 };
+
+            foreach (PurchaseOrderDetail podid in podlist)
+            {
+                scservice.updatepurchaseorderdetailitem(podid);
+            }
+            return true;
+        }
+        
 
     }
 }
