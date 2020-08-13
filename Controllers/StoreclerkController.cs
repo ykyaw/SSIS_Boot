@@ -90,23 +90,23 @@ namespace SSIS_BOOT.Controllers
             return r1;
         }
 
-        /*      FOR TESTING ONLY
-        [HttpGet] 
-        [Route("/storeclerk/ret")]
-        public Retrieval genretrievalform()
-        {
-            //long date = 99; //check for invalid date
-            long date = 1596447000; // for creating of new
-            //long date = 1595237400; // check for existing
-            int clerkid = 1;
-            List<Requisition> rq = scservice.getallreqformbydate(date);
-            if (rq == null || rq.Count == 0)
-            {
-                throw new Exception("Sorry, there is no Requisition matching the provided date. Please try again");
-            }
-            Retrieval r1 = scservice.genretrievalform(date, clerkid);
-            return r1;
-        }*/
+        ////FOR TESTING ONLY
+        //[HttpGet]
+        //[Route("/storeclerk/ret")]
+        //public Retrieval genretrievalform()
+        //{
+        //    //long date = 99; //check for invalid date
+        //    long date = 1597060800000; // for creating of new
+        //    //long date = 1595237400; // check for existing
+        //    int clerkid = 1;
+        //    List<Requisition> rq = scservice.getallreqformbydate(date);
+        //    if (rq == null || rq.Count == 0)
+        //    {
+        //        throw new Exception("Sorry, there is no Requisition matching the provided date. Please try again");
+        //    }
+        //    Retrieval r1 = scservice.genretrievalform(date, clerkid);
+        //    return r1;
+        //}
 
 
 

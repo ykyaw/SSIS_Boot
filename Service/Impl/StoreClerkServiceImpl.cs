@@ -135,11 +135,11 @@ namespace SSIS_BOOT.Service.Impl
         {
             try
             {
+                retrivrepo.UpdateRetrieval(r1);
                 foreach (RequisitionDetail rd in r1.RequisitionDetails)
                 {
                     rdrepo.updaterequsitiondetail(rd);
                 }
-                retrivrepo.UpdateRetrieval(r1);
                 return true;
             }
             catch(Exception exception)

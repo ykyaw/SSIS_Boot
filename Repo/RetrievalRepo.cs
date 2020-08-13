@@ -38,7 +38,13 @@ namespace SSIS_BOOT.Repo
         {
             try
             {
-                dbcontext.Retrievals.Update(r1);
+                //dbcontext.Retrievals.Update(r1);
+                var original = dbcontext.Retrievals.Find(r1.Id);
+                if(original ==null)
+                {
+                    throw new Exception();
+                }
+                dbcontext.Entry(original).CurrentValues.SetValues(r1);
                 dbcontext.SaveChanges();
                 return true;
             }

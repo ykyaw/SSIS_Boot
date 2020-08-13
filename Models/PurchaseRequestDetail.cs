@@ -25,6 +25,7 @@ namespace SSIS_BOOT.Models
         public string Status { get; set; }
         public string? Remarks { get; set; }
 
+        public Product Product { get; set; }
         public  Employee CreatedByClerk { get; set; }
         public  Supplier Supplier { get; set; }
         public  Employee ApprovedBySup { get; set; }
