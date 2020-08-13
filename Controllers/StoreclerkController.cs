@@ -76,6 +76,29 @@ namespace SSIS_BOOT.Controllers
             List<Requisition> reqlist = scservice.getReqformByDeptId(deptID);
             return reqlist;
         }
+
+        [HttpGet]
+        [Route("/storeclerk/rfld/{reqId}")]
+        public Requisition getreqformByReqId(int reqId)
+        {
+            Requisition req = scservice.getReqByReqId(reqId);
+            return req;
+        }
+
+        [HttpPut] //TO FOLLOW UP
+        [Route("/storeclerk/rfld/{reqId}")]
+        public bool updatereqcollectiontime(Requisition req)
+        {
+
+            ////To be followed up. Also include email service to rep
+            //Requisition req = scservice.getReqByReqId(reqId);
+            //return req;
+            return true;
+        }
+
+
+
+
         [HttpGet]
         [Route("/storeclerk/sc/{productId}")]
         public List<Transaction> retrievestockcard(string productId)
@@ -138,8 +161,8 @@ namespace SSIS_BOOT.Controllers
 
         [HttpGet]
         [Route("/storeclerk/supplier/{productId}")]
-        public List<TenderQuotation> gettop3supplier (string productId)
-        { 
+        public List<TenderQuotation> gettop3supplier(string productId)
+        {
             List<TenderQuotation> slist = scservice.gettop3suppliers(productId);
             return slist;
         }
@@ -161,7 +184,7 @@ namespace SSIS_BOOT.Controllers
         [HttpPost]
         //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPOST] and pass in from body
         [Route("/storeclerk/updatesc")]
-        public bool updatestockcard ([FromBody] Transaction t1)
+        public bool updatestockcard([FromBody] Transaction t1)
         {
             //for testing purpose 
             //Transaction t1 = new Transaction("C001", 1597211000, "supply to Math Department", -20, 530, 1, null); //August 12, 2020 13:43:20
@@ -175,9 +198,9 @@ namespace SSIS_BOOT.Controllers
         {
             //testing 
             //List<String> productId = new List<string> {"C004", "F021" };
-            
+
             int clerkid = (int)HttpContext.Session.GetInt32("Id");
-            List<PurchaseRequestDetail> prlist = scservice.addpurchaserequest(productId,clerkid);
+            List<PurchaseRequestDetail> prlist = scservice.addpurchaserequest(productId, clerkid);
 
             return prlist;
 
@@ -206,12 +229,32 @@ namespace SSIS_BOOT.Controllers
             return true;
         }
 
-        [HttpGet] 
+        //[HttpGet] //For testing oly
+        [HttpPost]
         [Route("/storeclerk/generatequote")]
         public bool generatequotefrompr(List<PurchaseRequestDetail> prdlist)
         {
+            ////Testing with fake value
+            //List<PurchaseRequestDetail> prd = new List<PurchaseRequestDetail>();
+            //PurchaseRequestDetail p1 = new PurchaseRequestDetail(1593617400000, 1, "E032", "ALPA", 80, 100, null, 100.00, 1593617400000, 1593691200000, 2, "approved", null);
+            //p1.Product = new Product("C001", "Clips Double 1", 4);
+            //PurchaseRequestDetail p2 = new PurchaseRequestDetail(1593617400000, 1, "D001", "OMEG", 80, 100, null, 100.00, 1593617400000, 1593691200000, 2, "approved", null);
+            //p2.Product = new Product("E032", "Exercise Book A4 Hardcover (100 pg)", 4);
+            //PurchaseRequestDetail p3 = new PurchaseRequestDetail(1593617400000, 1, "C001", "ALPA", 80, 100, null, 100.00, 1593617400000, 1593691200000, 2, "approved", null);
+            //p3.Product = new Product("F020", "File Separator", 4);
+            //PurchaseRequestDetail p4 = new PurchaseRequestDetail(1593617400000, 1, "P043", "OMEG", 80, 100, null, 100.00, 1593617400000, 1593691200000, 2, "approved", null);
+            //p4.Product = new Product("H011", "Highlighter Blue", 4);
+            //prd.Add(p1);
+            //prd.Add(p2);
+            //prd.Add(p3);
+            //prd.Add(p4);
+            //prd.Add(new PurchaseRequestDetail(1593617400000, 1, "E032", "OMEG", 80, 100, "MF032", 100.00, 1593617400000, 1593691200000, 2, "approved", null));
+            //prd.Add(new PurchaseRequestDetail(1593617400000, 1, "E032", "ALPA", 80, 100, "MFD001", 100.00, 1593617400000, 1593691200000, 2, "approved", null));
+            //prd.Add(new PurchaseRequestDetail(1593617400000, 1, "E032", "OMEG", 80, 100, "MF032", 100.00, 1593617400000, 1593691200000, 2, "approved", null));
+            //scservice.generatequotefrompr(prd);
+            //// END OF TEST
+
             scservice.generatequotefrompr(prdlist);
-            
             return true;
         }
 
@@ -236,7 +279,7 @@ namespace SSIS_BOOT.Controllers
             }
             return true;
         }
-        
+
 
     }
 }

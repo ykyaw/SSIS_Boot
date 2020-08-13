@@ -266,10 +266,10 @@ namespace SSIS_BOOT.DB
             dbcontext.SaveChanges();
 
             //seed supplier
-            Supplier supplier1 = new Supplier("ALPA", "ALPHA Office Supplies", "Ms Irene Tan", 4619928, 4612238, "Blk 1128, Ang Mo Kio Industrial Park, #02-1108 Ang Mo Kio Street 62,Singapore 622262", "MR -8500440-2");
-            Supplier supplier2 = new Supplier("CHEP", "Cheap Stationer", "Mr Soh Kway Koh", 3543234, 4742434, "Blk 34, Clementi Road, #07-02 Ban Ban Soh Building, Singapore 110525", null);
-            Supplier supplier3 = new Supplier("BANE", "BANES Shop", "Mr Loh Ah Pek", 4781234, 47924344, "Blk 124, Alexandra Road, #03-04 Banes Building, Singapore 550315", "MR-8200420-2");
-            Supplier supplier4 = new Supplier("OMEG", "OMEGA Stationery Supplier", "Mr Ronnie Ho", 767233, 7671234, "Blk 11, Hillview Avenue, #03-04 , Singapore 679036", "MR-8555330-1");
+            Supplier supplier1 = new Supplier("ALPA", "ALPHA Office Supplies", "Ms Irene Tan", 4619928, 4612238, "Blk 1128, Ang Mo Kio Industrial Park, #02-1108 Ang Mo Kio Street 62,Singapore 622262", "MR -8500440-2", "aalpa@mailinator.com");
+            Supplier supplier2 = new Supplier("CHEP", "Cheap Stationer", "Mr Soh Kway Koh", 3543234, 4742434, "Blk 34, Clementi Road, #07-02 Ban Ban Soh Building, Singapore 110525", null, "cchep@mailinator.com");
+            Supplier supplier3 = new Supplier("BANE", "BANES Shop", "Mr Loh Ah Pek", 4781234, 47924344, "Blk 124, Alexandra Road, #03-04 Banes Building, Singapore 550315", "MR-8200420-2", "bbanes@mailinator.com");
+            Supplier supplier4 = new Supplier("OMEG", "OMEGA Stationery Supplier", "Mr Ronnie Ho", 767233, 7671234, "Blk 11, Hillview Avenue, #03-04 , Singapore 679036", "MR-8555330-1", "oomega@mailinator.com");
             dbcontext.Add(supplier1);
             dbcontext.Add(supplier2);
             dbcontext.Add(supplier3);

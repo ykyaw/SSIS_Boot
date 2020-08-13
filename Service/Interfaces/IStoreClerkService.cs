@@ -19,6 +19,8 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public List<Requisition> getReqformByDeptId(string deptID);
 
+        public Requisition getReqByReqId(int reqid);
+
         public List<Transaction> retrievestockcard(string productId);
 
         public Retrieval genretrievalform(long date, int clerkid);
@@ -37,6 +39,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public bool updatepurchaseorderdetailitem(PurchaseOrderDetail pod);
 
         public bool generatequotefrompr(List<PurchaseRequestDetail> prd);
+
 
     }
 }

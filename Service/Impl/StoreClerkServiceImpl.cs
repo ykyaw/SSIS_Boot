@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using SSIS_BOOT.Common;
+using SSIS_BOOT.Email;
+using SSIS_BOOT.Email.EmailTemplates;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Repo;
 using SSIS_BOOT.Service.Interfaces;
@@ -25,10 +27,11 @@ namespace SSIS_BOOT.Service.Impl
         public TenderQuotationRepo tqrepo;
         public EmployeeRepo erepo;
         public SupplierRepo srepo;
+        protected IMailer mailservice;
 
         public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo, 
             RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, TransactionRepo trepo, TenderQuotationRepo tqrepo, RetrievalRepo retrivrepo,
-            EmployeeRepo erepo, SupplierRepo srepo)
+            EmployeeRepo erepo, SupplierRepo srepo, IMailer mailservice)
 
         {
             this.prepo = prepo;
@@ -42,6 +45,7 @@ namespace SSIS_BOOT.Service.Impl
             this.tqrepo = tqrepo;
             this.erepo = erepo;
             this.srepo = srepo;
+            this.mailservice = mailservice;
         }
 
         public List<Product> getallcat()
@@ -63,6 +67,13 @@ namespace SSIS_BOOT.Service.Impl
         {
             return purreqrepo.findallpurchasereq();
         }
+
+
+        public Requisition getReqByReqId(int reqid)
+        {
+            return rrepo.findreqformByReqID(reqid);
+        }
+
 
         public List<PurchaseRequestDetail> getprdetails(long prid)
         {
@@ -105,18 +116,25 @@ namespace SSIS_BOOT.Service.Impl
                         //pdict[prd.SupplierId] = prdlist2;
                     }
                 }
-                foreach(var r in pdict)
+                foreach (var r in pdict)
                 {
-                    foreach(PurchaseRequestDetail i in pdict[r.Key])
+                    Supplier supplier = srepo.findsupplierbyId(r.Value[0].SupplierId);
+                    Employee clerk = erepo.findempById(r.Value[0].CreatedByClerkId);
+                    EmailModel email = new EmailModel();
+                    List<PurchaseRequestDetail> List_of_PR_tosend = pdict[r.Key];
+                    Task.Run(async () =>
                     {
-                        Supplier supplier = srepo.findsupplierbyId(i.SupplierId);
-                        Employee clerk = erepo.findempById(i.CreatedByClerkId);
-                        //send email for each supplier (PENDING)
-                    }
+                        EmailTemplates.RequestQuoteTemplate rfq = new EmailTemplates.RequestQuoteTemplate(clerk, supplier, List_of_PR_tosend);
+                        email.emailTo = supplier.Email;
+                        email.emailSubject = rfq.subject;
+                        email.emailBody = rfq.body;
+                        await mailservice.SendRFQEmailAsync(email, clerk);
+                    });   
                 }
             }     
             return true;
         }
+
         public List<Requisition> getallreqform()
         {
             return rrepo.findallreqform();
@@ -222,7 +240,6 @@ namespace SSIS_BOOT.Service.Impl
 
             }
             return true;
-
         }
 
         public bool updateretrieval(Retrieval r1)
