@@ -79,7 +79,7 @@ namespace SSIS_BOOT.Controllers
         }
 
         [HttpGet]
-        [Route("/storeclerk/rfld/{reqId}")]
+        [Route("/storeclerk/rfld2/{reqId}")]
         public Requisition getreqformByReqId(int reqId)
         {
             Requisition req = scservice.getReqByReqId(reqId);

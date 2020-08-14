@@ -26,8 +26,8 @@ namespace SSIS_BOOT.Controllers
         public List<Requisition> getdeptreqlist()
         {
             //to be replaced by session of the user's departmentId
-            string deptid = "CPSC";
-            //string deptid = HttpContext.Session.GetString("DeptId");
+            //string deptid = "CPSC";
+            string deptid = HttpContext.Session.GetString("DeptId");
             List<Requisition> reqlist = deservice.getdeptreqlist(deptid);
             return reqlist;
         }

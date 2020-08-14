@@ -13,11 +13,15 @@ namespace SSIS_BOOT.Service.Impl
     {
         public AdjustmentVoucherRepo avrepo;
         public EmployeeRepo erepo;
+        public PurchaseRequestRepo purreqrepo;
+        public PurchaseOrderRepo porepo;
 
-        public StoreSupServiceImpl(AdjustmentVoucherRepo avrepo, EmployeeRepo erepo)
+        public StoreSupServiceImpl(AdjustmentVoucherRepo avrepo, EmployeeRepo erepo, PurchaseRequestRepo purreqrepo, PurchaseOrderRepo porepo)
         {
             this.avrepo = avrepo;
             this.erepo = erepo;
+            this.purreqrepo = purreqrepo;
+            this.porepo = porepo;
         }
 
         public AdjustmentVoucher getAdjVouchById(string id)
@@ -53,10 +57,59 @@ namespace SSIS_BOOT.Service.Impl
                 }
                 return true;
             }
-            catch(Exception m)
+            catch (Exception m)
             {
                 throw m;
             }
         }
+
+        public List<PurchaseRequestDetail> getpurchasereq()
+        {
+            return purreqrepo.findallpurchasereq();
+        }
+        public List<PurchaseRequestDetail> getprdetails(long prid)
+        {
+            return purreqrepo.findpurchasereq(prid);
+        }
+        //public bool updatepr(List<PurchaseRequestDetail> prdlist)
+        //{
+        //    foreach (PurchaseRequestDetail prd in prdlist)
+        //    {
+        //        purreqrepo.updatepurchaserequestitem(prd);
+        //    }
+        //    if (prdlist[0].Status == Status.PurchaseRequestStatus.approved)
+        //    {
+
+        //        List<PurchaseRequestDetail> sortedprlist = prdlist.GroupBy(m => m.SupplierId).SelectMany(m => m).ToList();
+        //        Dictionary<string, List<PurchaseRequestDetail>> pdict = new Dictionary<string, List<PurchaseRequestDetail>>();
+
+        //        foreach (PurchaseRequestDetail prd in sortedprlist)
+        //        {
+        //            if (!pdict.ContainsKey(prd.SupplierId))
+        //            {
+        //                List<PurchaseRequestDetail> prdlist1 = new List<PurchaseRequestDetail>();
+        //                prdlist1.Add(prd);
+        //                pdict.Add(prd.SupplierId, prdlist1);
+        //            }
+        //            else
+        //            {
+        //                //List<PurchaseRequestDetail> prdlist2 = pdict[prd.SupplierId];
+        //                pdict[prd.SupplierId].Add(prd);
+        //                //pdict[prd.SupplierId] = prdlist2;
+        //            }
+        //        }
+        //        foreach (var r in pdict)
+        //        {
+        //            PurchaseOrder po = new PurchaseOrder() { };
+        //            porepo.create(po);
+        //            }
+        //    }
+        //    else
+        //    {
+        //        //send email on rejected purchaserequest with remarks
+        //    }
+        //    return true;
+        //}
+
     }
 }

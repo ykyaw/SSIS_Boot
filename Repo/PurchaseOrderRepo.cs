@@ -22,6 +22,15 @@ namespace SSIS_BOOT.Repo
                 .Include(m=>m.ApprovedBySup).Include(m=>m.ReceivedByClerk).Include(m=> m.PurchaseOrderDetails).ToList();
             return polist;
         }
+        public PurchaseOrder create(PurchaseOrder po)
+        {
+            dbcontext.PurchaseOrders.Add(po);
+            dbcontext.SaveChanges();
+            int id = po.Id;
+
+            PurchaseOrder newpo = dbcontext.PurchaseOrders.FirstOrDefault(m => m.Id == id);
+            return newpo;
+        }
 
     }
 }
