@@ -38,6 +38,22 @@ namespace SSIS_BOOT.Controllers
             Requisition req = deservice.getrfdetail(reqId);
             return req;
         }
+        [HttpGet]
+        [Route("/deptemp/catalogue")]
+        public List<Product> getcatalogue()
+        {
+            List<Product> pdt = deservice.getallcat();
+            return pdt;
+        }
+        [HttpPost]
+        [Route("/deptemp/saveRFdraft")]
+        public Requisition savereqformdraft(List<RequisitionDetail> rdlist)
+        {
+            Requisition rq= deservice.updatereqform(rdlist);
+            return rq;
+
+        }
+
 
     }
 }

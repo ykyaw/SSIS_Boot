@@ -48,6 +48,19 @@ namespace SSIS_BOOT.Repo
             return req;
         }
 
+        //check for deptemp create of requisition form
+        //public bool updatereqformitem(RequisitionDetail rd)
+        //{
+        //    var original = dbcontext.RequisitionDetails.Find(rd.Id);
+        //    if (original == null)
+        //    {
+        //        throw new Exception();
+        //    }
+        //    dbcontext.Entry(original).CurrentValues.SetValues(rd);
+        //    dbcontext.SaveChanges();
+        //    return true;
+        //}
+
         public bool updaterequisitioncollectiontime(Requisition r1)
         {
             try

@@ -11,5 +11,8 @@ namespace SSIS_BOOT.Service.Interfaces
         public List<Requisition> getdeptreqlist(string deptId);
 
         public Requisition getrfdetail(int reqId);
+        public List<Product> getallcat();
+
+        public Requisition updatereqform(List<RequisitionDetail> rdlist);
     }
 }

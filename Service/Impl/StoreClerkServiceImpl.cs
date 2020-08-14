@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using SSIS_BOOT.Common;
 using SSIS_BOOT.Email;
 using SSIS_BOOT.Email.EmailTemplates;
@@ -27,14 +28,12 @@ namespace SSIS_BOOT.Service.Impl
         public TenderQuotationRepo tqrepo;
         public EmployeeRepo erepo;
         public SupplierRepo srepo;
-        public AdjustmentVoucherRepo advrepo;
         protected IMailer mailservice;
-        
+        public AdjustmentVoucherRepo avrepo;
 
         public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo, 
             RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, TransactionRepo trepo, TenderQuotationRepo tqrepo, RetrievalRepo retrivrepo,
-            EmployeeRepo erepo, SupplierRepo srepo, AdjustmentVoucherRepo advrepo,IMailer mailservice)
-
+            EmployeeRepo erepo, SupplierRepo srepo, IMailer mailservice, AdjustmentVoucherRepo avrepo)
         {
             this.prepo = prepo;
             this.purreqrepo = purreqrepo;
@@ -48,7 +47,8 @@ namespace SSIS_BOOT.Service.Impl
             this.erepo = erepo;
             this.srepo = srepo;
             this.mailservice = mailservice;
-            this.advrepo = advrepo;
+            this.avrepo = avrepo;
+
         }
 
         public List<Product> getallcat()
@@ -274,6 +274,18 @@ namespace SSIS_BOOT.Service.Impl
             }
         }
 
+        public AdjustmentVoucher createadjustmentvoucher()
+        {
+            //create empty adjustment voucher with only ID and initiated date
+            AdjustmentVoucher av = new AdjustmentVoucher();
+
+            av.InitiatedDate = (long)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            av.Id = avrepo.createnewid();
+            av.Status = Status.AdjVoucherStatus.created;
+            av.InitiatedClerkId = 2;
+            //av.InitiatedClerkId=(int)HttpContext.Session.GetInt32("Id");
+            return avrepo.saveNewAdjustmentVoucher(av);
+        }
 
 
         public bool updaterequisitioncollectiontime(Requisition r1)
@@ -292,11 +304,9 @@ namespace SSIS_BOOT.Service.Impl
                 throw exception;
             }
         }
-
-
         public List<AdjustmentVoucher> getAllAdjustmentVoucher()
         {
-            return advrepo.findAllAdjustmentVoucher();
+            return avrepo.findAllAdjustmentVoucher();
             
         }
     }

@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SSIS_BOOT.Common;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Service.Interfaces;
@@ -286,6 +287,14 @@ namespace SSIS_BOOT.Controllers
                 scservice.updatepurchaseorderdetailitem(podid);
             }
             return true;
+        }
+
+        [HttpGet]
+        [Route("/storeclerk/createav")]
+        public AdjustmentVoucher createadjustmentvoucher()
+        {
+            AdjustmentVoucher av = scservice.createadjustmentvoucher();
+            return av;
         }
 
         [HttpGet]
