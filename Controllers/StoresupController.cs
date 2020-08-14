@@ -26,7 +26,7 @@ namespace SSIS_BOOT.Controllers
         }
 
         [HttpGet]
-        [Route("/sup/voucher/{id}")]
+        [Route("/storesup/voucher/{id}")]
         public AdjustmentVoucher GetAdjustmentVoucher(string id)
         {
             //string id2 = "031_007_2020";
@@ -36,7 +36,7 @@ namespace SSIS_BOOT.Controllers
 
         //[HttpGet]
         [HttpPut]
-        [Route("/sup/voucher/{id}")]
+        [Route("/storesup/voucher/{id}")]
         public bool ApprovRejAdjustmentVoucher([FromBody]AdjustmentVoucher av)
         {
             // FOR TESTING ONLY
@@ -63,7 +63,7 @@ namespace SSIS_BOOT.Controllers
         }
 
         [HttpGet]
-        [Route("/sup/allvoucher")]
+        [Route("/storesup/allvoucher")]
         public List<AdjustmentVoucher> getAllAdjustmentVoucher()
         {
             List<AdjustmentVoucher> advlist = ssservice.getAllAdjustmentVoucher();
