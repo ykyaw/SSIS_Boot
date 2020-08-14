@@ -63,11 +63,47 @@ namespace SSIS_BOOT.Controllers
         }
 
         [HttpGet]
+        [Route("/storesup/pr")]
+        public List<PurchaseRequestDetail> getallpurchasereq()
+        {
+            List<PurchaseRequestDetail> prdetails = ssservice.getpurchasereq();
+            return prdetails;
+        }
+        [HttpGet]
+        [Route("/storesup/prdetails/{prid}")]
+        public List<PurchaseRequestDetail> getprdetails(long prid)
+        {
+            List<PurchaseRequestDetail> prdetails = ssservice.getprdetails(prid);
+            return prdetails;
+        }
+        //[HttpPut]
+        ////[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPUT] and pass in from body
+        //[Route("/storesup/updatepr")]
+        //public bool updatepurchaserequest([FromBody] List<PurchaseRequestDetail> prdlist)
+        //{
+        //    //testing 
+        //    //RequisitionDetail rd1 = new RequisitionDetail();
+        //    //rd1.RequisitionId = 8;
+        //    //rd1.ProductId = "C002";
+        //    //rd1.QtyNeeded = 10;
+        //    //RequisitionDetail rd2 = new RequisitionDetail();
+        //    //rd2.RequisitionId = 8;
+        //    //rd2.ProductId = "P013";
+        //    //rd2.QtyNeeded = 10;
+        //    //List<RequisitionDetail> rdlist = new List<RequisitionDetail>() { rd1, rd2 };
+
+        //    ssservice.updatepr(prdlist);
+        //    return true;
+        //}
+
+
+        [HttpGet]
         [Route("/storesup/allvoucher")]
         public List<AdjustmentVoucher> getAllAdjustmentVoucher()
         {
             List<AdjustmentVoucher> advlist = ssservice.getAllAdjustmentVoucher();
             return advlist;
         }
+
     }
 }
