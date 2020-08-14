@@ -61,5 +61,13 @@ namespace SSIS_BOOT.Controllers
                 throw new Exception(m.Message);
             }
         }
+
+        [HttpGet]
+        [Route("/sup/allvoucher")]
+        public List<AdjustmentVoucher> getAllAdjustmentVoucher()
+        {
+            List<AdjustmentVoucher> advlist = ssservice.getAllAdjustmentVoucher();
+            return advlist;
+        }
     }
 }

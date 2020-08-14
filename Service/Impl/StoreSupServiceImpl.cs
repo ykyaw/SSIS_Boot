@@ -53,10 +53,15 @@ namespace SSIS_BOOT.Service.Impl
                 }
                 return true;
             }
-            catch(Exception m)
+            catch (Exception m)
             {
                 throw m;
             }
+        }
+
+        public List<AdjustmentVoucher> getAllAdjustmentVoucher()
+        {
+            return avrepo.findAllAdjustmentVoucher();
         }
     }
 }
