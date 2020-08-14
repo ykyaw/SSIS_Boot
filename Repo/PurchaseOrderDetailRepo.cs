@@ -19,8 +19,8 @@ namespace SSIS_BOOT.Repo
         public List<PurchaseOrderDetail> findpodetails(int poId)
         {
             List<PurchaseOrderDetail> podlist = dbcontext.PurchaseOrderDetails.Include(m=>m.PurchaseOrder).ThenInclude(m=>m.Supplier)
-                .Include(m => m.PurchaseOrder).ThenInclude(m=>m.CollectionPoint)
-                .Include(m=> m.PurchaseRequestDetail).Include(m => m.Product).Where(m => m.PurchaseOrderId == poId).ToList();
+                .Include(m => m.PurchaseOrder).ThenInclude(m=>m.CollectionPoint).Include(m => m.PurchaseOrder).ThenInclude(m => m.OrderedByClerk).Include(m=> m.PurchaseRequestDetail)
+                .Include(m => m.Product).Where(m => m.PurchaseOrderId == poId).ToList();
             return podlist;
         }
 
