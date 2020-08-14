@@ -279,16 +279,16 @@ namespace SSIS_BOOT.DB
 
             //seed tender quotation
             // public TenderQuotation(string SupplierId, int Year, string ProductId, string PricePerUom,int? Rank)
-            TenderQuotation tq1 = new TenderQuotation("BANE", 2020, "P043", "$1.00/Dozen", 1); //Bane-2020-pencial with eraser head, 1,$1
-            TenderQuotation tq2 = new TenderQuotation("ALPA", 2020, "C001", "$2.00/Dozen", 1);//ALPA-2020-Clip-1,$2
-            TenderQuotation tq3 = new TenderQuotation("AlPA", 2020, "P043", "$1.00/Dozen", 2);
-            TenderQuotation tq4 = new TenderQuotation("BANE", 2020, "C001", "$2.20/Dozen", 2);
-            TenderQuotation tq5 = new TenderQuotation("CHEP", 2020, "C001", "$2.50/Dozen", 3);
-            TenderQuotation tq6 = new TenderQuotation("CHEP", 2020, "P043", "$1.20/Dozen", 3);
-            TenderQuotation tq7 = new TenderQuotation("OMEG", 2020, "C001", "$2.75/Dozen", null);
-            TenderQuotation tq8 = new TenderQuotation("OMEG", 2020, "P043", "$1.75/Dozen", null);
-            TenderQuotation tq9 = new TenderQuotation("OMEG", 2020, "D001", "$10.00/Box", 1); //diskettes ,$10
-            TenderQuotation tq10 = new TenderQuotation("CHEP", 2020, "D001", "$10.10/Box", 2);
+            TenderQuotation tq1 = new TenderQuotation("BANE", 2020, "P043", 1.00,"Dozen", 1); //Bane-2020-pencial with eraser head, 1,$1
+            TenderQuotation tq2 = new TenderQuotation("ALPA", 2020, "C001", 2.00,"Dozen", 1);//ALPA-2020-Clip-1,$2
+            TenderQuotation tq3 = new TenderQuotation("AlPA", 2020, "P043", 1.00,"Dozen", 2);
+            TenderQuotation tq4 = new TenderQuotation("BANE", 2020, "C001", 2.20,"Dozen", 2);
+            TenderQuotation tq5 = new TenderQuotation("CHEP", 2020, "C001", 2.50,"Dozen", 3);
+            TenderQuotation tq6 = new TenderQuotation("CHEP", 2020, "P043", 1.20,"Dozen", 3);
+            TenderQuotation tq7 = new TenderQuotation("OMEG", 2020, "C001", 2.75,"Dozen", null);
+            TenderQuotation tq8 = new TenderQuotation("OMEG", 2020, "P043", 1.75,"Dozen", null);
+            TenderQuotation tq9 = new TenderQuotation("OMEG", 2020, "D001", 10.00,"Box", 1); //diskettes ,$10
+            TenderQuotation tq10 = new TenderQuotation("CHEP", 2020, "D001",10.10,"Box", 2);
             dbcontext.Add(tq1);
             dbcontext.Add(tq2);
             dbcontext.Add(tq3);
@@ -302,12 +302,12 @@ namespace SSIS_BOOT.DB
             dbcontext.SaveChanges();
 
 
-            TenderQuotation tq11 = new TenderQuotation("BANE", 2020, "D001", "$10.20/Box", 3);
-            TenderQuotation tq12 = new TenderQuotation("CHEP", 2020, "E032", "$1.00/Each", 1);//exercise book,$1
-            TenderQuotation tq13 = new TenderQuotation("ALPA", 2020, "D001", "$1.05/Box", 2);
-            TenderQuotation tq14 = new TenderQuotation("OMEG", 2020, "D001", "$1.10/Box", 3);
-            TenderQuotation tq15 = new TenderQuotation("ALPA", 2020, "E032", "$1.05/EACH", 2);
-            TenderQuotation tq16 = new TenderQuotation("BANE", 2020, "E032", "$1.10/EACH", 3);
+            TenderQuotation tq11 = new TenderQuotation("BANE", 2020, "D001", 10.20,"Box", 3);
+            TenderQuotation tq12 = new TenderQuotation("CHEP", 2020, "E032", 1.00,"Each", 1);//exercise book,$1
+            TenderQuotation tq13 = new TenderQuotation("ALPA", 2020, "D001", 1.05,"Box", 2);
+            TenderQuotation tq14 = new TenderQuotation("OMEG", 2020, "D001", 1.10,"Box", 3);
+            TenderQuotation tq15 = new TenderQuotation("ALPA", 2020, "E032", 1.05,"EACH", 2);
+            TenderQuotation tq16 = new TenderQuotation("BANE", 2020, "E032", 1.10,"EACH", 3);
 
             dbcontext.Add(tq11);
             dbcontext.Add(tq12);
@@ -474,12 +474,12 @@ namespace SSIS_BOOT.DB
 
             //adjustment voucher in June that >250,due to wet exercise book"E032"x100 and spoilt diskettes "D001"x20 ,
             //created on 29/6@9:00am; approved by sup on 29/6@ 3:00pm, and approved by manager on 30/6/@3:00pm
-            AdjustmentVoucher adj1 = new AdjustmentVoucher("029/006/2020", 16, 1593421200000, 2, 1593442800000, 3, 1593529200000, "approved");
+            AdjustmentVoucher adj1 = new AdjustmentVoucher("029/06/2020", 16, 1593421200000, 2, 1593442800000, 3, 1593529200000, "approved");
             dbcontext.Add(adj1);
             dbcontext.SaveChanges();
 
             //Adjustment voucher raised on 31/7; due to 2 rusty clips found on 17/7/2020 retrival, approved by sup on 3/8/2020
-            AdjustmentVoucher adj2 = new AdjustmentVoucher("031/007/2020", 1, 1596207600000, 2, 1596447000000, "approved");
+            AdjustmentVoucher adj2 = new AdjustmentVoucher("031/07/2020", 1, 1596207600000, 2, 1596447000000, "approved");
             dbcontext.Add(adj2);
             dbcontext.SaveChanges();
 
@@ -490,18 +490,18 @@ namespace SSIS_BOOT.DB
             //seed adjustment voucher detail
             //adjustment voucher in June that >250,due to wet paper"E032" x100 and spoilt diskettes "D001"x20, created on 29/6@9:00am; and approved by manager on 30/6/3pm
             //wet paper"E032" x100
-            AdjustmentVoucherDetail adjdet1 = new AdjustmentVoucherDetail("029/006/2020", "E032", 100, 100.0, "100 wet paper due to heavy rain");
+            AdjustmentVoucherDetail adjdet1 = new AdjustmentVoucherDetail("029/06/2020", "E032", 100,1.00, 100.0, "100 wet paper due to heavy rain");
             dbcontext.Add(adjdet1);
             dbcontext.SaveChanges();
 
-            AdjustmentVoucherDetail adjdet2 = new AdjustmentVoucherDetail("031/007/2020", "D001", 20, 200.00, "20 diskettes found spoilt due to heavy rain");
+            AdjustmentVoucherDetail adjdet2 = new AdjustmentVoucherDetail("031/07/2020", "D001", 20,10.00, 200.00, "20 diskettes found spoilt due to heavy rain");
             dbcontext.Add(adjdet2);
             dbcontext.SaveChanges();
 
 
             //public AdjustmentVoucherDetail(string AdjustmentVoucherId, string ProductId, int QtyAdjusted, double TotalPrice, string Reason)
             //seed purchase request detail
-            AdjustmentVoucherDetail adjdet3 = new AdjustmentVoucherDetail("031/007/2020", "C001", 2, 4.00, "2 clips in inventory found rusty, spoilt");
+            AdjustmentVoucherDetail adjdet3 = new AdjustmentVoucherDetail("031/07/2020", "C001", 2, 2.00,4.00, "2 clips in inventory found rusty, spoilt");
             dbcontext.Add(adjdet3);
             dbcontext.SaveChanges();
 

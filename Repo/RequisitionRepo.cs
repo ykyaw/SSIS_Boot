@@ -61,6 +61,24 @@ namespace SSIS_BOOT.Repo
         //    return true;
         //}
 
+        public bool updaterequisitioncollectiontime(Requisition r1)
+        {
+            try
+            {
+                var original = dbcontext.Requisitions.Find(r1.Id);
+                if (original == null)
+                {
+                    throw new Exception();
+                }
+                dbcontext.Entry(original).CurrentValues.SetValues(r1);
+                dbcontext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                throw new Exception("Error updating collection time for retrieval");
+            }
+        }
 
     }
 }

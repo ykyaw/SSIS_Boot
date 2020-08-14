@@ -88,13 +88,21 @@ namespace SSIS_BOOT.Controllers
 
         [HttpPut] //TO FOLLOW UP
         [Route("/storeclerk/rfld/{reqId}")]
-        public bool updatereqcollectiontime(Requisition req)
+        public bool updateRequisitionCollectionTime([FromBody] Requisition r1)
         {
+            try
+            {
+                int clerkid = (int)HttpContext.Session.GetInt32("Id");
+                r1.AckByClerkId = clerkid;
+                scservice.updaterequisitioncollectiontime(r1);
+                ////To be followed up. Also include email service to rep
+                return true;
+            }
+            catch 
+            {
+                throw new Exception("Error updating collection time. Please check entry again");
+            }
 
-            ////To be followed up. Also include email service to rep
-            //Requisition req = scservice.getReqByReqId(reqId);
-            //return req;
-            return true;
         }
 
 
@@ -287,6 +295,14 @@ namespace SSIS_BOOT.Controllers
         {
             AdjustmentVoucher av = scservice.createadjustmentvoucher();
             return av;
+        }
+
+        [HttpGet]
+        [Route("/storeclerk/adv")]
+        public List<AdjustmentVoucher> getAllAdjustmentVoucher()
+        {
+            List<AdjustmentVoucher> advlist = scservice.getAllAdjustmentVoucher();
+            return advlist;
         }
 
 

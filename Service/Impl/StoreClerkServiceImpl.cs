@@ -34,7 +34,6 @@ namespace SSIS_BOOT.Service.Impl
         public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo, 
             RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, TransactionRepo trepo, TenderQuotationRepo tqrepo, RetrievalRepo retrivrepo,
             EmployeeRepo erepo, SupplierRepo srepo, IMailer mailservice, AdjustmentVoucherRepo avrepo)
-
         {
             this.prepo = prepo;
             this.purreqrepo = purreqrepo;
@@ -49,6 +48,7 @@ namespace SSIS_BOOT.Service.Impl
             this.srepo = srepo;
             this.mailservice = mailservice;
             this.avrepo = avrepo;
+
         }
 
         public List<Product> getallcat()
@@ -285,6 +285,29 @@ namespace SSIS_BOOT.Service.Impl
             av.InitiatedClerkId = 2;
             //av.InitiatedClerkId=(int)HttpContext.Session.GetInt32("Id");
             return avrepo.saveNewAdjustmentVoucher(av);
+        }
+
+
+        public bool updaterequisitioncollectiontime(Requisition r1)
+        {
+            try
+            {
+                rrepo.updaterequisitioncollectiontime(r1);
+
+
+                //IMPLEMENT EMAIL SERVICE TO INFORM REP OF COLLECTION TIME
+
+                return true;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+        public List<AdjustmentVoucher> getAllAdjustmentVoucher()
+        {
+            return avrepo.findAllAdjustmentVoucher();
+            
         }
     }
 }
