@@ -61,6 +61,7 @@ namespace SSIS_BOOT.Controllers
                 throw new Exception(m.Message);
             }
         }
+
         [HttpGet]
         [Route("/storesup/pr")]
         public List<PurchaseRequestDetail> getallpurchasereq()
@@ -94,5 +95,15 @@ namespace SSIS_BOOT.Controllers
         //    ssservice.updatepr(prdlist);
         //    return true;
         //}
+
+
+        [HttpGet]
+        [Route("/storesup/allvoucher")]
+        public List<AdjustmentVoucher> getAllAdjustmentVoucher()
+        {
+            List<AdjustmentVoucher> advlist = ssservice.getAllAdjustmentVoucher();
+            return advlist;
+        }
+
     }
 }

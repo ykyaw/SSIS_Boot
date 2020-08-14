@@ -11,9 +11,14 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public AdjustmentVoucher getAdjVouchById(string id);
         public bool ApprovRejAdjustmentVoucher(AdjustmentVoucher av, int approvalId);
+
         public List<PurchaseRequestDetail> getpurchasereq();
         public List<PurchaseRequestDetail> getprdetails(long prid);
 
         //public bool updatepr(List<PurchaseRequestDetail> prdlist);
+
+
+        public List<AdjustmentVoucher> getAllAdjustmentVoucher();
+
     }
 }

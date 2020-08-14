@@ -63,6 +63,7 @@ namespace SSIS_BOOT.Service.Impl
             }
         }
 
+
         public List<PurchaseRequestDetail> getpurchasereq()
         {
             return purreqrepo.findallpurchasereq();
@@ -110,6 +111,12 @@ namespace SSIS_BOOT.Service.Impl
         //    }
         //    return true;
         //}
+
+
+        public List<AdjustmentVoucher> getAllAdjustmentVoucher()
+        {
+            return avrepo.findAllAdjustmentVoucher();
+        }
 
     }
 }
