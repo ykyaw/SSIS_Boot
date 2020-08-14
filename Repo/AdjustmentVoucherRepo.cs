@@ -31,7 +31,7 @@ namespace SSIS_BOOT.Repo
         }
         public string createnewid()
         {
-            // 029/006/2020
+            // 029_006_2020
             AdjustmentVoucher lastcreatedvoucher = dbcontext.AdjustmentVouchers.OrderByDescending(x => x.InitiatedDate).Take(1).FirstOrDefault();
             string lastcreatedid = lastcreatedvoucher.Id;
 
@@ -52,19 +52,19 @@ namespace SSIS_BOOT.Repo
                 lastnum++;
                 if (lastnum >= 10)
                 {
-                    string newid = string.Format("0{0}/{1}/{2}", lastnum, lastcreatedid.Substring(4, 3), initiatedateyear);
+                    string newid = string.Format("0{0}_{1}_{2}", lastnum, lastcreatedid.Substring(4, 3), initiatedateyear);
                     return newid;
                 }
                 else
                 {
-                    string newid = string.Format("00{0}/{1}/{2}", lastnum, lastcreatedid.Substring(4, 3), initiatedateyear);
+                    string newid = string.Format("00{0}_{1}_{2}", lastnum, lastcreatedid.Substring(4, 3), initiatedateyear);
                     return newid;
                 }
                 
             }
             else
             {
-                string newid = string.Format("00{0}/0{1}/{2}", num, DateTime.Now.ToString("MM"), initiatedateyear);
+                string newid = string.Format("00{0}_0{1}_{2}", num, DateTime.Now.ToString("MM"), initiatedateyear);
                 //
                 return newid;
             }

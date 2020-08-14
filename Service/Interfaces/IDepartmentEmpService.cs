@@ -12,7 +12,10 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public Requisition getrfdetail(int reqId);
         public List<Product> getallcat();
+        public Requisition createrequisition(int empid,string deptid);
 
         public Requisition updatereqform(List<RequisitionDetail> rdlist);
+
+        public bool submitrf(List<RequisitionDetail> rdlist);
     }
 }

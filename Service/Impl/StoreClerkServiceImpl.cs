@@ -30,10 +30,11 @@ namespace SSIS_BOOT.Service.Impl
         public SupplierRepo srepo;
         protected IMailer mailservice;
         public AdjustmentVoucherRepo avrepo;
+        public DepartmentRepo drepo;
 
         public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo, 
             RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, TransactionRepo trepo, TenderQuotationRepo tqrepo, RetrievalRepo retrivrepo,
-            EmployeeRepo erepo, SupplierRepo srepo, IMailer mailservice, AdjustmentVoucherRepo avrepo)
+            EmployeeRepo erepo, SupplierRepo srepo, IMailer mailservice, AdjustmentVoucherRepo avrepo, DepartmentRepo drepo)
         {
             this.prepo = prepo;
             this.purreqrepo = purreqrepo;
@@ -48,6 +49,7 @@ namespace SSIS_BOOT.Service.Impl
             this.srepo = srepo;
             this.mailservice = mailservice;
             this.avrepo = avrepo;
+            this.drepo = drepo;
 
         }
 
@@ -274,7 +276,7 @@ namespace SSIS_BOOT.Service.Impl
             }
         }
 
-        public AdjustmentVoucher createadjustmentvoucher()
+        public AdjustmentVoucher createadjustmentvoucher(int clerkid)
         {
             //create empty adjustment voucher with only ID and initiated date
             AdjustmentVoucher av = new AdjustmentVoucher();
@@ -282,8 +284,8 @@ namespace SSIS_BOOT.Service.Impl
             av.InitiatedDate = (long)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             av.Id = avrepo.createnewid();
             av.Status = Status.AdjVoucherStatus.created;
-            av.InitiatedClerkId = 2;
-            //av.InitiatedClerkId=(int)HttpContext.Session.GetInt32("Id");
+            av.InitiatedClerkId = clerkid;
+
             return avrepo.saveNewAdjustmentVoucher(av);
         }
 
@@ -308,6 +310,10 @@ namespace SSIS_BOOT.Service.Impl
         {
             return avrepo.findAllAdjustmentVoucher();
             
+        }
+        public List<Department> getalldepartment()
+        {
+            return drepo.findalldepartment();
         }
     }
 }

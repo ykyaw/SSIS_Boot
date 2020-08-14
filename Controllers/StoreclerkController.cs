@@ -210,7 +210,6 @@ namespace SSIS_BOOT.Controllers
 
             int clerkid = (int)HttpContext.Session.GetInt32("Id");
             List<PurchaseRequestDetail> prlist = scservice.addpurchaserequest(productId, clerkid);
-
             return prlist;
 
         }
@@ -293,7 +292,8 @@ namespace SSIS_BOOT.Controllers
         [Route("/storeclerk/createav")]
         public AdjustmentVoucher createadjustmentvoucher()
         {
-            AdjustmentVoucher av = scservice.createadjustmentvoucher();
+            int clerkid= (int)HttpContext.Session.GetInt32("Id");
+            AdjustmentVoucher av = scservice.createadjustmentvoucher(clerkid);
             return av;
         }
 
@@ -304,7 +304,13 @@ namespace SSIS_BOOT.Controllers
             List<AdjustmentVoucher> advlist = scservice.getAllAdjustmentVoucher();
             return advlist;
         }
-
+        [HttpGet]
+        [Route("/storeclerk/retrievealldept")]
+        public List<Department> retrievedepartment()
+        {
+            List<Department> deptlist = scservice.getalldepartment();
+            return deptlist;
+        }
 
     }
 }

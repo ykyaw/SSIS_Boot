@@ -50,6 +50,12 @@ namespace SSIS_BOOT.Repo
                 throw new Exception("Error saving Requsition Detail for " + rd.Product.Description);
             }
         }
+        public bool addreqformitem(RequisitionDetail rd)
+        {
+            dbcontext.RequisitionDetails.Update(rd);
+            dbcontext.SaveChanges();
+            return true;
+        }
 
     }
 }
