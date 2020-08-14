@@ -160,11 +160,17 @@ namespace SSIS_BOOT.DB
 
             //seed department
             Department d1 = new Department("STOR", "LU Stationary Store", 9999999);
+            d1.CollectionPointId = 6;
             Department d2 = new Department("ENGL", "English Dept", 8742234);
+            d2.CollectionPointId = 5;
             Department d3 = new Department("CPSC", "Computer Science", 8901235);
+            d3.CollectionPointId = 2;
             Department d4 = new Department("COMM", "Commerce Dept", 8741284);
+            d4.CollectionPointId = 5;
             Department d5 = new Department("REGR", "Registrar Dept", 8901266);
+            d5.CollectionPointId = 1;
             Department d6 = new Department("ZOOL", " Zoology Dept", 8901266);
+            d6.CollectionPointId = 2;
             dbcontext.Add(d1);
             dbcontext.Add(d2);
             dbcontext.Add(d3);

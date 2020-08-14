@@ -17,13 +17,17 @@ namespace SSIS_BOOT.Service.Impl
         private RequisitionDetailRepo rdrepo;
         private ProductRepo prepo;
         private EmployeeRepo erepo;
+        private DepartmentRepo drepo;
+        private CollectionPointRepo cprepo;
 
-        public DepartmentEmpServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, ProductRepo prepo, EmployeeRepo erepo)
+        public DepartmentEmpServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, ProductRepo prepo, EmployeeRepo erepo, DepartmentRepo drepo, CollectionPointRepo cprepo)
         {
             this.rrepo = rrepo;
             this.rdrepo = rdrepo;
             this.prepo = prepo;
             this.erepo = erepo;
+            this.drepo = drepo;
+            this.cprepo = cprepo;
         }
         public List<Requisition> getdeptreqlist(string deptId)
         {
@@ -51,7 +55,6 @@ namespace SSIS_BOOT.Service.Impl
             Requisition req = rrepo.findreqByReqId(requisitionId);
             return req;
         }
-
 
         public Requisition createrequisition(int empid,string deptid)
         {
@@ -86,11 +89,28 @@ namespace SSIS_BOOT.Service.Impl
             //send email to dept manager(PENDING)
             // if (supervisor !=null){}
 
-            return true;
-            
-            
+            return true;                  
         }
 
+        public Department GetDepartment(string deptId)
+        {
+            Department dept = drepo.findDepartmentById(deptId);
+            return dept;
+        }
 
+        public List<CollectionPoint> GetAllCollectionPoint()
+        {
+            List<CollectionPoint> clist = cprepo.GetAllCollectionPoint();
+            return clist;
+        }
+
+        public bool UpdateCollectionPoint(string deptid, CollectionPoint cp)
+        {
+            int collectionpointId = cp.Id;
+            drepo.UpdateCollectionPoint(deptid, collectionpointId);
+            return true;
+
+
+        }
     }
 }

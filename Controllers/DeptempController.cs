@@ -98,6 +98,43 @@ namespace SSIS_BOOT.Controllers
             return true;
         }
 
+        [HttpGet]
+        [Route("/deptemp/dept")]
+        public Department GetDepartment()
+        {
+            string deptid = "CPSC"; //For Testing
+            //string deptid = HttpContext.Session.GetString("DeptId");
+            Department d1 = deservice.GetDepartment(deptid);
+            return d1;
+        }
+
+        [HttpGet]
+        [Route("/deptemp/clist")]
+        public List<CollectionPoint> GetAllCollectionPoint()
+        {
+            List<CollectionPoint> clist = deservice.GetAllCollectionPoint();
+            return clist;
+        }
+
+        //[HttpGet]
+        [HttpPut]
+        [Route("/deptemp/ucp")]
+        public Department UpdateCollectionPoint([FromBody] CollectionPoint cp)
+        {
+            //// FOR TESTING //
+            //CollectionPoint c6 = new CollectionPoint("University Hospital", "11:30AM");
+            //c6.Id = 6;
+            //string deptid = "CPSC"; //For Testing
+            //deservice.UpdateCollectionPoint(deptid, c6);
+            //Department d1 = deservice.GetDepartment(deptid);
+            //return d1;
+            ////END OF TEST
+
+            string deptid = HttpContext.Session.GetString("DeptId");
+            deservice.UpdateCollectionPoint(deptid, cp);
+            Department d1 = deservice.GetDepartment(deptid);
+            return d1;
+        }
 
 
 

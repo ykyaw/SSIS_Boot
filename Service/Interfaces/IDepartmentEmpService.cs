@@ -17,5 +17,10 @@ namespace SSIS_BOOT.Service.Interfaces
         public Requisition updatereqform(List<RequisitionDetail> rdlist);
 
         public bool submitrf(List<RequisitionDetail> rdlist);
+
+
+        public Department GetDepartment(string deptId);
+        public List<CollectionPoint> GetAllCollectionPoint();
+        public bool UpdateCollectionPoint(string deptid, CollectionPoint cp);
     }
 }
