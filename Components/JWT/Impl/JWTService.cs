@@ -121,6 +121,7 @@ namespace SSIS_BOOT.Components.JWT.Impl
                 {
                     new Claim(ClaimTypes.Name,emp.Name),
                     new Claim(ClaimTypes.Email,emp.Email),
+                    new Claim(ClaimTypes.Role,emp.Role),
                     new Claim(ClaimTypes.Expired, DateTime.UtcNow.AddMinutes(Convert.ToInt32(ExpireMinutes)).ToString())
                 }
 

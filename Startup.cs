@@ -50,6 +50,7 @@ namespace SSIS_BOOT
             services.AddScoped<SupplierRepo>();
             services.AddScoped<AdjustmentVoucherRepo>();
             services.AddScoped<DepartmentRepo>();
+            services.AddScoped<AdjustmentVoucherDetailRepo>();
             services.AddScoped<IDepartmentEmpService, DepartmentEmpServiceImpl>();
             services.AddScoped<IDepartmentHeadService, DepartmentHeadServiceImpl>();
             services.AddScoped<IStoreClerkService, StoreClerkServiceImpl>();

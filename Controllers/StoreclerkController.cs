@@ -312,5 +312,13 @@ namespace SSIS_BOOT.Controllers
             return deptlist;
         }
 
+        [HttpGet]
+        [Route("/storeclerk/advdet/{advId}")]
+        public List<AdjustmentVoucherDetail> getAdvDetailsbyAdvId(string advId)
+        {
+            List<AdjustmentVoucherDetail> advdetails = scservice.getAdvDetailsbyAdvId(advId);
+            return advdetails;
+        }
+
     }
 }

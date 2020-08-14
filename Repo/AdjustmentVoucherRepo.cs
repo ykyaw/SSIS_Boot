@@ -81,5 +81,33 @@ namespace SSIS_BOOT.Repo
             return advlist;
         }
 
+        public AdjustmentVoucher findAdjustmentVoucherById(string id)
+        {
+                AdjustmentVoucher av = dbcontext.AdjustmentVouchers.Include(m => m.AdjustmentVoucherDetails).ThenInclude(m=>m.Product)
+                .Include(m=>m.ApprovedSup)
+                .Include(m=>m.ApprovedMgr)
+                .Include(m=>m.InitiatedClerk).FirstOrDefault(m => m.Id == id);
+                return av;
+        }
+
+        public bool updateAdjustmentVoucherApprovals(AdjustmentVoucher av)
+        {
+            try
+            {
+                var original = dbcontext.AdjustmentVouchers.Find(av.Id);
+                if (original == null)
+                {
+                    throw new Exception();
+                }
+                dbcontext.Entry(original).CurrentValues.SetValues(av);
+                dbcontext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                throw new Exception("Error approving adjustment voucher");
+            }
+        }
+
     }
 }
