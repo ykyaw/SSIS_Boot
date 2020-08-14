@@ -47,5 +47,6 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public List<AdjustmentVoucher> getAllAdjustmentVoucher();
 
+        public List<AdjustmentVoucherDetail> getAdvDetailsbyAdvId(string advId);
     }
 }

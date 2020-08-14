@@ -30,10 +30,11 @@ namespace SSIS_BOOT.Service.Impl
         public SupplierRepo srepo;
         protected IMailer mailservice;
         public AdjustmentVoucherRepo avrepo;
+        public AdjustmentVoucherDetailRepo avdetrepo;
 
-        public StoreClerkServiceImpl(ProductRepo prepo,PurchaseRequestRepo purreqrepo,PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo, 
+        public StoreClerkServiceImpl(ProductRepo prepo, PurchaseRequestRepo purreqrepo, PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo,
             RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, TransactionRepo trepo, TenderQuotationRepo tqrepo, RetrievalRepo retrivrepo,
-            EmployeeRepo erepo, SupplierRepo srepo, IMailer mailservice, AdjustmentVoucherRepo avrepo)
+            EmployeeRepo erepo, SupplierRepo srepo, IMailer mailservice, AdjustmentVoucherRepo avrepo, AdjustmentVoucherDetailRepo avdetrepo)
         {
             this.prepo = prepo;
             this.purreqrepo = purreqrepo;
@@ -48,7 +49,7 @@ namespace SSIS_BOOT.Service.Impl
             this.srepo = srepo;
             this.mailservice = mailservice;
             this.avrepo = avrepo;
-
+            this.avdetrepo = avdetrepo;
         }
 
         public List<Product> getallcat()
@@ -87,8 +88,8 @@ namespace SSIS_BOOT.Service.Impl
         public bool generatequotefrompr(List<PurchaseRequestDetail> prdlist)
         {
             List<PurchaseRequestDetail> prdlistwithnull = new List<PurchaseRequestDetail>();
-            
-            foreach(PurchaseRequestDetail prd in prdlist)
+
+            foreach (PurchaseRequestDetail prd in prdlist)
             {
                 if (prd.VenderQuote == null)
                 {
@@ -99,12 +100,12 @@ namespace SSIS_BOOT.Service.Impl
             {
                 return true;
             }
-            else 
+            else
             {
                 List<PurchaseRequestDetail> pnull = prdlistwithnull.GroupBy(m => m.SupplierId).SelectMany(m => m).ToList();
                 Dictionary<string, List<PurchaseRequestDetail>> pdict = new Dictionary<string, List<PurchaseRequestDetail>>();
 
-                foreach(PurchaseRequestDetail prd in pnull)
+                foreach (PurchaseRequestDetail prd in pnull)
                 {
                     if (!pdict.ContainsKey(prd.SupplierId))
                     {
@@ -132,9 +133,9 @@ namespace SSIS_BOOT.Service.Impl
                         email.emailSubject = rfq.subject;
                         email.emailBody = rfq.body;
                         await mailservice.SendRFQEmailAsync(email, clerk);
-                    });   
+                    });
                 }
-            }     
+            }
             return true;
         }
 
@@ -181,7 +182,7 @@ namespace SSIS_BOOT.Service.Impl
                 }
             }
             Retrieval r3 = retrivrepo.GetRetrieval(date);
-            r3.RequisitionDetails = r3.RequisitionDetails.GroupBy(m=>m.Product.Description).SelectMany(r => r).ToList();
+            r3.RequisitionDetails = r3.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
             return r3;
         }
 
@@ -200,7 +201,7 @@ namespace SSIS_BOOT.Service.Impl
             return trepo.savenewtransaction(t1);
         }
 
-        public List<PurchaseRequestDetail> addpurchaserequest(List<String> productid,int clerkId)
+        public List<PurchaseRequestDetail> addpurchaserequest(List<String> productid, int clerkId)
         {
             long currentpurchaserequestid = (long)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 42;
 
@@ -228,13 +229,13 @@ namespace SSIS_BOOT.Service.Impl
 
             //retrieve the current status of prd
             IEnumerable<string> status = from prd in prdlist
-                                       select prd.Status;
+                                         select prd.Status;
             string prdstatus = status.First();
 
             if (prdstatus == Status.PurchaseRequestStatus.pendapprov)
             {
-                IEnumerable <int> clerkid = from prd in prdlist
-                              select prd.CreatedByClerkId;
+                IEnumerable<int> clerkid = from prd in prdlist
+                                           select prd.CreatedByClerkId;
                 int clerkId = clerkid.First();
 
                 Employee supervisor = erepo.findSupervisorByEmpId(clerkId);
@@ -256,7 +257,7 @@ namespace SSIS_BOOT.Service.Impl
                 }
                 return true;
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 throw exception;
             }
@@ -307,7 +308,21 @@ namespace SSIS_BOOT.Service.Impl
         public List<AdjustmentVoucher> getAllAdjustmentVoucher()
         {
             return avrepo.findAllAdjustmentVoucher();
-            
+
+        }
+
+        public List<AdjustmentVoucherDetail> getAdvDetailsbyAdvId(string advId)
+        {
+            try
+            {
+                List<AdjustmentVoucherDetail> advdetails = avdetrepo.findAdvDetailsbyAdvId(advId);
+
+                return advdetails;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
         }
     }
 }
