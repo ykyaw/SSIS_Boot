@@ -83,5 +83,25 @@ namespace SSIS_BOOT.Repo
             return req;
         }
 
+        public bool DeptHeadApprovRejRequisition(Requisition req)
+        {
+            try
+            {
+                var original = dbcontext.Requisitions.Find(req.Id);
+                if (original == null)
+                {
+                    throw new Exception();
+                }
+                original.Remarks = req.Remarks;
+                original.Status = req.Status;
+                dbcontext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                throw new Exception("Error approving or rejecting requisition");
+            }
+        }
+
     }
 }

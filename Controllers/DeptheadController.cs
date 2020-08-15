@@ -49,6 +49,26 @@ namespace SSIS_BOOT.Controllers
             return empList;
         }
 
+        [HttpPut]
+        [Route("/depthead/arr")]
+        public bool ApprovRejRequisition([FromBody] Requisition req)
+        {
+            try
+            {
+                int deptHeadId = (int)HttpContext.Session.GetInt32("Id");
+                req.ApprovedById = deptHeadId;
+                dhservice.ApprovRejRequisition(req);
+                return true;
+            }
+            catch (Exception m)
+            {
+                throw m;
+            }
+
+        }
+
+
+
 
 
     }

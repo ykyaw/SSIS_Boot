@@ -22,6 +22,21 @@ namespace SSIS_BOOT.Service.Impl
             this.erepo = erepo;
         }
 
+        public bool ApprovRejRequisition(Requisition req)
+        {
+            try
+            {
+                rrepo.DeptHeadApprovRejRequisition(req);
+                return true;
+            }
+            catch (Exception m)
+            {
+                throw m;
+            }
+            
+
+        }
+
         public List<Employee> GetAllDeptEmployee(string deptid)
         {
             List<Employee> emplist = erepo.findEmpByDept(deptid);
@@ -34,10 +49,8 @@ namespace SSIS_BOOT.Service.Impl
         }
         public Requisition getrfdetail(int reqId)
         {
-
             Requisition req = rrepo.findreqByReqId(reqId);
             return req;
-
         }
     }
 }
