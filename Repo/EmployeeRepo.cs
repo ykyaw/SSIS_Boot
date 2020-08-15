@@ -46,5 +46,11 @@ namespace SSIS_BOOT.Repo
             }
             return null;
         }
+
+        public List<Employee> findEmpByDept(string deptid)
+        {
+            List<Employee> emplist = dbcontext.Employees.Include(m=>m.Department).Include(m=>m.Manager).Where(m => m.DepartmentId == deptid).ToList();
+            return emplist;
+        }
     }
 }

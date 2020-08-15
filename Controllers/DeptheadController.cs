@@ -38,6 +38,17 @@ namespace SSIS_BOOT.Controllers
             return req;
         }
 
+        [HttpGet]
+        [Route("/depthead/gae")]
+        public List<Employee> GetAllDeptEmployee()
+        {
+            //For testing
+            //string deptid = "COMM";
+            string deptid = HttpContext.Session.GetString("DeptId");
+            List<Employee> empList = dhservice.GetAllDeptEmployee(deptid);
+            return empList;
+        }
+
 
 
     }

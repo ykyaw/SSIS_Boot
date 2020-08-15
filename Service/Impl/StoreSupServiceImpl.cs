@@ -48,13 +48,13 @@ namespace SSIS_BOOT.Service.Impl
                 {
                     av.ApprovedMgrId = emp.Id;
                     av.ApprovedMgrDate = date;
-                    avrepo.updateAdjustmentVoucherApprovals(av);
+                    avrepo.ManagerUpdateAdjustmentVoucherApprovals(av);
                 }
                 if (emp.Role == "ss")
                 {
                     av.ApprovedSupId = emp.Id;
                     av.ApprovedSupDate = date;
-                    avrepo.updateAdjustmentVoucherApprovals(av);
+                    avrepo.SupervisorUpdateAdjustmentVoucherApprovals(av);
                 }
                 if (av.Status == Status.AdjVoucherStatus.pendmanapprov)
                 {

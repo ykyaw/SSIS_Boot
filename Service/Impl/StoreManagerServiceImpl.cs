@@ -22,8 +22,8 @@ namespace SSIS_BOOT.Service.Impl
             //testing
             //string prdtid = "P043";
             //tqlist = tqrepo.gettop3suppliers(prdtid);
-           
-            tqrepo.updatetop3supplier(tqlist);
+            int currentyear = System.DateTime.Now.Year;
+            tqrepo.updatetop3supplier(tqlist, currentyear);
             return true;
         }
         public List<TenderQuotation> retrievesuppliers(string pdtid)

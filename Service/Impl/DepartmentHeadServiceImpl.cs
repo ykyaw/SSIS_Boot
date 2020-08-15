@@ -13,11 +13,19 @@ namespace SSIS_BOOT.Service.Impl
     {
         private RequisitionRepo rrepo;
         private RequisitionDetailRepo rdrepo;
+        private EmployeeRepo erepo;
 
-        public DepartmentHeadServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo)
+        public DepartmentHeadServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, EmployeeRepo erepo)
         {
             this.rrepo = rrepo;
             this.rdrepo = rdrepo;
+            this.erepo = erepo;
+        }
+
+        public List<Employee> GetAllDeptEmployee(string deptid)
+        {
+            List<Employee> emplist = erepo.findEmpByDept(deptid);
+            return emplist;
         }
 
         public List<Requisition> getdeptreqlist(string deptId)

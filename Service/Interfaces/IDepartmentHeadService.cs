@@ -11,5 +11,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public List<Requisition> getdeptreqlist(string deptId);
 
         public Requisition getrfdetail(int reqId);
+
+        public List<Employee> GetAllDeptEmployee(string deptid);
     }
 }

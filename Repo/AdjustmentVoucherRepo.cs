@@ -90,7 +90,7 @@ namespace SSIS_BOOT.Repo
                 return av;
         }
 
-        public bool updateAdjustmentVoucherApprovals(AdjustmentVoucher av)
+        public bool SupervisorUpdateAdjustmentVoucherApprovals(AdjustmentVoucher av)
         {
             try
             {
@@ -99,13 +99,39 @@ namespace SSIS_BOOT.Repo
                 {
                     throw new Exception();
                 }
-                dbcontext.Entry(original).CurrentValues.SetValues(av);
+                //dbcontext.Entry(original).CurrentValues.SetValues(av);
+                original.Status = av.Status;
+                original.Reason = av.Reason;
+                original.ApprovedSupId = av.ApprovedSupId;
+                original.ApprovedSupDate = av.ApprovedSupDate;
                 dbcontext.SaveChanges();
                 return true;
             }
             catch
             {
-                throw new Exception("Error approving adjustment voucher");
+                throw new Exception("Error approving adjustment voucher by supervisor");
+            }
+        }
+        public bool ManagerUpdateAdjustmentVoucherApprovals(AdjustmentVoucher av)
+        {
+            try
+            {
+                var original = dbcontext.AdjustmentVouchers.Find(av.Id);
+                if (original == null)
+                {
+                    throw new Exception();
+                }
+                //dbcontext.Entry(original).CurrentValues.SetValues(av);
+                original.Status = av.Status;
+                original.Reason = av.Reason;
+                original.ApprovedMgrId = av.ApprovedMgrId;
+                original.ApprovedMgrDate = av.ApprovedMgrDate;
+                dbcontext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                throw new Exception("Error approving adjustment voucher by manager");
             }
         }
 
