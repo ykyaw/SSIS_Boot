@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace SSIS_BOOT.Repo
 {
     public class TenderQuotationRepo
@@ -32,9 +33,29 @@ namespace SSIS_BOOT.Repo
 
             return tqlist2;
         }
-        public bool updatetop3supplier(List<TenderQuotation> tqlist)
+        //public bool updatetop3supplier(List<TenderQuotation> tqlist) //ORIGINAL METHOD
+        //{
+        //    foreach(TenderQuotation tq in tqlist)
+        //    {
+        //        var original = dbcontext.TenderQuotations.Find(tq.Id);
+        //        if (original == null)
+        //        {
+        //            throw new Exception();
+        //        }
+        //        //if (tq.SupplierId == "CHEP")
+        //        //{
+        //        //    tq.Rank = 2;
+
+        //        //}
+        //        dbcontext.Entry(original).CurrentValues.SetValues(tq);
+        //        dbcontext.SaveChanges();
+        //    }
+        //    return true;
+        //}
+
+        public bool updatetop3supplier(List<TenderQuotation> tqlist) //IMPROVED METHOD
         {
-            foreach(TenderQuotation tq in tqlist)
+            foreach (TenderQuotation tq in tqlist)
             {
                 var original = dbcontext.TenderQuotations.Find(tq.Id);
                 if (original == null)
@@ -47,10 +68,13 @@ namespace SSIS_BOOT.Repo
 
                 //}
                 dbcontext.Entry(original).CurrentValues.SetValues(tq);
+               
                 dbcontext.SaveChanges();
             }
             return true;
         }
+
+
 
         public List<TenderQuotation> retrievesuppliers(string pdtid)
         {

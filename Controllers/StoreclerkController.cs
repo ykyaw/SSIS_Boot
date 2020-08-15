@@ -87,7 +87,7 @@ namespace SSIS_BOOT.Controllers
         }
 
         [HttpPut] //TO FOLLOW UP
-        [Route("/storeclerk/rfld/{reqId}")]
+        [Route("/storeclerk/rfld")]
         public bool updateRequisitionCollectionTime([FromBody] Requisition r1)
         {
             try
@@ -156,7 +156,9 @@ namespace SSIS_BOOT.Controllers
         {
             try
             {
+                int clerkid = (int)HttpContext.Session.GetInt32("Id");
                 Retrieval r = r1;
+                r.ClerkId = clerkid;
                 scservice.updateretrieval(r);
                 return true;
             }
@@ -233,7 +235,7 @@ namespace SSIS_BOOT.Controllers
             //prd2.SupplierId = "ALPA";
             //prd2.Status = Status.PurchaseRequestStatus.pendapprov;
             //List<PurchaseRequestDetail> prdlist = new List<PurchaseRequestDetail> { prd1, prd2 };
-
+            //int clerkid = (int)HttpContext.Session.GetInt32("Id");
             scservice.updatepurchaserequestitem(prdlist);
             //List<PurchaseRequestDetail> prdetailsfinal = scservice.getpurchasereq();
             return true;
@@ -282,9 +284,10 @@ namespace SSIS_BOOT.Controllers
             //pod1.Remark = "Pending 10 more";
             //pod1.PurchaseOrder.ReceivedDate = 1594724400000;
             //List<PurchaseOrderDetail> podlist = new List<PurchaseOrderDetail> { pod1 };
-
+            int clerkid = (int)HttpContext.Session.GetInt32("Id");
             foreach (PurchaseOrderDetail podid in podlist)
             {
+                podid.ReceivedByClerkId = clerkid;
                 scservice.updatepurchaseorderdetailitem(podid);
             }
             return true;

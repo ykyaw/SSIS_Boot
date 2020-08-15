@@ -41,7 +41,8 @@ namespace SSIS_BOOT.Repo
                 {
                     throw new Exception();
                 }
-                dbcontext.Entry(original).CurrentValues.SetValues(rd);
+                original.QtyDisbursed = rd.QtyDisbursed;
+                original.DisburseRemark = rd.DisburseRemark;
                 dbcontext.SaveChanges();
                 return true;
             }

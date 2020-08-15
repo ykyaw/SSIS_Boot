@@ -589,13 +589,13 @@ namespace SSIS_BOOT.DB
             //  public PurchaseOrder(string SupplierId, double TotalPrice, int OrderedByClerkId, long? OrderedDate, long SupplyByDate, int? ApprovedBySupId,
             // int? ReceivedByClerkId, long? ReceivedDate,string Status)
             //1/7/2020@3:30pm Purchase request of paper"E032" x100 and spoilt diskettes "D001"x20, and "C001"x15 supply by 15/7,received on 14 / 7 / 2020 @ 11:00am(UTC)
-            PurchaseOrder po1 = new PurchaseOrder("ALPA", 130.00, 1, 1593617400000, 1594771200000, 2, 1, 1594724400000, "Approved");
-            PurchaseOrder po2 = new PurchaseOrder("OMEG", 300.00, 1, 1593617400000, 1594771200000, 2, 1, 1594724400000, "Approved");
+            PurchaseOrder po1 = new PurchaseOrder("ALPA", 130.00, 1, 1593617400000, 1594771200000, 2);
+            PurchaseOrder po2 = new PurchaseOrder("OMEG", 300.00, 1, 1593617400000, 1594771200000, 2);
 
             // 15/7 / 2020 @ 8:00am Purchase request of Clip "C001"x15, supply by 31/7/2020 @00:00, recieved on 29/7/2020 @ 9:30am(trans13)
-            PurchaseOrder po3 = new PurchaseOrder("ALPA", 30.00, 1, 1594800000000, 1596153600000, 2, 16, 1595926800000, "Approved");
+            PurchaseOrder po3 = new PurchaseOrder("ALPA", 30.00, 1, 1594800000000, 1596153600000, 2);
 
-            PurchaseOrder po4 = new PurchaseOrder("BANE", 100.00, 16, 1595926800000, 1597190400000, 2, 1, 1596441600000, "Approved");
+            PurchaseOrder po4 = new PurchaseOrder("BANE", 100.00, 16, 1595926800000, 1597190400000, 2);
             dbcontext.Add(po1);
             dbcontext.SaveChanges();
             dbcontext.Add(po2);
@@ -608,14 +608,15 @@ namespace SSIS_BOOT.DB
 
 
             //seed purchase order detail
-            //public PurchaseOrderDetail(int? PurchaseOrderId, int? PurchaseRequestDetailId, string ProductId, int QtyPurchased, int? QtyReceived,
-            //double TotalPrice, int? SupplierDeliveryNo, string? Remark)
 
-            PurchaseOrderDetail poDet1 = new PurchaseOrderDetail(1, 1, "E032", 100, 100, 100.00, 1234556, "Only 80 left in 1st supplier");
-            PurchaseOrderDetail poDet2 = new PurchaseOrderDetail(1, 3, "C001", 15, 15, 30.00, 1234556, null);
-            PurchaseOrderDetail poDet3 = new PurchaseOrderDetail(2, 2, "D001", 30, 30, 300.00, 1234556, null);
-            PurchaseOrderDetail poDet4 = new PurchaseOrderDetail(3, 4, "C001", 15, 15, 30.00, 654321, null);
-            PurchaseOrderDetail poDet5 = new PurchaseOrderDetail(4, 5, "P043", 500, 500, 500.00, 456258, null);
+            //public PurchaseOrderDetail(int? PurchaseOrderId, int? PurchaseRequestDetailId, string ProductId, int QtyPurchased, int? QtyReceived,
+            //double TotalPrice, int? SupplierDeliveryNo, string? Remark, string Status)
+
+            PurchaseOrderDetail poDet1 = new PurchaseOrderDetail(1, 1, "E032", 100, null, 100.00, null, "Only 80 left in 1st supplier", Status.PurchaseOrderStatus.approved);
+            PurchaseOrderDetail poDet2 = new PurchaseOrderDetail(1, 3, "C001", 15, null, 30.00, null, null, Status.PurchaseOrderStatus.approved);
+            PurchaseOrderDetail poDet3 = new PurchaseOrderDetail(2, 2, "D001", 30, null, 300.00, null, null, Status.PurchaseOrderStatus.approved);
+            PurchaseOrderDetail poDet4 = new PurchaseOrderDetail(3, 4, "C001", 15, null, 30.00, null, null, Status.PurchaseOrderStatus.approved);
+            PurchaseOrderDetail poDet5 = new PurchaseOrderDetail(4, 5, "P043", 500, null, 500.00, null, null, Status.PurchaseOrderStatus.approved);
             dbcontext.Add(poDet1);
             dbcontext.Add(poDet2);
             dbcontext.Add(poDet3);
