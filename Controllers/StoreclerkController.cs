@@ -197,6 +197,8 @@ namespace SSIS_BOOT.Controllers
         {
             //for testing purpose 
             //Transaction t1 = new Transaction("C001", 1597211000, "supply to Math Department", -20, 530, 1, null); //August 12, 2020 13:43:20
+            int clerkid = (int)HttpContext.Session.GetInt32("Id");
+            t1.UpdatedByEmpId = clerkid;
             scservice.savetransaction(t1);
             return true;
         }

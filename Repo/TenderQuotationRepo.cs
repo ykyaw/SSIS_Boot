@@ -54,7 +54,7 @@ namespace SSIS_BOOT.Repo
 
         public List<TenderQuotation> retrievesuppliers(string pdtid)
         {
-            List<TenderQuotation> tqlist = dbcontext.TenderQuotations.Include(m => m.Supplier).Where(m => m.ProductId == pdtid).ToList();
+            List<TenderQuotation> tqlist = dbcontext.TenderQuotations.Include(m=>m.Product).Include(m => m.Supplier).Where(m => m.ProductId == pdtid).ToList();
             return tqlist;
         }
     }
