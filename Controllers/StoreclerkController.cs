@@ -93,7 +93,7 @@ namespace SSIS_BOOT.Controllers
             try
             {
                 int clerkid = (int)HttpContext.Session.GetInt32("Id");
-                r1.AckByClerkId = clerkid;
+                r1.ProcessedByClerkId = clerkid;
                 scservice.updaterequisitioncollectiontime(r1);
                 ////To be followed up. Also include email service to rep
                 return true;
