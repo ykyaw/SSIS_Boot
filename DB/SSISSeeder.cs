@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using SSIS_BOOT.Common;
 using SSIS_BOOT.Models;
 
 namespace SSIS_BOOT.DB
@@ -377,15 +378,16 @@ namespace SSIS_BOOT.DB
 
             //Fri 17/7/2020 @2:00pm to retrieve, disbursement on 20/7, item C001 to both ENGL and CPSC
             //(cover 2 rows in ReqDet)
-            Retrieval retr1 = new Retrieval(1, 1595237400000, 1594994400000, "retrieved");
+            
+            Retrieval retr1 = new Retrieval(1, 1595237400000, 1594994400000, Status.RetrievalStatus.retrieved);
             dbcontext.Add(retr1);
             dbcontext.SaveChanges();
             //Fri 31/7/2020 @3:00 to retrive, disbursement on 3/8,item "P043" to ENGL (cover 1 rows in ReqDet)
-            Retrieval retr2 = new Retrieval(1, 1596447000000, 1596207600000, "retrieved");
+            Retrieval retr2 = new Retrieval(1, 1596447000000, 1596207600000, Status.RetrievalStatus.retrieved);
             dbcontext.Add(retr2);
             dbcontext.SaveChanges();
             //Fri 7//8/2020 @3:00 to retrive, disbursement on 10/8,item "P043" and "C001" to ENGL and CPSC(cover 4 rows in ReqDet)
-            Retrieval retr3 = new Retrieval(1, 1597060800000, 1596812400000, "retrieved", "2 clips in inventory found rusty, spoilt", true);
+            Retrieval retr3 = new Retrieval(1, 1597060800000, 1596812400000, Status.RetrievalStatus.retrieved, "2 clips in inventory found rusty, spoilt", true);
             dbcontext.Add(retr3);
             dbcontext.SaveChanges();
 
@@ -395,38 +397,38 @@ namespace SSIS_BOOT.DB
             //public Requisition(string DepartmentId, int ReqByEmpId, int ApprovedById, int ProcessedByClerkId)
             Requisition r1 = new Requisition("ENGL", 4, 5, 1);
             r1.CreatedDate = 1594735200000;//14/7/2020 @ 2:00pm (UTC)
-            r1.Status = "Rejected";
+            r1.Status = Status.RequsitionStatus.rejected;
             r1.Remarks = "qty is too irrelavant";
             dbcontext.Add(r1);
             Requisition r2 = new Requisition("CPSC", 6, 7, 1);
             r2.CreatedDate = 1597060800000;//10/8/2020 @ 12:00pm (UTC)
-            r2.Status = "Confirmed";
+            r2.Status = Status.RequsitionStatus.confirmed;
             dbcontext.Add(r2);
             dbcontext.SaveChanges();
             //public Requisition(string DepartmentId, int ReqByEmpId, int ApprovedById, string? Remarks,int ProcessedByClerkId, long CreatedDate, string Status,
             //int? CollectionPointId, long? CollectionDate, int? ReceivedByRepId, long? ReceivedDate, int? AckByClerkId, long? AckDate)
 
             //requisition on 14/7/2020 @ 2:00pm (UTC),dilivered &received on 20/7 @9:30am, 
-            Requisition r3 = new Requisition("CPSC", 15, 7, null, 1, 1597060800000, "completed",
-                                               1, 1595237400000,
+            Requisition r3 = new Requisition("CPSC", 15, 7, null, 1, 1597060800000, Status.RequsitionStatus.completed,
+                                               1, 1598227200000,
                                                4, 1595237400000, 1, 1595237400);
 
-            Requisition r4 = new Requisition("ENGL", 4, 5, null, 1, 1597060800000, "completed",
-                                               1, 1595237400000,
+            Requisition r4 = new Requisition("ENGL", 4, 5, null, 1, 1597060800000, Status.RequsitionStatus.completed,
+                                               1, 1598227200000,
                                                4, 1595237400000, 1, 1595237400000);
 
             //create date- Wednesday, 29-Jul-20 15:00:00 UTC ;receive-03/8/2020 @ 9:30am (UTC);acknowldge-03/8/2020 @ 9:30am
-            Requisition r5 = new Requisition("ENGL", 14, 5, null, 1, 1596034800000, "completed",
-                                               1, 1596447000000,
+            Requisition r5 = new Requisition("ENGL", 14, 5, null, 1, 1596034800000, Status.RequsitionStatus.completed,
+                                               1, 1597881600000,
                                                4, 1596447000000, 1, 1596447000000);
 
             //created-05 /8/ 2020 09:00:00 (UTC); collection-date-10/8/2020 @930am; received-10/8/2020 @11/:00am; confirmed -10/8/2020@12:00pm
-            Requisition r6 = new Requisition("ENGL", 4, 5, null, 16, 1596618000000, "completed",
-                                               1, 1597060800000,
+            Requisition r6 = new Requisition("ENGL", 4, 5, null, 16, 1596618000000, Status.RequsitionStatus.completed,
+                                               1, 1598313600000,
                                                4, 1597059000000, 1, 1597060800000);
             //created-05 /8/ 2020 09:00:00 (UTC); collection-date-10/8/2020 @930am; received-10/8/2020 @11/:00am; confirmed -10/8/2020@12:00pm
-            Requisition r7 = new Requisition("CPSC", 6, 7, null, 16, 1596618000000, "completed",
-                                               1, 1597060800000,
+            Requisition r7 = new Requisition("CPSC", 6, 7, null, 16, 1596618000000, Status.RequsitionStatus.completed,
+                                               1, 1598313600000,
                                                4, 1597059000000, 1, 1597060800000);
 
             dbcontext.Add(r3);
@@ -480,12 +482,12 @@ namespace SSIS_BOOT.DB
 
             //adjustment voucher in June that >250,due to wet exercise book"E032"x100 and spoilt diskettes "D001"x20 ,
             //created on 29/6@9:00am; approved by sup on 29/6@ 3:00pm, and approved by manager on 30/6/@3:00pm
-            AdjustmentVoucher adj1 = new AdjustmentVoucher("029_06_2020", 16, 1593421200000, 2, 1593442800000, 3, 1593529200000, "approved");
+            AdjustmentVoucher adj1 = new AdjustmentVoucher("029_06_2020", 16, 1593421200000, 2, 1593442800000, 3, 1593529200000, Status.AdjVoucherStatus.approved);
             dbcontext.Add(adj1);
             dbcontext.SaveChanges();
 
             //Adjustment voucher raised on 31/7; due to 2 rusty clips found on 17/7/2020 retrival, approved by sup on 3/8/2020
-            AdjustmentVoucher adj2 = new AdjustmentVoucher("031_07_2020", 1, 1596207600000, 2, 1596447000000, "approved");
+            AdjustmentVoucher adj2 = new AdjustmentVoucher("031_07_2020", 1, 1596207600000, 2, 1596447000000, Status.AdjVoucherStatus.approved);
             dbcontext.Add(adj2);
             dbcontext.SaveChanges();
 
@@ -519,15 +521,15 @@ namespace SSIS_BOOT.DB
 
             //1/7/2020@3:30pm Purchase request of paper"E032" x100 and spoilt diskettes "D001"x20, and "C001"x15,
             //approved on 2/7/2020@12pm, supply by 15/7,received on 14 / 7 / 2020 @ 11:00am(UTC)
-            PurchaseRequestDetail PRDet1 = new PurchaseRequestDetail(1593617400000, 1, "E032", "ALPA", 80, 100, "MF032", 100.00, 1593617400000, 1593691200000, 2, "approved", null);
-            PurchaseRequestDetail PRDet2 = new PurchaseRequestDetail(1593617400000, 1, "D001", "OMEG", 10, 30, "MFD001", 300.00, 1593617400000, 1593691200000, 2, "approved", null);
-            PurchaseRequestDetail PRDet3 = new PurchaseRequestDetail(1594800000000, 1, "C001", "ALPA", 50, 15, "MFC001", 30.00, 1594800000000, 1593691200000, 2, "approved", null);
+            PurchaseRequestDetail PRDet1 = new PurchaseRequestDetail(1593617400000, 1, "E032", "ALPA", 80, 100, "MF032", 100.00, 1593617400000, 1593691200000, 2, Status.PurchaseRequestStatus.approved, null);
+            PurchaseRequestDetail PRDet2 = new PurchaseRequestDetail(1593617400000, 1, "D001", "OMEG", 10, 30, "MFD001", 300.00, 1593617400000, 1593691200000, 2, Status.PurchaseRequestStatus.approved, null);
+            PurchaseRequestDetail PRDet3 = new PurchaseRequestDetail(1594800000000, 1, "C001", "ALPA", 50, 15, "MFC001", 30.00, 1594800000000, 1593691200000, 2, Status.PurchaseRequestStatus.approved, null);
 
             // 15/7 / 2020 @ 8:00am Purchase request of Clip "C001"x15, supply by 31/7/2020 @00:00, Approved on 17/7@10:00 recieved on 29/7/2020 @ 9:30am(trans13)
-            PurchaseRequestDetail PRDet4 = new PurchaseRequestDetail(1593617400000, 1, "C001", "ALPA", 3, 15, "MFC001", 30.00, 1593617400000, 1596153600000, 2, "approved", null);
+            PurchaseRequestDetail PRDet4 = new PurchaseRequestDetail(1593617400000, 1, "C001", "ALPA", 3, 15, "MFC001", 30.00, 1593617400000, 1596153600000, 2, Status.PurchaseRequestStatus.approved, null);
 
             // 29/7@9:30am  Purchase order of "P043"x500 Requested, supply by 12/8/2020,approved on 30/7, received on 3/8/2020@8:30am (trans1)
-            PurchaseRequestDetail PRDet5 = new PurchaseRequestDetail(1595926800000, 16, "P043", "BANE", 50, 500, "MF043", 500.00, 1595926800000, 1596441600000, 2, "approved", null);
+            PurchaseRequestDetail PRDet5 = new PurchaseRequestDetail(1595926800000, 16, "P043", "BANE", 50, 500, "MF043", 500.00, 1595926800000, 1596441600000, 2, Status.PurchaseRequestStatus.approved, null);
             dbcontext.Add(PRDet1);
             dbcontext.SaveChanges();
             dbcontext.Add(PRDet2);
@@ -543,13 +545,13 @@ namespace SSIS_BOOT.DB
             //  public PurchaseOrder(string SupplierId, double TotalPrice, int OrderedByClerkId, long? OrderedDate, long SupplyByDate, int? ApprovedBySupId,
             // int? ReceivedByClerkId, long? ReceivedDate,string Status)
             //1/7/2020@3:30pm Purchase request of paper"E032" x100 and spoilt diskettes "D001"x20, and "C001"x15 supply by 15/7,received on 14 / 7 / 2020 @ 11:00am(UTC)
-            PurchaseOrder po1 = new PurchaseOrder("ALPA", 130.00, 1, 1593617400000, 1594771200000, 2, 1, 1594724400000, "approved");
-            PurchaseOrder po2 = new PurchaseOrder("OMEG", 300.00, 1, 1593617400000, 1594771200000, 2, 1, 1594724400000, "approved");
+            PurchaseOrder po1 = new PurchaseOrder("ALPA", 130.00, 1, 1593617400000, 1594771200000, 2, 1, 1594724400000, "Approved");
+            PurchaseOrder po2 = new PurchaseOrder("OMEG", 300.00, 1, 1593617400000, 1594771200000, 2, 1, 1594724400000, "Approved");
 
             // 15/7 / 2020 @ 8:00am Purchase request of Clip "C001"x15, supply by 31/7/2020 @00:00, recieved on 29/7/2020 @ 9:30am(trans13)
-            PurchaseOrder po3 = new PurchaseOrder("ALPA", 30.00, 1, 1594800000000, 1596153600000, 2, 16, 1595926800000, "approved");
+            PurchaseOrder po3 = new PurchaseOrder("ALPA", 30.00, 1, 1594800000000, 1596153600000, 2, 16, 1595926800000, "Approved");
 
-            PurchaseOrder po4 = new PurchaseOrder("BANE", 100.00, 16, 1595926800000, 1597190400000, 2, 1, 1596441600000, "approved");
+            PurchaseOrder po4 = new PurchaseOrder("BANE", 100.00, 16, 1595926800000, 1597190400000, 2, 1, 1596441600000, "Approved");
             dbcontext.Add(po1);
             dbcontext.SaveChanges();
             dbcontext.Add(po2);
