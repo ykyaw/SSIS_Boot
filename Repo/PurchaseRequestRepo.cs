@@ -55,5 +55,18 @@ namespace SSIS_BOOT.Repo
             dbcontext.SaveChanges();
             return true;
         }
+        public bool updateapprovedpritems(PurchaseRequestDetail prd, int supid, long approveddate)
+        {
+            var original = dbcontext.PurchaseRequestDetails.Find(prd.Id);
+            if (original == null)
+            {
+                throw new Exception();
+            }
+            prd.ApprovedBySupId = supid;
+            prd.ApprovedDate = approveddate;
+            dbcontext.Entry(original).CurrentValues.SetValues(prd);
+            dbcontext.SaveChanges();
+            return true;
+        }
     }
 }

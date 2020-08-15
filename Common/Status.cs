@@ -41,6 +41,10 @@ namespace SSIS_BOOT.Common
             public const string approved = "Approved";
         }
 
-
+        public static class PurchaseOrderStatus
+        {
+            public const string approved = "Approved";
+            public const string received = "Received"; //received from supplier
+        }
     }
 }

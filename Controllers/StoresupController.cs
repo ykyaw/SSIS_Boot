@@ -7,16 +7,19 @@ using SSIS_BOOT.Common;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
+using SSIS_BOOT.Repo;
 
 namespace SSIS_BOOT.Controllers
 {
     public class StoresupController : Controller
     {
         private IStoreSupService ssservice;
+        private IStoreClerkService scservice;
 
-        public StoresupController(IStoreSupService ssservice)
+        public StoresupController(IStoreSupService ssservice, IStoreClerkService scservice)
         {
             this.ssservice = ssservice;
+            this.scservice = scservice;
         }
 
 
@@ -76,25 +79,21 @@ namespace SSIS_BOOT.Controllers
             List<PurchaseRequestDetail> prdetails = ssservice.getprdetails(prid);
             return prdetails;
         }
-        //[HttpPut]
-        ////[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPUT] and pass in from body
-        //[Route("/storesup/updatepr")]
-        //public bool updatepurchaserequest([FromBody] List<PurchaseRequestDetail> prdlist)
-        //{
-        //    //testing 
-        //    //RequisitionDetail rd1 = new RequisitionDetail();
-        //    //rd1.RequisitionId = 8;
-        //    //rd1.ProductId = "C002";
-        //    //rd1.QtyNeeded = 10;
-        //    //RequisitionDetail rd2 = new RequisitionDetail();
-        //    //rd2.RequisitionId = 8;
-        //    //rd2.ProductId = "P013";
-        //    //rd2.QtyNeeded = 10;
-        //    //List<RequisitionDetail> rdlist = new List<RequisitionDetail>() { rd1, rd2 };
+        [HttpPut]
+        //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPUT] and pass in from body
+        [Route("/storesup/updatepr")]
+        public bool updatepurchaserequest([FromBody] List<PurchaseRequestDetail> prdlist)
+        {
+            //testing 
+            //long prid = 1593617400000;
+            //List<PurchaseRequestDetail> prdlist = scservice.getprdetails(prid);
+            //int supid = 2;
 
-        //    ssservice.updatepr(prdlist);
-        //    return true;
-        //}
+            int supid = (int)HttpContext.Session.GetInt32("Id");
+            long approveddate = (long)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            ssservice.updatepr(prdlist, supid, approveddate);
+            return true;
+        }
 
 
         [HttpGet]

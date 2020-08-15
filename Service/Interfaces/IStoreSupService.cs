@@ -15,7 +15,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public List<PurchaseRequestDetail> getpurchasereq();
         public List<PurchaseRequestDetail> getprdetails(long prid);
 
-        //public bool updatepr(List<PurchaseRequestDetail> prdlist);
+        public bool updatepr(List<PurchaseRequestDetail> prdlist, int supid, long approveddate);
 
 
         public List<AdjustmentVoucher> getAllAdjustmentVoucher();

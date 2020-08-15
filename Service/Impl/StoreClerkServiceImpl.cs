@@ -17,21 +17,21 @@ namespace SSIS_BOOT.Service.Impl
 {
     public class StoreClerkServiceImpl : IStoreClerkService
     {
-        public ProductRepo prepo;
-        public PurchaseRequestRepo purreqrepo;
-        public PurchaseOrderRepo porepo;
-        public PurchaseOrderDetailRepo podrepo;
-        public RequisitionRepo rrepo;
-        public RequisitionDetailRepo rdrepo;
-        public TransactionRepo trepo;
-        public RetrievalRepo retrivrepo;
-        public TenderQuotationRepo tqrepo;
-        public EmployeeRepo erepo;
-        public SupplierRepo srepo;
+        private ProductRepo prepo;
+        private PurchaseRequestRepo purreqrepo;
+        private PurchaseOrderRepo porepo;
+        private PurchaseOrderDetailRepo podrepo;
+        private RequisitionRepo rrepo;
+        private RequisitionDetailRepo rdrepo;
+        private TransactionRepo trepo;
+        private RetrievalRepo retrivrepo;
+        private TenderQuotationRepo tqrepo;
+        private EmployeeRepo erepo;
+        private SupplierRepo srepo;
         protected IMailer mailservice;
-        public AdjustmentVoucherRepo avrepo;
-        public DepartmentRepo drepo;
-        public AdjustmentVoucherDetailRepo avdetrepo;
+        private AdjustmentVoucherRepo avrepo;
+        private DepartmentRepo drepo;
+        private AdjustmentVoucherDetailRepo avdetrepo;
 
 
         public StoreClerkServiceImpl(ProductRepo prepo, PurchaseRequestRepo purreqrepo, PurchaseOrderRepo porepo, PurchaseOrderDetailRepo podrepo,

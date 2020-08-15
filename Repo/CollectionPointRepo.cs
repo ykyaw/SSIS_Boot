@@ -23,6 +23,12 @@ namespace SSIS_BOOT.Repo
             return clist;
         }
 
+        public CollectionPoint getstorecollectionpoint()
+        {
+            CollectionPoint storecp=dbcontext.CollectionPoints.Where(m => m.Id == 6).FirstOrDefault();
+            return storecp;
+        }
+
 
     }
 }

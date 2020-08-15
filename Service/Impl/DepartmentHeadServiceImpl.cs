@@ -11,8 +11,8 @@ namespace SSIS_BOOT.Service.Impl
 {
     public class DepartmentHeadServiceImpl:IDepartmentHeadService
     {
-        public RequisitionRepo rrepo;
-        public RequisitionDetailRepo rdrepo;
+        private RequisitionRepo rrepo;
+        private RequisitionDetailRepo rdrepo;
 
         public DepartmentHeadServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo)
         {
