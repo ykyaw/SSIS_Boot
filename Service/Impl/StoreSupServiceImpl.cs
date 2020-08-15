@@ -120,7 +120,7 @@ namespace SSIS_BOOT.Service.Impl
                     {
                         totalprice += pr.TotalPrice;
                     }
-                    PurchaseOrder newpo = porepo.create(po, clerkid, supplierid, ordereddate, status, collectionpointid, totalprice);
+                    PurchaseOrder newpo = porepo.create(po, clerkid, supplierid, ordereddate, collectionpointid, totalprice);
                     List<PurchaseRequestDetail> List_of_PRD_toaddinPO = pdict[r.Key];
                     newpo = porepo.addpodinPO(List_of_PRD_toaddinPO, newpo.Id);
 

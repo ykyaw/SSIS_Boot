@@ -225,8 +225,12 @@ namespace SSIS_BOOT.Service.Impl
 
         public bool updatepurchaserequestitem(List<PurchaseRequestDetail> prdlist)
         {
+            DateTime dateTime = DateTime.UtcNow.Date;
+            DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
+            long date = dt.ToUnixTimeMilliseconds();
             foreach (PurchaseRequestDetail prd in prdlist)
             {
+                prd.SubmitDate = date;
                 purreqrepo.updatepurchaserequestitem(prd);
             }
 

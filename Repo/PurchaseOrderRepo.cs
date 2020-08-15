@@ -19,15 +19,14 @@ namespace SSIS_BOOT.Repo
         public List<PurchaseOrder> findallpurchaseorder()
         {
             List<PurchaseOrder> polist = dbcontext.PurchaseOrders.Include(m => m.CollectionPoint).Include(m => m.Supplier).Include(m => m.OrderedByClerk)
-                .Include(m => m.ApprovedBySup).Include(m => m.ReceivedByClerk).Include(m => m.PurchaseOrderDetails).ToList();
+                .Include(m => m.ApprovedBySup).Include(m => m.PurchaseOrderDetails).ToList();
             return polist;
         }
-        public PurchaseOrder create(PurchaseOrder po, int clerkid, string supplierid, long ordereddate,string status, int collectionpointid,double totalprice)
+        public PurchaseOrder create(PurchaseOrder po, int clerkid, string supplierid, long ordereddate, int collectionpointid,double totalprice)
         {
             po.OrderedByClerkId = clerkid;
             po.SupplierId = supplierid;
             po.OrderedDate = ordereddate;
-            po.Status = status;
             po.CollectionPointId = collectionpointid;
             po.TotalPrice = totalprice;
             dbcontext.PurchaseOrders.Add(po);
@@ -51,7 +50,7 @@ namespace SSIS_BOOT.Repo
                 dbcontext.SaveChanges();
             }
             PurchaseOrder po = dbcontext.PurchaseOrders.Include(m => m.CollectionPoint).Include(m => m.Supplier).Include(m => m.OrderedByClerk)
-                .Include(m => m.ApprovedBySup).Include(m => m.ReceivedByClerk).Include(m => m.PurchaseOrderDetails).Where(m => m.Id == poid).FirstOrDefault();
+                .Include(m => m.ApprovedBySup).Include(m => m.PurchaseOrderDetails).Where(m => m.Id == poid).FirstOrDefault();
             return po;
         }
 

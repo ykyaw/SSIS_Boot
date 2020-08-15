@@ -64,7 +64,10 @@ namespace SSIS_BOOT.Repo
                 {
                     throw new Exception();
                 }
-                dbcontext.Entry(original).CurrentValues.SetValues(r1);
+                original.CollectionDate = r1.CollectionDate;
+                original.Status = r1.Status;
+                original.ProcessedByClerkId = r1.ProcessedByClerkId;               
+                //dbcontext.Entry(original).CurrentValues.SetValues(r1);
                 dbcontext.SaveChanges();
                 return true;
             }

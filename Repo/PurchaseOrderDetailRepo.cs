@@ -31,7 +31,12 @@ namespace SSIS_BOOT.Repo
             {
                 throw new Exception();
             }
-            dbcontext.Entry(original).CurrentValues.SetValues(pod);
+            //dbcontext.Entry(original).CurrentValues.SetValues(pod);
+            original.QtyReceived = pod.QtyReceived;
+            original.ReceivedDate = pod.ReceivedDate;
+            original.SupplierDeliveryNo = pod.SupplierDeliveryNo;
+            original.Remark = pod.Remark;
+            original.Status = pod.Status;
             dbcontext.SaveChanges();
             return true;
         }

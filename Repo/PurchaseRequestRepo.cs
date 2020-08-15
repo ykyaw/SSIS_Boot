@@ -51,7 +51,13 @@ namespace SSIS_BOOT.Repo
             {
                 throw new Exception();
             }
-            dbcontext.Entry(original).CurrentValues.SetValues(prd);
+            //dbcontext.Entry(original).CurrentValues.SetValues(prd);
+            original.ReorderQty = prd.ReorderQty;
+            original.SupplierId = prd.SupplierId;
+            original.VenderQuote = prd.VenderQuote;
+            original.TotalPrice = prd.TotalPrice;
+            original.Status = prd.Status;
+            original.SubmitDate = prd.SubmitDate;
             dbcontext.SaveChanges();
             return true;
         }
@@ -62,9 +68,10 @@ namespace SSIS_BOOT.Repo
             {
                 throw new Exception();
             }
-            prd.ApprovedBySupId = supid;
-            prd.ApprovedDate = approveddate;
-            dbcontext.Entry(original).CurrentValues.SetValues(prd);
+            original.Remarks = prd.Remarks;
+            original.Status = prd.Status;
+            original.ApprovedBySupId = supid;
+            original.ApprovedDate = approveddate;         
             dbcontext.SaveChanges();
             return true;
         }

@@ -44,7 +44,9 @@ namespace SSIS_BOOT.Repo
                 {
                     throw new Exception();
                 }
-                dbcontext.Entry(original).CurrentValues.SetValues(r1);
+                original.NeedAdjustment = r1.NeedAdjustment;
+                original.Remark = r1.Remark;
+                original.ClerkId = r1.ClerkId;
                 dbcontext.SaveChanges();
                 return true;
             }
