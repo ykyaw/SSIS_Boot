@@ -53,9 +53,27 @@ namespace SSIS_BOOT.Repo
         }
         public bool addreqformitem(RequisitionDetail rd)
         {
-            dbcontext.RequisitionDetails.Update(rd);
+            dbcontext.RequisitionDetails.Add(rd);
             dbcontext.SaveChanges();
             return true;
+        }
+
+        public bool deleteRequisitionDetailByRequisitionId(RequisitionDetail rd)
+        {
+            RequisitionDetail original = dbcontext.RequisitionDetails.Where(m => m.RequisitionId == rd.RequisitionId).FirstOrDefault();
+            if (original != null)
+            {
+                dbcontext.RequisitionDetails.Remove(original);
+            }
+            dbcontext.SaveChanges();
+            return true;
+        }
+
+        public List<RequisitionDetail> GetDisbursementByDate(string deptid, long longdate)
+        {
+            Requisition rq = dbcontext.Requisitions.Where(m => m.DepartmentId == deptid && m.CollectionDate == longdate).FirstOrDefault();
+            List<RequisitionDetail> rdl = dbcontext.RequisitionDetails.Where(m=>m.RequisitionId == rq.Id).ToList();
+            return rdl;
         }
 
     }

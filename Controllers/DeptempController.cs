@@ -58,10 +58,10 @@ namespace SSIS_BOOT.Controllers
             Requisition req = deservice.createrequisition(empid,deptid);
             return req;
         }
-        [HttpPut]
+        [HttpPost]
         //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPUT] and pass in from body
         [Route("/deptemp/updateRF")]
-        public Requisition updateRF([FromBody]List<RequisitionDetail> rdlist)
+        public bool updateRF([FromBody]List<RequisitionDetail> rdlist)
         {
             //testing [FromBody]List<RequisitionDetail> rdlist
             //to ensure that requisitionid is alr filled in
@@ -75,10 +75,10 @@ namespace SSIS_BOOT.Controllers
             //rd2.QtyNeeded = 10;
             //List<RequisitionDetail> rdlist = new List<RequisitionDetail>() { rd1, rd2 };
 
-            Requisition req = deservice.updatereqform(rdlist);
-            return req;
+            deservice.updatereqform(rdlist);
+            return true;
         }
-        [HttpPut]
+        [HttpPost]
         //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPUT] and pass in from body
         [Route("/deptemp/submitrf")]
         public bool submitrf([FromBody] List<RequisitionDetail> rdlist)
@@ -134,6 +134,15 @@ namespace SSIS_BOOT.Controllers
             deservice.UpdateCollectionPoint(deptid, cp);
             Department d1 = deservice.GetDepartment(deptid);
             return d1;
+        }
+
+        [HttpGet]
+        [Route("/deptemp/dis/{longdate}")]
+        public List<RequisitionDetail> GetDisbursementByDate(long longdate)
+        {
+            string deptid = HttpContext.Session.GetString("DeptId");
+            List<RequisitionDetail> rdl = deservice.GetDisbursementByDate(deptid, longdate);
+            return rdl;
         }
 
 
