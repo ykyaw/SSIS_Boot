@@ -51,12 +51,19 @@ namespace SSIS_BOOT.Controllers
         [Route("/deptemp/createRF")]
         public Requisition createRF()
         {
-            //int empid = 3;
-            //string deptid = "CPSC";
-            int empid = (int)HttpContext.Session.GetInt32("Id");
-            string deptid = (string)HttpContext.Session.GetString("DeptId");
-            Requisition req = deservice.createrequisition(empid,deptid);
-            return req;
+            try
+            {
+                //int empid = 3;
+                //string deptid = "CPSC";
+                int empid = (int)HttpContext.Session.GetInt32("Id");
+                string deptid = (string)HttpContext.Session.GetString("DeptId");
+                Requisition req = deservice.createrequisition(empid, deptid);
+                return req;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }            
         }
         [HttpPost]
         //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPUT] and pass in from body
@@ -146,6 +153,21 @@ namespace SSIS_BOOT.Controllers
         }
 
 
-
+        [HttpPut]
+        [Route("/deptemp/ack")]
+        public bool AckItemReceived([FromBody]List<RequisitionDetail> rdlist)
+        {
+            try
+            {
+                int empid = (int)HttpContext.Session.GetInt32("Id");
+                //string deptid = HttpContext.Session.GetString("DeptId");
+                deservice.AckItemReceived(empid, rdlist);
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

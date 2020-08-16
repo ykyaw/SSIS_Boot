@@ -64,6 +64,12 @@ namespace SSIS_BOOT.Service.Impl
 
         public Requisition createrequisition(int empid,string deptid)
         {
+            Employee emp = erepo.findempById(empid);
+            if(emp.Role == "dh")
+            {
+                throw new Exception("Sorry, department head cannot create own requisition");
+            }
+            
             //create empty requisition with date,employee ID and departmentid
             Requisition newform = new Requisition();
 
@@ -132,6 +138,26 @@ namespace SSIS_BOOT.Service.Impl
         {
             List<RequisitionDetail> rdl = rdrepo.GetDisbursementByDate(deptid, longdate);
             return rdl;
+        }
+
+        public bool AckItemReceived(int empid, List<RequisitionDetail> rdlist)
+        {
+            try
+            {
+                DateTime dateTime = DateTime.UtcNow.Date;
+                DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
+                long date = dt.ToUnixTimeMilliseconds();
+                foreach (RequisitionDetail r in rdlist)
+                {
+                    rdrepo.EmpAckItemReceived(r);
+                    rrepo.DeptEmpUpdateReceivedOnRequisition(empid, (int)r.RequisitionId, date, Status.RequsitionStatus.received);
+                }
+                return true;
+            }
+            catch(Exception m)
+            {
+                throw m;
+            }
         }
     }
 }

@@ -16,10 +16,10 @@ namespace SSIS_BOOT.Repo
             this.dbcontext = dbcontext;
         }
 
-        public Requisition findreqformByReqID (int reqId)
+        public Requisition findreqformByReqID(int reqId)
         {
             Requisition req = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product)
-                .Include(m => m.Department).Include(m=>m.ReqByEmp).Include(m=>m.CollectionPoint).Include(m=>m.ApprovedBy).Where(m => m.Id == reqId).FirstOrDefault();
+                .Include(m => m.Department).Include(m => m.ReqByEmp).Include(m => m.CollectionPoint).Include(m => m.ApprovedBy).Where(m => m.Id == reqId).FirstOrDefault();
             return req;
         }
 
@@ -38,7 +38,7 @@ namespace SSIS_BOOT.Repo
         }
         public List<Requisition> findrequsitionbycollectiondate(long date)
         {
-            List<Requisition> lr = dbcontext.Requisitions.Include(m=>m.RequisitionDetails).ThenInclude(m=>m.Product).Include(m=>m.Department).Where(m => m.CollectionDate == date).ToList();
+            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product).Include(m => m.Department).Where(m => m.CollectionDate == date).ToList();
             return lr;
         }
 
@@ -66,7 +66,7 @@ namespace SSIS_BOOT.Repo
                 }
                 original.CollectionDate = r1.CollectionDate;
                 original.Status = r1.Status;
-                original.ProcessedByClerkId = r1.ProcessedByClerkId;               
+                original.ProcessedByClerkId = r1.ProcessedByClerkId;
                 //dbcontext.Entry(original).CurrentValues.SetValues(r1);
                 dbcontext.SaveChanges();
                 return true;
@@ -103,5 +103,25 @@ namespace SSIS_BOOT.Repo
             }
         }
 
+        public bool DeptEmpUpdateReceivedOnRequisition(int empid, int requisitionId, long date, string status)
+        {
+            try
+            {
+                var original = dbcontext.Requisitions.Find(requisitionId);
+                if (original != null)
+                {
+                    original.Status = status;
+                    original.ReceivedByRepId = empid;
+                    original.ReceivedDate = date;
+                }
+            }
+            catch
+            {
+                throw new Exception("Error updating receival on requisition ");
+            }
+            dbcontext.SaveChanges();
+            return true;
+        }
     }
+    
 }

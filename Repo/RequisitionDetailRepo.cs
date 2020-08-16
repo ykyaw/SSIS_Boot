@@ -76,5 +76,25 @@ namespace SSIS_BOOT.Repo
             return rdl;
         }
 
+
+        public bool EmpAckItemReceived(RequisitionDetail rd)
+        {
+            try
+            {
+                RequisitionDetail original = dbcontext.RequisitionDetails.Where(m => m.Id == rd.Id).FirstOrDefault();
+                if (original != null)
+                {
+                    original.QtyReceived = rd.QtyReceived;
+                    original.RepRemark = rd.RepRemark;
+                }
+            }
+            catch
+            {
+                throw new Exception("Error updating receival on Requisition Detail ");
+            }
+            dbcontext.SaveChanges();
+            return true;
+        }
+
     }
 }
