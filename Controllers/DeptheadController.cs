@@ -62,9 +62,41 @@ namespace SSIS_BOOT.Controllers
             }
             catch (Exception m)
             {
-                throw m;
+                throw new Exception(m.Message);
             }
 
+        }
+
+        [HttpPut]
+        [Route("/depthead/del")]
+        public bool AssignDelegate([FromBody] Employee emp)
+        {
+            try
+            {
+                string deptid = (string)HttpContext.Session.GetString("DeptId");
+                dhservice.AssignDelegate(emp, deptid);
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("/depthead/adr/{empid}")]
+        public bool AssignDeptRep(int empid)
+        {
+            try
+            {
+                string deptid = (string)HttpContext.Session.GetString("DeptId");
+                dhservice.AssignDeptRep(empid, deptid);
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
 

@@ -43,8 +43,24 @@ namespace SSIS_BOOT.Repo
             {
                 throw new Exception("Error updating collection point");
             }
+        }
 
-
+        public bool AssignDeptRep(int empid, string deptid)
+        {
+            try
+            {
+                Department dept = dbcontext.Departments.Where(m => m.Id == deptid).FirstOrDefault();
+                if (dept != null)
+                {
+                    dept.RepId = empid;
+                }
+                dbcontext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                throw new Exception("Error assigning department representative. Please try again");
+            }
         }
 
     }

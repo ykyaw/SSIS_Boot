@@ -52,5 +52,25 @@ namespace SSIS_BOOT.Repo
             List<Employee> emplist = dbcontext.Employees.Include(m=>m.Department).Include(m=>m.Manager).Where(m => m.DepartmentId == deptid).ToList();
             return emplist;
         }
+
+        public bool AssignDelegateDate(Employee emp)
+        {
+            try
+            {
+                Employee original = dbcontext.Employees.FirstOrDefault(m => m.Id == emp.Id);
+                if (original != null)
+                {
+                    original.DelegateFromDate = emp.DelegateFromDate;
+                    original.DelegateToDate = emp.DelegateToDate;
+                }
+                dbcontext.SaveChanges();
+                return true;
+            }
+            catch(Exception)
+            {
+                throw new Exception("Error saving delegate dates");
+            }        
+
+        }
     }
 }

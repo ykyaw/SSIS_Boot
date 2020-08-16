@@ -14,12 +14,14 @@ namespace SSIS_BOOT.Service.Impl
         private RequisitionRepo rrepo;
         private RequisitionDetailRepo rdrepo;
         private EmployeeRepo erepo;
+        private DepartmentRepo drepo;
 
-        public DepartmentHeadServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, EmployeeRepo erepo)
+        public DepartmentHeadServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, EmployeeRepo erepo, DepartmentRepo drepo)
         {
             this.rrepo = rrepo;
             this.rdrepo = rdrepo;
             this.erepo = erepo;
+            this.drepo = drepo;
         }
 
         public bool ApprovRejRequisition(Requisition req)
@@ -32,9 +34,7 @@ namespace SSIS_BOOT.Service.Impl
             catch (Exception m)
             {
                 throw m;
-            }
-            
-
+            }         
         }
 
         public List<Employee> GetAllDeptEmployee(string deptid)
@@ -51,6 +51,40 @@ namespace SSIS_BOOT.Service.Impl
         {
             Requisition req = rrepo.findreqByReqId(reqId);
             return req;
+        }
+
+        public bool AssignDelegate(Employee emp, string deptid)
+        {
+            List<Employee> emplist = erepo.findEmpByDept(deptid);
+            foreach(Employee e in emplist)
+            {
+                if(emp.DelegateFromDate >= e.DelegateFromDate && emp.DelegateToDate <= e.DelegateToDate)
+                {
+                    throw new Exception("Conflict of delegate dates with " + e.Name + ". Please try again");
+                }
+            }
+            try
+            {
+                erepo.AssignDelegateDate(emp);
+                return true;
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }       
+        }
+
+        public bool AssignDeptRep(int empid, string deptid)
+        {
+            try
+            {
+                drepo.AssignDeptRep(empid, deptid);
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }
