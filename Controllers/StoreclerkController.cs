@@ -187,7 +187,10 @@ namespace SSIS_BOOT.Controllers
             //string deptId = "CPSC";
             //long collectiondate = 1597060800;
             List<RequisitionDetail> dlist = scservice.retrievedisbursementlist(deptId, collectiondate);
-
+            if (dlist == null || dlist.Count == 0)
+            {
+                throw new Exception("Sorry, there is no Disbursement matching the provided date for this department.");
+            }
             // send email to the department rep (PENDING)
             return dlist;
         }

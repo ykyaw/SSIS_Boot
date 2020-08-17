@@ -42,27 +42,44 @@ namespace SSIS_BOOT.Service.Impl
         {
             return prepo.findallcat();
         }
-        public Requisition updatereqform(List<RequisitionDetail> rdlist)
+        public bool updatereqform(List<RequisitionDetail> rdlist)
         {
-            foreach (RequisitionDetail rd in rdlist)
+
+            foreach(RequisitionDetail r in rdlist) //Delete all old entries based on requisitionId
+            {
+                rdrepo.deleteRequisitionDetailByRequisitionId(r);
+            }
+
+            foreach (RequisitionDetail rd in rdlist) //Create new latest entries based on requisitionId 
             {
                 if (rd.QtyNeeded != 0)
                 {
                     rdrepo.addreqformitem(rd);
                 }
             }
-            int requisitionId = (int)rdlist[0].RequisitionId;
-            Requisition req = rrepo.findreqByReqId(requisitionId);
-            return req;
+            //int requisitionId = (int)rdlist[0].RequisitionId; //logic changed by tk. line not required anymore
+            //Requisition req = rrepo.findreqByReqId(requisitionId); //logic changed by tk. line not required anymore
+            return true;
         }
 
         public Requisition createrequisition(int empid,string deptid)
         {
+            Employee emp = erepo.findempById(empid);
+            if(emp.Role == "dh")
+            {
+                throw new Exception("Sorry, department head cannot create own requisition");
+            }
+            
             //create empty requisition with date,employee ID and departmentid
             Requisition newform = new Requisition();
 
+            DateTime dateTime = DateTime.UtcNow.Date;
+            DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
+            long date = dt.ToUnixTimeMilliseconds();
+
             newform.ReqByEmpId = empid;
-            newform.CreatedDate= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            //newform.CreatedDate= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); //From tk: changed date format to UTC 00:00 for date
+            newform.CreatedDate = date;
             newform.DepartmentId = deptid;
             newform.Status = Status.RequsitionStatus.created;
 
@@ -70,25 +87,31 @@ namespace SSIS_BOOT.Service.Impl
         }
         public bool submitrf(List<RequisitionDetail> rdlist)
         {
-            foreach (RequisitionDetail rd in rdlist)
+            foreach (RequisitionDetail r in rdlist) //Delete all old entries based on requisitionId
+            {
+                rdrepo.deleteRequisitionDetailByRequisitionId(r);
+            }
+
+            foreach (RequisitionDetail rd in rdlist) //Create new latest entries based on requisitionId 
             {
                 if (rd.QtyNeeded != 0)
                 {
                     rdrepo.addreqformitem(rd);
                 }
             }
+            
+            // Updating Requisition to "Pending Approval" status
             int requisitionId = (int)rdlist[0].RequisitionId;
             Requisition req = rrepo.findreqByReqId(requisitionId);
-
             req.Status = Status.RequsitionStatus.pendapprov;
-            Requisition updatedreq = rrepo.updateRequisition(req);
 
+            //Finding supervisor Email address to send auto email
+            Requisition updatedreq = rrepo.updateRequisition(req);
             int deptemp = updatedreq.ReqByEmpId;
             Employee depthead = erepo.findSupervisorByEmpId(deptemp);
 
             //send email to dept manager(PENDING)
             // if (supervisor !=null){}
-
             return true;                  
         }
 
@@ -109,8 +132,32 @@ namespace SSIS_BOOT.Service.Impl
             int collectionpointId = cp.Id;
             drepo.UpdateCollectionPoint(deptid, collectionpointId);
             return true;
+        }
 
+        public List<RequisitionDetail> GetDisbursementByDate(string deptid, long longdate)
+        {
+            List<RequisitionDetail> rdl = rdrepo.GetDisbursementByDate(deptid, longdate);
+            return rdl;
+        }
 
+        public bool AckItemReceived(int empid, List<RequisitionDetail> rdlist)
+        {
+            try
+            {
+                DateTime dateTime = DateTime.UtcNow.Date;
+                DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
+                long date = dt.ToUnixTimeMilliseconds();
+                foreach (RequisitionDetail r in rdlist)
+                {
+                    rdrepo.EmpAckItemReceived(r);
+                    rrepo.DeptEmpUpdateReceivedOnRequisition(empid, (int)r.RequisitionId, date, Status.RequsitionStatus.received);
+                }
+                return true;
+            }
+            catch(Exception m)
+            {
+                throw m;
+            }
         }
     }
 }

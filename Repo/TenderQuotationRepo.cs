@@ -53,24 +53,25 @@ namespace SSIS_BOOT.Repo
         //    return true;
         //}
 
-        public bool updatetop3supplier(List<TenderQuotation> tqlist) //IMPROVED METHOD
+        public bool updatetop3supplier(List<TenderQuotation> tqlist, int currentyear) //IMPROVED METHOD
         {
-            foreach (TenderQuotation tq in tqlist)
+            string productIdtoUpdate = tqlist[0].ProductId;
+            List<TenderQuotation> originTQList = dbcontext.TenderQuotations.Where(m => m.ProductId == productIdtoUpdate && m.Year == currentyear).ToList();
+            foreach(TenderQuotation k in originTQList)
             {
-                var original = dbcontext.TenderQuotations.Find(tq.Id);
-                if (original == null)
-                {
-                    throw new Exception();
-                }
-                //if (tq.SupplierId == "CHEP")
-                //{
-                //    tq.Rank = 2;
-
-                //}
-                dbcontext.Entry(original).CurrentValues.SetValues(tq);
-               
-                dbcontext.SaveChanges();
+                k.Rank = null;
             }
+            foreach(TenderQuotation i in tqlist)
+            {
+                foreach(TenderQuotation j in originTQList)
+                {
+                    if(i.SupplierId == j.SupplierId)
+                    {
+                        j.Rank = i.Rank;
+                    }
+                }
+            }
+            dbcontext.SaveChanges();
             return true;
         }
 
