@@ -147,9 +147,9 @@ namespace SSIS_BOOT.Service.Impl
             return rrepo.findallreqform();
         }
 
-        public List<Requisition> getallreqformbydate(long date)
+        public List<Requisition> getallreqformbydateandstatus(long date, int clerkid, string reqStatus)
         {
-            return rrepo.findrequsitionbycollectiondate(date);
+            return rrepo.findrequsitionbycollectiondateandstatus(date, clerkid, reqStatus);
         }
 
         public List<Requisition> getReqformByDeptId(string deptID)
@@ -163,9 +163,9 @@ namespace SSIS_BOOT.Service.Impl
         }
 
 
-        public Retrieval genretrievalform(long date, int clerkid)
+        public Retrieval genretrievalform(long date, int clerkid, List<Requisition> listreq)
         {
-            Retrieval r_exist = retrivrepo.GetRetrieval(date);
+            Retrieval r_exist = retrivrepo.GetRetrieval(date, clerkid, Status.RetrievalStatus.created); // check if there already exist a retrieval with "created" status and processed by clerkid
             if (r_exist != null)
             {
                 return r_exist;
@@ -174,19 +174,36 @@ namespace SSIS_BOOT.Service.Impl
             r1.ClerkId = clerkid;
             r1.DisbursedDate = date;
             r1.Status = Status.RetrievalStatus.created;
-            Retrieval r2 = retrivrepo.genretrievalandreturn(r1); //creates retrieval form and returns it
-            List<Requisition> req1 = rrepo.findrequsitionbycollectiondate(date);
-            foreach (Requisition re in req1)
+            Retrieval newRetrieval = retrivrepo.genretrievalandreturn(r1); //creates empty retrieval form and returns it
+
+            foreach (Requisition re in listreq)//listreq is passed in from controller, which is a list of requisition with "confirmed" status, on the selected date and processed by the clerk in session
             {
                 foreach (RequisitionDetail detail in re.RequisitionDetails)
                 {
-                    detail.RetrievalId = r2.Id; //assign the newly created retrieval Id to each requsitiondetail 
+                    detail.RetrievalId = newRetrieval.Id; //assign the newly created retrieval Id to each requsitiondetail belonging to a confirmed retrieval 
                     RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
                 }
             }
-            Retrieval r3 = retrivrepo.GetRetrieval(date);
-            r3.RequisitionDetails = r3.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
-            return r3;
+            Retrieval updatedRetrieval = retrivrepo.GetRetrievalById(newRetrieval.Id); //Get back the latest created retrieval with all the related objects
+            updatedRetrieval.RequisitionDetails = updatedRetrieval.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
+            return updatedRetrieval;
+        }
+
+        public bool updateretrieval(Retrieval r1)
+        {
+            try
+            {
+                retrivrepo.UpdateRetrieval(r1);
+                foreach (RequisitionDetail rd in r1.RequisitionDetails)
+                {
+                    rdrepo.updaterequsitiondetail(rd);
+                }
+                return true;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
         }
 
         public List<TenderQuotation> gettop3suppliers(string productId)
@@ -255,22 +272,7 @@ namespace SSIS_BOOT.Service.Impl
             return true;
         }
 
-        public bool updateretrieval(Retrieval r1)
-        {
-            try
-            {
-                retrivrepo.UpdateRetrieval(r1);
-                foreach (RequisitionDetail rd in r1.RequisitionDetails)
-                {
-                    rdrepo.updaterequsitiondetail(rd);
-                }
-                return true;
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
-        }
+
         public bool updatepurchaseorderdetailitem(PurchaseOrderDetail pod)
         {
             try

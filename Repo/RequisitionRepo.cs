@@ -36,9 +36,12 @@ namespace SSIS_BOOT.Repo
             return lr;
             // .Include(m => m.ReqByEmp).Include(m => m.ApprovedBy).Include(m => m.ProcessedByClerk).Include(m => m.RequisitionDetails)
         }
-        public List<Requisition> findrequsitionbycollectiondate(long date)
+        public List<Requisition> findrequsitionbycollectiondateandstatus(long date, int clerkid, string reqStatus)
         {
-            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product).Include(m => m.Department).Where(m => m.CollectionDate == date).ToList();
+            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.RequisitionDetails)
+                .ThenInclude(m => m.Product)
+                .Include(m => m.Department)
+                .Where(m => m.CollectionDate == date && m.ProcessedByClerkId == clerkid && m.Status == reqStatus).ToList();
             return lr;
         }
 

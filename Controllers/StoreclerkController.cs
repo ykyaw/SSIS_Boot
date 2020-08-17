@@ -121,12 +121,12 @@ namespace SSIS_BOOT.Controllers
         public Retrieval genretrievalform([FromBody] long date)
         {
             int clerkid = (int)HttpContext.Session.GetInt32("Id");
-            List<Requisition> rq = scservice.getallreqformbydate(date);
-            if (rq == null || rq.Count == 0)
+            List<Requisition> listreq = scservice.getallreqformbydateandstatus(date, clerkid, Status.RequsitionStatus.confirmed); //retrieve requisition where status is confirmed 
+            if (listreq == null || listreq.Count == 0)
             {
-                throw new Exception("Sorry, there is no Requisition matching the provided date. Please try again");
+                throw new Exception("Sorry, you currently don't have any confirmed requisition on this provided date that requires retrieval");
             }
-            Retrieval r1 = scservice.genretrievalform(date, clerkid);
+            Retrieval r1 = scservice.genretrievalform(date, clerkid, listreq);
             return r1;
         }
 
@@ -167,7 +167,6 @@ namespace SSIS_BOOT.Controllers
                 string msg = m.Message;
                 throw new Exception(msg);
             }
-
         }
 
         [HttpGet]
@@ -181,7 +180,6 @@ namespace SSIS_BOOT.Controllers
         [Route("/storeclerk/disbursement")]
         public List<RequisitionDetail> retrievedisbursementlist([FromBody]Requisition r1)
         {
-
             string deptId = r1.DepartmentId;
             long collectiondate = (long)r1.CollectionDate;
             //string deptId = "CPSC";

@@ -25,7 +25,7 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public List<Transaction> retrievestockcard(string productId);
 
-        public Retrieval genretrievalform(long date, int clerkid);
+        public Retrieval genretrievalform(long date, int clerkid, List<Requisition> listreq);
         public List<TenderQuotation> gettop3suppliers(string productId);
 
         public List<RequisitionDetail> retrievedisbursementlist(string deptId, long collectiondate);
@@ -36,7 +36,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public bool updatepurchaserequestitem(List<PurchaseRequestDetail> prdlist);
 
         public bool updateretrieval(Retrieval r1);
-        public List<Requisition> getallreqformbydate(long date);
+        public List<Requisition> getallreqformbydateandstatus(long date, int clerkid, string reqStatus);
 
         public bool updatepurchaseorderdetailitem(PurchaseOrderDetail pod);
 
