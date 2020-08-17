@@ -204,6 +204,7 @@ namespace SSIS_BOOT.Controllers
             //Transaction t1 = new Transaction("C001", 1597211000, "supply to Math Department", -20, 530, 1, null); //August 12, 2020 13:43:20
             int clerkid = (int)HttpContext.Session.GetInt32("Id");
             t1.UpdatedByEmpId = clerkid;
+            t1.Date = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); //added by tk, to be able to track to the milisecond for date of transaction
             scservice.savetransaction(t1);
             return true;
         }
