@@ -148,7 +148,7 @@ namespace SSIS_BOOT.DB
             CollectionPoint c1 = new CollectionPoint("Stationary Store", "9:30AM");
             CollectionPoint c2 = new CollectionPoint("Management School", "11:30AM");
             CollectionPoint c3 = new CollectionPoint("Medical School", "9:30AM");
-            CollectionPoint c4 = new CollectionPoint("Engineering School", "11:30AM");
+            CollectionPoint c4 = new CollectionPoint("English School", "11:30AM");
             CollectionPoint c5 = new CollectionPoint("Science School", "9:30AM");
             CollectionPoint c6 = new CollectionPoint("University Hospital", "11:30AM");
             dbcontext.Add(c1);
@@ -194,48 +194,48 @@ namespace SSIS_BOOT.DB
             Employee e4 = new Employee("Pamela Kow(de)", "Pamela@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "ENGL", "de");
             dbcontext.Add(e4);
             dbcontext.SaveChanges();
-            Employee e5 = new Employee("Ezra Pound (dh)", "Ezra@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "ENGL", "dh");
+            Employee e5 = new Employee("Elizabeth Tan(dh)", "ElizabethTan@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "ENGL", "dh");
             dbcontext.Add(e5);
             dbcontext.SaveChanges();
-            Employee e6 = new Employee("Wee Kian Fatt", "Pamela@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "CPSC", "de");
+            Employee e6 = new Employee("Wee Kian Fatt(de)", "KianFatt@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "ENGL", "de");
             dbcontext.Add(e6);
             dbcontext.SaveChanges();
-            Employee e7 = new Employee("soh Kian Wee (dh)", "kw@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "CPSC", "de");
+            Employee e7 = new Employee("Soh Kian Wee(dh)", "kw@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "CPSC", "dh");
             dbcontext.Add(e7);
             dbcontext.SaveChanges();
             Employee e8 = new Employee("Mary Tan(de)", "Mary@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "COMM", "de");
             dbcontext.Add(e8);
             dbcontext.SaveChanges();
-            Employee e9 = new Employee("Nasi Lemak (dh)", "Nasilemak@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "COMM", "dh");
+            Employee e9 = new Employee("Nasi Lemak(dh)", "Nasilemak@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "COMM", "dh");
             dbcontext.Add(e9);
             dbcontext.SaveChanges();
-            Employee e10 = new Employee("Lor Mee", "Lormee@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "REGR", "de");
+            Employee e10 = new Employee("Lor Mee(de)", "Lormee@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "REGR", "de");
             dbcontext.Add(e10);
             dbcontext.SaveChanges();
-            Employee e11 = new Employee("Carrot Cake (dh)", "Carrotcake@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "REGR", "dh");
+            Employee e11 = new Employee("Carrot Cake(dh)", "Carrotcake@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "REGR", "dh");
             dbcontext.Add(e11);
             dbcontext.SaveChanges();
             Employee e12 = new Employee("Fish Ball(de)", "Fishball@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "ZOOL", "de");
             dbcontext.Add(e12);
             dbcontext.SaveChanges();
-            Employee e13 = new Employee("Cheong Fun (dh)", "Cheongfun@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "ZOOL", "dh");
+            Employee e13 = new Employee("Cheong Fun(dh)", "Cheongfun@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "ZOOL", "dh");
             dbcontext.Add(e13);
             dbcontext.SaveChanges();
-            Employee e14 = new Employee("Adeline Yee (de)", "Adeline@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "ENGL", "de");
+            Employee e14 = new Employee("Adeline Yee(de)", "Adeline@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "ENGL", "de");
             dbcontext.Add(e14);
             dbcontext.SaveChanges();
             Employee e15 = new Employee("Nicole Chong(de)", "Nicole@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "CPSC", "de");
             dbcontext.Add(e15);
             dbcontext.SaveChanges();
-            Employee e16 = new Employee("Fel (sc)", "Fel@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "STOR", "sc");
+            Employee e16 = new Employee("Fel(sc)", "Fel@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "STOR", "sc");
             dbcontext.Add(e16);
             dbcontext.SaveChanges();
 
             //set manager to employee
             e4.ManagerId = 5;
             e14.ManagerId = 5;
-            e6.ManagerId = 7;
-            e15.ManagerId = 15;
+            e6.ManagerId = 5;
+            e15.ManagerId = 7;
             e8.ManagerId = 9;
             e10.ManagerId = 11;
             e12.ManagerId = 13;
@@ -253,9 +253,9 @@ namespace SSIS_BOOT.DB
             dbcontext.SaveChanges();
             //set department head and employee
 
-            d2.RepId = 4;
+            d2.RepId = 6;
             d2.HeadId = 5;
-            d3.RepId = 6;
+            d3.RepId = 15;
             d3.HeadId = 7;
             d4.RepId = 8;
             d4.HeadId = 9;
@@ -327,10 +327,10 @@ namespace SSIS_BOOT.DB
             //public Transaction(string ProductId, DateTime Date, string Description, int Qty, int Balance, int UpdatedByEmpId, string? RefCode)
             
             //corr/to retr1
-            Transaction trans1 = new Transaction("E032", 1594724400000, "supply from ALPHA", 80, 180, 1, null);//14/7/2020 @ 11:00am (UTC)
+            Transaction trans1 = new Transaction("E032", 1594724400000, "supply from ALPHA", 40, 80, 1, null);//14/7/2020 @ 11:00am (UTC)
             dbcontext.Add(trans1);
             dbcontext.SaveChanges();
-            Transaction trans2 = new Transaction("D001", 1594724400000, "supply from OMEG", 10, 40, 1, null);  //14/7/2020 @ 11:00am (UTC)
+            Transaction trans2 = new Transaction("D001", 1594724400000, "supply from OMEG", 5, 5, 1, null);  //14/7/2020 @ 11:00am (UTC)
             dbcontext.Add(trans2);
             dbcontext.SaveChanges();
             Transaction trans3 = new Transaction("C001", 1594724400000, "supply from ALPA", 15, 65, 1, null); //14/7/2020 @ 11:00am (UTC)
@@ -342,7 +342,7 @@ namespace SSIS_BOOT.DB
             Transaction trans5 = new Transaction("C001", 1595237400000, "supply to English Department", -50, 3, 1, null);//"2 spoilt in stock"; 20/7/2020 @ 9:30am (UTC)
             dbcontext.Add(trans5);
             dbcontext.SaveChanges();
-            Transaction trans6 = new Transaction("C001", 1595926800000, "Supply from ALPA", 15, 18, 16, null);//29/7/2020 @ 9:30am (UTC)
+            Transaction trans6 = new Transaction("C001", 1595926800000, "Supply from ALPA", 30, 18, 16, null);//29/7/2020 @ 9:30am (UTC)
             dbcontext.Add(trans6);
             dbcontext.SaveChanges();
 
@@ -400,9 +400,10 @@ namespace SSIS_BOOT.DB
             r1.Status = Status.RequsitionStatus.rejected;
             r1.Remarks = "qty is too irrelavant";
             dbcontext.Add(r1);
-            Requisition r2 = new Requisition("CPSC", 6, 7, 1);
+            Requisition r2 = new Requisition("ENGL", 6, 5, 1);
             r2.CreatedDate = 1597060800000;//10/8/2020 @ 12:00pm (UTC)
-            r2.Status = Status.RequsitionStatus.confirmed;
+            r2.Status = Status.RequsitionStatus.approved;
+            r2.CollectionPointId = 5;
             dbcontext.Add(r2);
             dbcontext.SaveChanges();
             //public Requisition(string DepartmentId, int ReqByEmpId, int ApprovedById, string? Remarks,int ProcessedByClerkId, long CreatedDate, string Status,
@@ -424,13 +425,13 @@ namespace SSIS_BOOT.DB
 
             //created-05 /8/ 2020 09:00:00 (UTC); collection-date-10/8/2020 @930am; received-10/8/2020 @11/:00am; confirmed -10/8/2020@12:00pm
             Requisition r6 = new Requisition("ENGL", 4, 5, null, 16, 1596618000000, Status.RequsitionStatus.completed,
-                                               1, 1598313600000,
+                                               1, 1597017600000,
                                                4, 1597059000000, 1, 1597060800000);
             //created-05 /8/ 2020 09:00:00 (UTC); collection-date-10/8/2020 @930am; received-10/8/2020 @11/:00am; confirmed -10/8/2020@12:00pm
-            Requisition r7 = new Requisition("CPSC", 6, 7, null, 16, 1596618000000, Status.RequsitionStatus.completed,
-                                               1, 1598313600000,
+            Requisition r7 = new Requisition("CPSC", 15, 7, null, 16, 1596618000000, Status.RequsitionStatus.completed,
+                                               1, 1597017600000,
                                                4, 1597059000000, 1, 1597060800000);
-
+            
             dbcontext.Add(r3);
             dbcontext.SaveChanges();
             dbcontext.Add(r4);
@@ -442,6 +443,40 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(r7);
             dbcontext.SaveChanges();
 
+            //created-05/8/2020 09:00:00 (UTC); collection-date-25/8/2020 @00:00am(localtime)
+            Requisition r8 = new Requisition("ENGL", 4, 5, 1);
+            r8.CreatedDate = 1596618000000;
+            r8.Status = Status.RequsitionStatus.confirmed;
+            r8.CollectionPointId = 1;
+            r8.CollectionDate = 1598313600000;
+            dbcontext.Add(r8);
+            dbcontext.SaveChanges();
+
+            //created-05/8/2020 09:00:00 (UTC); collection-date-20/8/2020 @00:00am(localtime)
+            Requisition r9 = new Requisition("ENGL", 14, 5, 1);
+            r9.CreatedDate = 1596618000000;
+            r9.Status = Status.RequsitionStatus.confirmed;
+            r9.CollectionPointId = 1;
+            r9.CollectionDate = 1597852800000;
+            dbcontext.Add(r9);
+            dbcontext.SaveChanges();
+
+            //created-10/8/2020 09:00:00 (localtimezone)
+            Requisition r10 = new Requisition("ENGL", 14, 5, 1);
+            r10.CreatedDate = 1597021200000;
+            r10.Status = Status.RequsitionStatus.approved;
+            r10.CollectionPointId = 5;
+            dbcontext.Add(r10);
+            dbcontext.SaveChanges();
+
+            //created-05/8/2020 09:00:00 (UTC); collection-date-25/8/2020 @00:00am(localtime)
+            Requisition r11 = new Requisition("CPSC", 15, 7, 1);
+            r11.CreatedDate = 1596618000000;
+            r11.Status = Status.RequsitionStatus.confirmed;
+            r11.CollectionPointId = 1;
+            r11.CollectionDate = 1598313600000;
+            dbcontext.Add(r11);
+            dbcontext.SaveChanges();
 
 
 
@@ -476,6 +511,44 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(rd9);
             dbcontext.SaveChanges();
 
+            RequisitionDetail rd10 = new RequisitionDetail(8, "C001", 10);
+            dbcontext.Add(rd10);
+            dbcontext.SaveChanges();
+            RequisitionDetail rd11 = new RequisitionDetail(8, "F021", 10);
+            dbcontext.Add(rd11);
+            dbcontext.SaveChanges();
+            RequisitionDetail rd12 = new RequisitionDetail(8, "P010", 10);
+            dbcontext.Add(rd12);
+            dbcontext.SaveChanges();
+
+            RequisitionDetail rd13 = new RequisitionDetail(9, "E032", 5);
+            dbcontext.Add(rd13);
+            dbcontext.SaveChanges();
+            RequisitionDetail rd14 = new RequisitionDetail(9, "H011", 7);
+            dbcontext.Add(rd14);
+            dbcontext.SaveChanges();
+            RequisitionDetail rd15 = new RequisitionDetail(9, "H012", 12);
+            dbcontext.Add(rd15);
+            dbcontext.SaveChanges();
+
+            RequisitionDetail rd16 = new RequisitionDetail(10, "C004", 5);
+            dbcontext.Add(rd16);
+            dbcontext.SaveChanges();
+            RequisitionDetail rd17 = new RequisitionDetail(10, "F020", 5);
+            dbcontext.Add(rd17);
+            dbcontext.SaveChanges();
+            RequisitionDetail rd18 = new RequisitionDetail(10, "P011", 10);
+            dbcontext.Add(rd18);
+            dbcontext.SaveChanges();
+
+            RequisitionDetail rd19 = new RequisitionDetail(11, "F021", 5);
+            dbcontext.Add(rd19);
+            dbcontext.SaveChanges();
+            RequisitionDetail rd20 = new RequisitionDetail(11, "P011", 5);
+            dbcontext.Add(rd20);
+            dbcontext.SaveChanges();
+
+
             //seed adjustment voucher
             //public AdjustmentVoucher(string Id, int InitiatedClerkId, long InitiatedDate, 
             //int? ApprovedSupId, long? ApprovedSupDate, int? ApprovedMgrId, long? ApprovedMgrDate, string Status)
@@ -487,14 +560,15 @@ namespace SSIS_BOOT.DB
             dbcontext.SaveChanges();
 
             //Adjustment voucher raised on 31/7; due to 2 rusty clips found on 17/7/2020 retrival, approved by sup on 3/8/2020
-            AdjustmentVoucher adj2 = new AdjustmentVoucher("031_07_2020", 1, 1596207600000, 2, 1596447000000, Status.AdjVoucherStatus.approved);
+            AdjustmentVoucher adj2 = new AdjustmentVoucher("031_07_2020", 1, 1596207600000, 2, 1596447000000, Status.AdjVoucherStatus.pendapprov);
             dbcontext.Add(adj2);
             dbcontext.SaveChanges();
 
+            //Adjustment voucher raised on 15/8 approved by sup on 16/8/2020
+            AdjustmentVoucher adj3 = new AdjustmentVoucher("001_08_2020", 1, 1597449600000, 2, 1597536000000, Status.AdjVoucherStatus.created);
+            dbcontext.Add(adj3);
+            dbcontext.SaveChanges();
 
-
-
-            //
             //seed adjustment voucher detail
             //adjustment voucher in June that >250,due to wet paper"E032" x100 and spoilt diskettes "D001"x20, created on 29/6@9:00am; and approved by manager on 30/6/3pm
             //wet paper"E032" x100
@@ -506,11 +580,19 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(adjdet2);
             dbcontext.SaveChanges();
 
-
             //public AdjustmentVoucherDetail(string AdjustmentVoucherId, string ProductId, int QtyAdjusted, double TotalPrice, string Reason)
             //seed purchase request detail
             AdjustmentVoucherDetail adjdet3 = new AdjustmentVoucherDetail("031_07_2020", "C001", 2, 2.00,4.00, "2 clips in inventory found rusty, spoilt");
             dbcontext.Add(adjdet3);
+            dbcontext.SaveChanges();
+
+
+            AdjustmentVoucherDetail adjdet4 = new AdjustmentVoucherDetail("001_08_2020", "D001", 26, 10, 260.00, "26 diskettes went missing");
+            dbcontext.Add(adjdet4);
+            dbcontext.SaveChanges();
+
+            AdjustmentVoucherDetail adjdet5 = new AdjustmentVoucherDetail("001_08_2020", "E032", 2, 1.00, 2.00, "Exercise book - water damage");
+            dbcontext.Add(adjdet5);
             dbcontext.SaveChanges();
 
 
