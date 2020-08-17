@@ -96,5 +96,23 @@ namespace SSIS_BOOT.Repo
             return true;
         }
 
+        public bool ClerkSaveRequisitionDetailRemarksOnCompletion(RequisitionDetail rd)
+        {
+            try
+            {
+                RequisitionDetail original = dbcontext.RequisitionDetails.Where(m => m.Id == rd.Id).FirstOrDefault();
+                if (original != null)
+                {
+                    original.ClerkRemark = rd.ClerkRemark;
+                }
+            }
+            catch
+            {
+                throw new Exception("Error completing requisition for " + rd.Product.Description);
+            }
+            dbcontext.SaveChanges();
+            return true;
+        }
+
     }
 }

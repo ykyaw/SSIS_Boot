@@ -27,5 +27,11 @@ namespace SSIS_BOOT.Repo
             dbcontext.SaveChanges();
             return true;            
         }
+
+        public Transaction GetLatestTransactionByProductId(string productId)
+        {
+            Transaction t = dbcontext.Transactions.Where(m => m.ProductId == productId).OrderByDescending(m => m.Date).FirstOrDefault();
+            return t;
+        }
     }
 }

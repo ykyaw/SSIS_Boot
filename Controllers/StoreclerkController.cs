@@ -204,13 +204,14 @@ namespace SSIS_BOOT.Controllers
             //Transaction t1 = new Transaction("C001", 1597211000, "supply to Math Department", -20, 530, 1, null); //August 12, 2020 13:43:20
             int clerkid = (int)HttpContext.Session.GetInt32("Id");
             t1.UpdatedByEmpId = clerkid;
+            t1.Date = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); //added by tk, to be able to track to the milisecond for date of transaction
             scservice.savetransaction(t1);
             return true;
         }
         [HttpPost]
         //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPOST] and pass in from body
         [Route("/storeclerk/createpr")]
-        public List<PurchaseRequestDetail> generatepurchaserequest([FromBody]List<String> productId)
+        public List<PurchaseRequestDetail> generatepurchaserequest([FromBody]List<string> productId)
         {
             //testing 
             //List<String> productId = new List<string> {"C004", "F021" };
@@ -326,6 +327,22 @@ namespace SSIS_BOOT.Controllers
         {
             List<AdjustmentVoucherDetail> advdetails = scservice.getAdvDetailsbyAdvId(advId);
             return advdetails;
+        }
+
+        [HttpPut]
+        [Route("/storeclerk/ackreq")]
+        public bool AckCompletedRequisition([FromBody] List<RequisitionDetail> rdl)
+        {
+            try
+            {
+                int clerkid = (int)HttpContext.Session.GetInt32("Id");
+                scservice.AckCompletedRequisition(rdl, clerkid);
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
     }

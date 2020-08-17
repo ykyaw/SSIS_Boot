@@ -122,6 +122,27 @@ namespace SSIS_BOOT.Repo
             dbcontext.SaveChanges();
             return true;
         }
+
+        public bool ClerkCompleteRequisition(int clerkid, int requisitionId, long date, string status)
+        {
+            try
+            {
+                var original = dbcontext.Requisitions.Find(requisitionId);
+                if (original != null)
+                {
+                    original.Status = status;
+                    original.AckByClerkId = clerkid;
+                    original.AckDate = date;
+                }
+            }
+            catch
+            {
+                throw new Exception("Error updating clerk acknowledgement on requisition ");
+            }
+            dbcontext.SaveChanges();
+            return true;
+
+        }
     }
     
 }

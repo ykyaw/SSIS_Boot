@@ -51,5 +51,7 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public List<AdjustmentVoucherDetail> getAdvDetailsbyAdvId(string advId);
 
+        public bool AckCompletedRequisition(List<RequisitionDetail> rdl, int clerkId);
+
     }
 }
