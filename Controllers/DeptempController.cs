@@ -109,8 +109,8 @@ namespace SSIS_BOOT.Controllers
         [Route("/deptemp/dept")]
         public Department GetDepartment()
         {
-            string deptid = "CPSC"; //For Testing
-            //string deptid = HttpContext.Session.GetString("DeptId");
+            //string deptid = "CPSC"; //For Testing
+            string deptid = HttpContext.Session.GetString("DeptId");
             Department d1 = deservice.GetDepartment(deptid);
             return d1;
         }
