@@ -1,5 +1,5 @@
 
-﻿using SSIS_BOOT.DB;
+using SSIS_BOOT.DB;
 using SSIS_BOOT.Models;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using SSIS_BOOT.Common;
 
@@ -42,7 +42,7 @@ namespace SSIS_BOOT.Repo
             int lastnum = int.Parse(lastcreatedid.Substring(0, 3));
             int lastcreatedmonth = int.Parse(lastcreatedid.Substring(4, 3));
             int lastcreatedyear = int.Parse(lastcreatedid.Substring(8, 4));
-           
+
 
             int num = 001;
             int initiatedatemonth = int.Parse(DateTime.Now.ToString("MM"));
@@ -61,7 +61,7 @@ namespace SSIS_BOOT.Repo
                     string newid = string.Format("00{0}_{1}_{2}", lastnum, lastcreatedid.Substring(4, 3), initiatedateyear);
                     return newid;
                 }
-                
+
             }
             else
             {
@@ -76,8 +76,8 @@ namespace SSIS_BOOT.Repo
         {
             List<AdjustmentVoucher> advlist = dbcontext.AdjustmentVouchers.Include(m => m.InitiatedClerk)
                 .Include(m => m.ApprovedSup)
-                .Include(m=>m.ApprovedMgr)
-                .Include(m=>m.AdjustmentVoucherDetails)
+                .Include(m => m.ApprovedMgr)
+                .Include(m => m.AdjustmentVoucherDetails)
                 .ToList();
             return advlist;
         }
@@ -105,7 +105,7 @@ namespace SSIS_BOOT.Repo
         }
 
 
-            public bool SupervisorUpdateAdjustmentVoucherApprovals(AdjustmentVoucher av)
+        public bool SupervisorUpdateAdjustmentVoucherApprovals(AdjustmentVoucher av)
         {
             try
             {
@@ -154,12 +154,12 @@ namespace SSIS_BOOT.Repo
         {
             try
             {
-                AdjustmentVoucher av=findAdjustmentVoucherById(AdjustmentVoucherId);
+                AdjustmentVoucher av = findAdjustmentVoucherById(AdjustmentVoucherId);
                 if (av == null)
                 {
                     throw new Exception();
                 }
-                av.Status= Status.AdjVoucherStatus.created;
+                av.Status = Status.AdjVoucherStatus.created;
                 dbcontext.Update(av);
                 dbcontext.SaveChanges();
             }
@@ -181,13 +181,37 @@ namespace SSIS_BOOT.Repo
                 av.Status = Status.AdjVoucherStatus.pendapprov;
                 dbcontext.Update(av);
                 dbcontext.SaveChanges();
-                
+
             }
             catch
             {
                 throw new Exception("Error finding adjustment voucher by this id");
             }
 
+        }
+
+        public List<AdjustmentVoucher> findAdjustmentVoucherByClerkId(int clerkid)
+        {
+            try
+            {
+                List<AdjustmentVoucher> avlist = dbcontext.AdjustmentVouchers
+                    .Include(m => m.AdjustmentVoucherDetails)
+                    .ThenInclude(m => m.Product)
+                .Include(m => m.ApprovedSup)
+                .Include(m => m.ApprovedMgr)
+                .Include(m => m.InitiatedClerk)
+                .Where(m => m.InitiatedClerkId == clerkid)
+                .ToList();
+                if (avlist == null)
+                {
+                    throw new Exception();
+                }
+                return avlist;
+            }
+            catch
+            {
+                throw new Exception("Error finding adjustment voucher by this clerk id");
+            }
         }
 
     }

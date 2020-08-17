@@ -393,5 +393,10 @@ namespace SSIS_BOOT.Service.Impl
         {
             return avrepo.findAdjustmentVoucherById(advId);
         }
+
+        public List<AdjustmentVoucher> findAdjustmentVoucherByClerkId(int clerkid)
+        {
+            return avrepo.findAdjustmentVoucherByClerkId(clerkid);
+        }
     }
 }

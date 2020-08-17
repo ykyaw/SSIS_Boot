@@ -58,6 +58,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public bool ClerkSubmitAdjustmentVoucher(string adjustmentVoucherId);
 
         public AdjustmentVoucher findAdjustmentVoucherById(string advId);
+        public List<AdjustmentVoucher> findAdjustmentVoucherByClerkId(int clerkid);
 
     }
 }

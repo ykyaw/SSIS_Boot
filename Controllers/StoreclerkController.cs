@@ -370,5 +370,13 @@ namespace SSIS_BOOT.Controllers
             return av;
         }
 
+        [HttpGet]
+        [Route("/storeclerk/findAdjustmentVoucherbyClerk/")]
+        public List<AdjustmentVoucher> findAdjustmentVoucherByClerkId()
+        {
+            int clerkid = (int)HttpContext.Session.GetInt32("Id");
+            return scservice.findAdjustmentVoucherByClerkId(clerkid);
+        }
+
     }
 }
