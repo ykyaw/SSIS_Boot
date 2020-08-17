@@ -21,7 +21,7 @@ namespace SSIS_BOOT.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPut]
         //[HttpGet] //for testing
         [Route("/storemgmt/updatesupplier")]
         public bool updatetop3supplier([FromBody] List<TenderQuotation> tqlist)
@@ -37,7 +37,7 @@ namespace SSIS_BOOT.Controllers
             return true;
         }
         [HttpGet]
-        [Route("/storemgmt/retrievesuppliers")]
+        [Route("/storemgmt/retrievesuppliers/{pdtid}")]
         public List<TenderQuotation> retrievesupplierbyproductId(string pdtid)
         {
             //string pdtid1 = "E032";

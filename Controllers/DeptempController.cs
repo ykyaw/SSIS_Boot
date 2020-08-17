@@ -126,7 +126,7 @@ namespace SSIS_BOOT.Controllers
         //[HttpGet]
         [HttpPut]
         [Route("/deptemp/ucp")]
-        public Department UpdateCollectionPoint([FromBody] CollectionPoint cp)
+        public bool UpdateCollectionPoint([FromBody] CollectionPoint cp)
         {
             //// FOR TESTING //
             //CollectionPoint c6 = new CollectionPoint("University Hospital", "11:30AM");
@@ -136,11 +136,9 @@ namespace SSIS_BOOT.Controllers
             //Department d1 = deservice.GetDepartment(deptid);
             //return d1;
             ////END OF TEST
-
             string deptid = HttpContext.Session.GetString("DeptId");
             deservice.UpdateCollectionPoint(deptid, cp);
-            Department d1 = deservice.GetDepartment(deptid);
-            return d1;
+            return true;
         }
 
         [HttpGet]
