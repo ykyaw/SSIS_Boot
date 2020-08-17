@@ -9,6 +9,7 @@ using System.Text;
 
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using SSIS_BOOT.Common;
 
 namespace SSIS_BOOT.Repo
 {
@@ -83,14 +84,28 @@ namespace SSIS_BOOT.Repo
 
         public AdjustmentVoucher findAdjustmentVoucherById(string id)
         {
-                AdjustmentVoucher av = dbcontext.AdjustmentVouchers.Include(m => m.AdjustmentVoucherDetails).ThenInclude(m=>m.Product)
-                .Include(m=>m.ApprovedSup)
-                .Include(m=>m.ApprovedMgr)
-                .Include(m=>m.InitiatedClerk).FirstOrDefault(m => m.Id == id);
+            try
+            {
+                AdjustmentVoucher av = dbcontext.AdjustmentVouchers.Include(m => m.AdjustmentVoucherDetails).ThenInclude(m => m.Product)
+                .Include(m => m.ApprovedSup)
+                .Include(m => m.ApprovedMgr)
+                .Include(m => m.InitiatedClerk)
+                .FirstOrDefault(m => m.Id == id);
+                if (av == null)
+                {
+                    throw new Exception();
+                }
+
                 return av;
+            }
+            catch
+            {
+                throw new Exception("Error finding adjustment voucher by this id");
+            }
         }
 
-        public bool SupervisorUpdateAdjustmentVoucherApprovals(AdjustmentVoucher av)
+
+            public bool SupervisorUpdateAdjustmentVoucherApprovals(AdjustmentVoucher av)
         {
             try
             {
@@ -133,6 +148,46 @@ namespace SSIS_BOOT.Repo
             {
                 throw new Exception("Error approving adjustment voucher by manager");
             }
+        }
+
+        public void ClerkUpdateAdjustmentVoucherById(string AdjustmentVoucherId)
+        {
+            try
+            {
+                AdjustmentVoucher av=findAdjustmentVoucherById(AdjustmentVoucherId);
+                if (av == null)
+                {
+                    throw new Exception();
+                }
+                av.Status= Status.AdjVoucherStatus.created;
+                dbcontext.Update(av);
+                dbcontext.SaveChanges();
+            }
+            catch
+            {
+                throw new Exception("Error finding adjustment voucher by this id");
+            }
+        }
+
+        public void ClerkSubmitAdjustmentVoucher(string AdjustmentVoucherId)
+        {
+            try
+            {
+                AdjustmentVoucher av = findAdjustmentVoucherById(AdjustmentVoucherId);
+                if (av == null)
+                {
+                    throw new Exception();
+                }
+                av.Status = Status.AdjVoucherStatus.pendapprov;
+                dbcontext.Update(av);
+                dbcontext.SaveChanges();
+                
+            }
+            catch
+            {
+                throw new Exception("Error finding adjustment voucher by this id");
+            }
+
         }
 
     }

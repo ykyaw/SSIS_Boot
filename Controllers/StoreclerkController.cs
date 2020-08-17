@@ -343,5 +343,32 @@ namespace SSIS_BOOT.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("/storeclerk/UpdateAdjustmentDetails/")]
+        public bool UpdataeAdjustmentDetails([FromBody]List<AdjustmentVoucherDetail> voucherDetails)
+        {
+
+            //int clerkid = (int)HttpContext.Session.GetInt32("Id");
+            return scservice.updateAdjustmentVoucherDeatails(voucherDetails);
+        }
+
+        [HttpPut]
+        [Route("/storeclerk/SubmitAdjustmentDetails/")]
+        public bool SubmitAdjustmentDetails([FromBody]List<AdjustmentVoucherDetail> voucherDetails)
+        {
+            UpdataeAdjustmentDetails(voucherDetails);
+            string adjustmentVoucherId = voucherDetails[0].AdjustmentVoucherId;
+            scservice.ClerkSubmitAdjustmentVoucher(adjustmentVoucherId);
+            return true;
+        }
+
+        [HttpGet]
+        [Route("/storeclerk/findAdjustmentVoucher/{advId}")]
+        public AdjustmentVoucher findAdjustmentVoucherById(string advId)
+        {
+            AdjustmentVoucher av = scservice.findAdjustmentVoucherById(advId);
+            return av;
+        }
+
     }
 }

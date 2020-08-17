@@ -32,7 +32,7 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public bool savetransaction(Transaction t1);
 
-        public List<PurchaseRequestDetail> addpurchaserequest(List<String> productId,int clerkid);
+        public List<PurchaseRequestDetail> addpurchaserequest(List<String> productId, int clerkid);
         public bool updatepurchaserequestitem(List<PurchaseRequestDetail> prdlist);
 
         public bool updateretrieval(Retrieval r1);
@@ -52,6 +52,12 @@ namespace SSIS_BOOT.Service.Interfaces
         public List<AdjustmentVoucherDetail> getAdvDetailsbyAdvId(string advId);
 
         public bool AckCompletedRequisition(List<RequisitionDetail> rdl, int clerkId);
+
+        public bool updateAdjustmentVoucherDeatails(List<AdjustmentVoucherDetail> voucherDetails);
+
+        public bool ClerkSubmitAdjustmentVoucher(string adjustmentVoucherId);
+
+        public AdjustmentVoucher findAdjustmentVoucherById(string advId);
 
     }
 }

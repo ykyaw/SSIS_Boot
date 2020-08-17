@@ -359,5 +359,39 @@ namespace SSIS_BOOT.Service.Impl
                 throw m;
             }
         }
+        public void deleteOriginalDetails(string AdjustmentVoucherId)
+        {
+
+            avdetrepo.deleteAdvDetailsbyAdvId(AdjustmentVoucherId);
+
+        }
+
+        public bool updateAdjustmentVoucherDeatails(List<AdjustmentVoucherDetail> voucherDetails)
+        {
+            string AdjustmentVoucherId = voucherDetails[0].AdjustmentVoucherId;
+            //if there are details in this adjustment voucher
+            if (avdetrepo.hasDetails(AdjustmentVoucherId))
+            {
+                avdetrepo.deleteAdvDetailsbyAdvId(AdjustmentVoucherId);
+            }
+            foreach (AdjustmentVoucherDetail avdetail in voucherDetails)
+            {
+                avdetrepo.updateAdjustmentVoucherDeatail(avdetail);
+            }
+            avrepo.ClerkUpdateAdjustmentVoucherById(AdjustmentVoucherId);
+            return true;
+
+        }
+
+        public bool ClerkSubmitAdjustmentVoucher(string adjustmentVoucherId)
+        {
+            avrepo.ClerkSubmitAdjustmentVoucher(adjustmentVoucherId);
+            return true;
+        }
+
+        public AdjustmentVoucher findAdjustmentVoucherById(string advId)
+        {
+            return avrepo.findAdjustmentVoucherById(advId);
+        }
     }
 }
