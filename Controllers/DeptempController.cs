@@ -137,7 +137,14 @@ namespace SSIS_BOOT.Controllers
             //return d1;
             ////END OF TEST
             string deptid = HttpContext.Session.GetString("DeptId");
-            deservice.UpdateCollectionPoint(deptid, cp);
+            try
+            {
+                deservice.UpdateCollectionPoint(deptid, cp);
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
             return true;
         }
 

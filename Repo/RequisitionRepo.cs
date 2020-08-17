@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SSIS_BOOT.Common;
 using SSIS_BOOT.DB;
 using SSIS_BOOT.Models;
 using System;
@@ -145,6 +146,27 @@ namespace SSIS_BOOT.Repo
             dbcontext.SaveChanges();
             return true;
 
+        }
+
+        public bool DeptRepUpdateRequisitionCollectionPoint(string deptid, int collectionpointId)
+        {
+            try
+            {
+                List<Requisition> deptreqlist = dbcontext.Requisitions.Where(m => m.DepartmentId == deptid).ToList();
+                IEnumerable<Requisition> reqlist = from r in deptreqlist
+                                                   where r.Status == Status.RequsitionStatus.created || r.Status == Status.RequsitionStatus.pendapprov
+                                                   select r;
+                foreach (Requisition rq in reqlist)
+                {
+                    rq.CollectionPointId = collectionpointId;
+                }
+            }
+            catch
+            {
+                throw new Exception("Error updating collection point for existing pending or creating requisition.");
+            }
+            dbcontext.SaveChanges();
+            return true;
         }
     }
     

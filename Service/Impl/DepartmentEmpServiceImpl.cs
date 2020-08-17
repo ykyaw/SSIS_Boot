@@ -131,6 +131,16 @@ namespace SSIS_BOOT.Service.Impl
         {
             int collectionpointId = cp.Id;
             drepo.UpdateCollectionPoint(deptid, collectionpointId);
+
+            //For requisition with status "created" and "pending approval", their collection point need to be updated with new collection point
+            try
+            {
+                rrepo.DeptRepUpdateRequisitionCollectionPoint(deptid, collectionpointId);
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
             return true;
         }
 
