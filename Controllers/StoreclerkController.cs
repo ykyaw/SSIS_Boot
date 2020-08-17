@@ -329,5 +329,21 @@ namespace SSIS_BOOT.Controllers
             return advdetails;
         }
 
+        [HttpPut]
+        [Route("/storeclerk/ackreq")]
+        public bool AckCompletedRequisition([FromBody] List<RequisitionDetail> rdl)
+        {
+            try
+            {
+                int clerkid = (int)HttpContext.Session.GetInt32("Id");
+                scservice.AckCompletedRequisition(rdl, clerkid);
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
     }
 }

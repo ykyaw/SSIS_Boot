@@ -337,5 +337,25 @@ namespace SSIS_BOOT.Service.Impl
         {
             return drepo.findalldepartment();
         }
+
+        public bool AckCompletedRequisition(List<RequisitionDetail> rdl, int clerkId)
+        {
+            try
+            {
+                DateTime dateTime = DateTime.UtcNow.Date;
+                DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
+                long date = dt.ToUnixTimeMilliseconds();
+                foreach (RequisitionDetail rd in rdl)
+                {
+                    rdrepo.ClerkSaveRequisitionDetailRemarksOnCompletion(rd);
+                    rrepo.ClerkCompleteRequisition(clerkId, (int)rd.RequisitionId, date, Status.RequsitionStatus.received);
+                }
+                return true;
+            }
+            catch (Exception m)
+            {
+                throw m;
+            }
+        }
     }
 }
