@@ -94,7 +94,7 @@ namespace SSIS_BOOT.Service.Impl
 
             foreach (PurchaseRequestDetail prd in prdlist)
             {
-                if (prd.VenderQuote == null)
+                if (prd.VenderQuote == null || prd.VenderQuote == "")
                 {
                     prdlistwithnull.Add(prd);
                 }
@@ -204,16 +204,18 @@ namespace SSIS_BOOT.Service.Impl
             return trepo.savenewtransaction(t1);
         }
 
-        public List<PurchaseRequestDetail> addpurchaserequest(List<String> productid, int clerkId)
+        public List<PurchaseRequestDetail> addpurchaserequest(List<string> productid, int clerkId)
         {
             long currentpurchaserequestid = (long)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 42;
 
-            foreach (String id in productid)
+            foreach (string id in productid)
             {
                 PurchaseRequestDetail prd1 = new PurchaseRequestDetail();
                 prd1.ProductId = id;
                 prd1.Status = Status.PurchaseRequestStatus.created;
                 prd1.PurchaseRequestId = currentpurchaserequestid;
+                Transaction t = trepo.GetLatestTransactionByProductId(id);
+                prd1.CurrentStock = t.Balance;
                 //prd1.CreatedByClerkId = (int)2;
                 prd1.CreatedByClerkId = clerkId;
                 purreqrepo.addnewpurchaserequestdetail(prd1);

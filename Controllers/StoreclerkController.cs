@@ -210,7 +210,7 @@ namespace SSIS_BOOT.Controllers
         [HttpPost]
         //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPOST] and pass in from body
         [Route("/storeclerk/createpr")]
-        public List<PurchaseRequestDetail> generatepurchaserequest([FromBody]List<String> productId)
+        public List<PurchaseRequestDetail> generatepurchaserequest([FromBody]List<string> productId)
         {
             //testing 
             //List<String> productId = new List<string> {"C004", "F021" };
