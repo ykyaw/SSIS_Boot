@@ -398,5 +398,10 @@ namespace SSIS_BOOT.Service.Impl
         {
             return avrepo.findAdjustmentVoucherByClerkId(clerkid);
         }
+
+        public TenderQuotation getFirstTenderbyProdutId(string ProductId)
+        {
+            return tqrepo.getFirstTenderbyProdutId(ProductId);
+        }
     }
 }

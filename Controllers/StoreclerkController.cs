@@ -378,5 +378,13 @@ namespace SSIS_BOOT.Controllers
             return scservice.findAdjustmentVoucherByClerkId(clerkid);
         }
 
+
+        [HttpGet]
+        [Route("/storeclerk/FirstTenderbyProdutId/{ProductId}")]
+        public TenderQuotation getFirstTenderbyProdutId(string ProductId)
+        {
+           return scservice.getFirstTenderbyProdutId(ProductId);
+        }
+
     }
 }

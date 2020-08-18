@@ -10,6 +10,7 @@ namespace SSIS_BOOT.Models
     public class AdjustmentVoucher
     {
         [Key]
+        
         public string Id { get; set; }
         public int InitiatedClerkId { get; set; }
         public long InitiatedDate { get; set; }
