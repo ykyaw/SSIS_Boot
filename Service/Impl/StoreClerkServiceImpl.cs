@@ -163,30 +163,76 @@ namespace SSIS_BOOT.Service.Impl
         }
 
 
-        public Retrieval genretrievalform(long date, int clerkid, List<Requisition> listreq)
+        //public Retrieval genretrievalform(long date, int clerkid, List<Requisition> listreq) //ORIGINAL LOGIC
+        //{
+        //    Retrieval r_exist = retrivrepo.GetRetrieval(date, clerkid, Status.RetrievalStatus.created); // check if there already exist a retrieval with "created" status and processed by clerkid
+        //    if (r_exist != null)
+        //    {
+        //        //delete old requisitiondetail
+        //        //add new requisition detail
+
+        //        return r_exist;
+        //    }
+        //    Retrieval r1 = new Retrieval();
+        //    r1.ClerkId = clerkid;
+        //    r1.DisbursedDate = date;
+        //    r1.Status = Status.RetrievalStatus.created;
+        //    Retrieval newRetrieval = retrivrepo.genretrievalandreturn(r1); //creates empty retrieval form and returns it
+
+        //    foreach (Requisition re in listreq)//listreq is passed in from controller, which is a list of requisition with "confirmed" status, on the selected date and processed by the clerk in session
+        //    {
+        //        foreach (RequisitionDetail detail in re.RequisitionDetails)
+        //        {
+        //            detail.RetrievalId = newRetrieval.Id; //assign the newly created retrieval Id to each requsitiondetail belonging to a confirmed retrieval 
+        //            RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
+        //        }
+        //    }
+        //    Retrieval updatedRetrieval = retrivrepo.GetRetrievalById(newRetrieval.Id); //Get back the latest created retrieval with all the related objects
+        //    updatedRetrieval.RequisitionDetails = updatedRetrieval.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
+        //    return updatedRetrieval;
+        //}
+
+
+
+        public Retrieval genretrievalform(long date, int clerkid, List<Requisition> listreq) //UPDATED LOGIC
         {
             Retrieval r_exist = retrivrepo.GetRetrieval(date, clerkid, Status.RetrievalStatus.created); // check if there already exist a retrieval with "created" status and processed by clerkid
-            if (r_exist != null)
+            
+            if (r_exist != null) //If an existing retrieval form for the collection date has been created, update existing requisition with same date with the existing retrievalformId 
             {
-                return r_exist;
-            }
-            Retrieval r1 = new Retrieval();
-            r1.ClerkId = clerkid;
-            r1.DisbursedDate = date;
-            r1.Status = Status.RetrievalStatus.created;
-            Retrieval newRetrieval = retrivrepo.genretrievalandreturn(r1); //creates empty retrieval form and returns it
-
-            foreach (Requisition re in listreq)//listreq is passed in from controller, which is a list of requisition with "confirmed" status, on the selected date and processed by the clerk in session
-            {
-                foreach (RequisitionDetail detail in re.RequisitionDetails)
+                foreach (Requisition re in listreq)//listreq is passed in from controller, which is a list of requisition with "confirmed" status, on the selected date and processed by the clerk in session
                 {
-                    detail.RetrievalId = newRetrieval.Id; //assign the newly created retrieval Id to each requsitiondetail belonging to a confirmed retrieval 
-                    RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
+                    foreach (RequisitionDetail detail in re.RequisitionDetails)
+                    {
+                        detail.RetrievalId = r_exist.Id; //assign the newly created retrieval Id to each requsitiondetail belonging to a confirmed retrieval 
+                        RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
+                    }
                 }
+                Retrieval updatedRetrieval = retrivrepo.GetRetrievalById(r_exist.Id); //Get back the latest created retrieval with all the related objects
+                updatedRetrieval.RequisitionDetails = updatedRetrieval.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
+                return updatedRetrieval;
             }
-            Retrieval updatedRetrieval = retrivrepo.GetRetrievalById(newRetrieval.Id); //Get back the latest created retrieval with all the related objects
-            updatedRetrieval.RequisitionDetails = updatedRetrieval.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
-            return updatedRetrieval;
+
+            else //If there is no retrieval form for the collection date, create a new retrieval form and update existing requisition with same date with the newly created retrievalformId 
+            {
+                Retrieval r1 = new Retrieval();
+                r1.ClerkId = clerkid;
+                r1.DisbursedDate = date;
+                r1.Status = Status.RetrievalStatus.created;
+                Retrieval newRetrieval = retrivrepo.genretrievalandreturn(r1); //creates empty retrieval form and returns it
+
+                foreach (Requisition re in listreq)//listreq is passed in from controller, which is a list of requisition with "confirmed" status, on the selected date and processed by the clerk in session
+                {
+                    foreach (RequisitionDetail detail in re.RequisitionDetails)
+                    {
+                        detail.RetrievalId = newRetrieval.Id; //assign the newly created retrieval Id to each requsitiondetail belonging to a confirmed retrieval 
+                        RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
+                    }
+                }
+                Retrieval updatedRetrieval = retrivrepo.GetRetrievalById(newRetrieval.Id); //Get back the latest created retrieval with all the related objects
+                updatedRetrieval.RequisitionDetails = updatedRetrieval.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
+                return updatedRetrieval;
+            }
         }
 
         public bool updateretrieval(Retrieval r1)
