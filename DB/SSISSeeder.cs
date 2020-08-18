@@ -239,8 +239,9 @@ namespace SSIS_BOOT.DB
             e8.ManagerId = 9;
             e10.ManagerId = 11;
             e12.ManagerId = 13;
-            e1.ManagerId = 3;
-            e16.ManagerId = 3;
+            e1.ManagerId = 2;
+            e2.ManagerId = 3;
+            e16.ManagerId = 2;
             dbcontext.Update(e1);
             dbcontext.Update(e4);
             dbcontext.Update(e6);
@@ -418,19 +419,19 @@ namespace SSIS_BOOT.DB
                                                1, 1598227200000,
                                                4, 1595237400000, 1, 1595237400000);
 
-            //create date- Wednesday, 29-Jul-20 15:00:00 UTC ;receive-03/8/2020 @ 9:30am (UTC);acknowldge-03/8/2020 @ 9:30am
-            Requisition r5 = new Requisition("ENGL", 14, 5, null, 1, 1596034800000, Status.RequsitionStatus.completed,
+            //create date- Wednesday, 29-Jul-20 00:00:00 UTC ;receive-20/8/2020 @ 0:00am (UTC);acknowldge-03/8/2020 @ 9:30am
+            Requisition r5 = new Requisition("ENGL", 14, 5, null, 1, 1595980800000, Status.RequsitionStatus.completed,
                                                1, 1597881600000,
                                                4, 1596447000000, 1, 1596447000000);
 
-            //created-05 /8/ 2020 09:00:00 (UTC); collection-date-10/8/2020 @930am; received-10/8/2020 @11/:00am; confirmed -10/8/2020@12:00pm
-            Requisition r6 = new Requisition("ENGL", 4, 5, null, 16, 1596618000000, Status.RequsitionStatus.completed,
+            //created-05 /8/ 2020 00:00:00 (UTC); collection-date-10/8/2020 @0:00 UTC; received and confirmed-10/8/2020  @0:00 UTC
+            Requisition r6 = new Requisition("ENGL", 4, 5, null, 16, 1596585600000, Status.RequsitionStatus.completed,
                                                1, 1597017600000,
-                                               4, 1597059000000, 1, 1597060800000);
-            //created-05 /8/ 2020 09:00:00 (UTC); collection-date-10/8/2020 @930am; received-10/8/2020 @11/:00am; confirmed -10/8/2020@12:00pm
-            Requisition r7 = new Requisition("CPSC", 15, 7, null, 16, 1596618000000, Status.RequsitionStatus.completed,
+                                               4, 1597017600000, 1, 1597017600000);
+            //created-05 /8/ 2020 00:00:00 (UTC); collection-date-10/8/2020 @0:00 UTC; received and confirmed-10/8/2020 @0:00 UTC
+            Requisition r7 = new Requisition("CPSC", 15, 7, null, 16, 1596585600000, Status.RequsitionStatus.completed,
                                                1, 1597017600000,
-                                               4, 1597059000000, 1, 1597060800000);
+                                               4, 1597017600000, 1, 1597017600000);
             
             dbcontext.Add(r3);
             dbcontext.SaveChanges();
@@ -443,35 +444,35 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(r7);
             dbcontext.SaveChanges();
 
-            //created-05/8/2020 09:00:00 (UTC); collection-date-25/8/2020 @00:00am(localtime)
+            //created-05/8/2020 00:00:00 (UTC); collection-date-25/8/2020 @00:00am(GMT)
             Requisition r8 = new Requisition("ENGL", 4, 5, 1);
-            r8.CreatedDate = 1596618000000;
+            r8.CreatedDate = 1596585600000;
             r8.Status = Status.RequsitionStatus.confirmed;
             r8.CollectionPointId = 1;
             r8.CollectionDate = 1598313600000;
             dbcontext.Add(r8);
             dbcontext.SaveChanges();
 
-            //created-05/8/2020 09:00:00 (UTC); collection-date-20/8/2020 @00:00am(localtime)
+            //created-05/8/2020 00:00:00 (UTC); collection-date-20/8/2020 @00:00am(GMT)
             Requisition r9 = new Requisition("ENGL", 14, 5, 1);
-            r9.CreatedDate = 1596618000000;
+            r9.CreatedDate = 1596585600000;
             r9.Status = Status.RequsitionStatus.confirmed;
             r9.CollectionPointId = 1;
-            r9.CollectionDate = 1597852800000;
+            r9.CollectionDate = 1597881600000;
             dbcontext.Add(r9);
             dbcontext.SaveChanges();
 
-            //created-10/8/2020 09:00:00 (localtimezone)
+            //created-10/8/2020 00:00:00 (localtimezone)
             Requisition r10 = new Requisition("ENGL", 14, 5, 1);
-            r10.CreatedDate = 1597021200000;
+            r10.CreatedDate = 1597017600000;
             r10.Status = Status.RequsitionStatus.approved;
             r10.CollectionPointId = 5;
             dbcontext.Add(r10);
             dbcontext.SaveChanges();
 
-            //created-05/8/2020 09:00:00 (UTC); collection-date-25/8/2020 @00:00am(localtime)
+            //created-05/8/2020 00:00:00 (UTC); collection-date-25/8/2020 @00:00am(localtime)
             Requisition r11 = new Requisition("CPSC", 15, 7, 1);
-            r11.CreatedDate = 1596618000000;
+            r11.CreatedDate = 1596585600000;
             r11.Status = Status.RequsitionStatus.confirmed;
             r11.CollectionPointId = 1;
             r11.CollectionDate = 1598313600000;
