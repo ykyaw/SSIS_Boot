@@ -318,26 +318,29 @@ namespace SSIS_BOOT.Service.Impl
             DateTime dateTime = DateTime.UtcNow.Date;
             DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
             long date = dt.ToUnixTimeMilliseconds();
+            List<PurchaseRequestDetail> updatedprlist = new List<PurchaseRequestDetail>();
             foreach (PurchaseRequestDetail prd in prdlist)
             {
                 prd.SubmitDate = date;
-                purreqrepo.updatepurchaserequestitem(prd);
+                PurchaseRequestDetail pr = purreqrepo.updatepurchaserequestitem(prd);
+                updatedprlist.Add(pr);  
             }
-
-            //retrieve the current status of prd
-            IEnumerable<string> status = from prd in prdlist
-                                         select prd.Status;
-            string prdstatus = status.First();
+            string prdstatus = prdlist[0].Status;
 
             if (prdstatus == Status.PurchaseRequestStatus.pendapprov)
             {
-                IEnumerable<int> clerkid = from prd in prdlist
-                                           select prd.CreatedByClerkId;
-                int clerkId = clerkid.First();
+                Employee supervisor = erepo.findempById((int)updatedprlist[0].CreatedByClerk.ManagerId);
+                EmailModel email = new EmailModel();
 
-                Employee supervisor = erepo.findSupervisorByEmpId(clerkId);
-                //send email to supervisor(PENDING)
-                // if (supervisor !=null){}
+                Task.Run(async () =>
+                {
+                    EmailTemplates.UpdatePRStatusTemplate ctt = new EmailTemplates.UpdatePRStatusTemplate(updatedprlist, supervisor);
+                    email.emailTo = supervisor.Email;
+                    email.emailSubject = ctt.subject;
+                    email.emailBody = ctt.body;
+                    await mailservice.SendEmailAsync(email);
+                });
+
 
             }
             return true;
@@ -375,11 +378,20 @@ namespace SSIS_BOOT.Service.Impl
         {
             try
             {
-                rrepo.updaterequisitioncollectiontime(r1);
+                Requisition original = rrepo.updaterequisitioncollectiontime(r1);
+                
+                Employee drep = erepo.findempById((int)original.Department.RepId);
+                Employee deptemp = erepo.findempById(original.ReqByEmpId);
+                EmailModel email = new EmailModel();
 
-
-                //IMPLEMENT EMAIL SERVICE TO INFORM REP OF COLLECTION TIME
-
+                Task.Run(async () =>
+                {
+                    EmailTemplates.CollectionTimeTemplate ctt = new EmailTemplates.CollectionTimeTemplate(original,drep);
+                    email.emailTo = drep.Email;
+                    email.emailSubject = ctt.subject;
+                    email.emailBody = ctt.body;
+                    await mailservice.SendEmailwithccAsync(email,deptemp);
+                });
                 return true;
             }
             catch (Exception exception)
@@ -423,6 +435,27 @@ namespace SSIS_BOOT.Service.Impl
                     rdrepo.ClerkSaveRequisitionDetailRemarksOnCompletion(rd);
                     rrepo.ClerkCompleteRequisition(clerkId, (int)rd.RequisitionId, date, Status.RequsitionStatus.received);
                 }
+
+                var uniquereqid = rdl.Select(m => m.RequisitionId).Distinct().ToList();
+                List<Requisition> reqlist = new List<Requisition>();
+                foreach(var i in uniquereqid)
+                {
+                    Requisition r = rrepo.findreqByReqId((int)i);
+                    reqlist.Add(r);
+                }
+                Employee drep = reqlist[0].ReceivedByRep;
+                EmailModel email = new EmailModel();
+                
+                Task.Run(async () =>
+                {
+                    EmailTemplates.AckCompletedReq ctt = new EmailTemplates.AckCompletedReq(reqlist, drep);
+                    email.emailTo = drep.Email;
+                    email.emailSubject = ctt.subject;
+                    email.emailBody = ctt.body;
+                    await mailservice.SendEmailAsync(email);
+                });
+
+
                 return true;
             }
             catch (Exception m)

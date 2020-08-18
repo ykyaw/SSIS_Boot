@@ -55,6 +55,29 @@ namespace SSIS_BOOT.Email
             await smtp.SendMailAsync(message);
         }
 
+        public async Task SendEmailwithccAsync(EmailModel mailobj, Employee deptemp)
+        {
+            MailMessage message = new MailMessage();
+            SmtpClient smtp = new SmtpClient();
+            message.From = new MailAddress(_emailSettings.Mail, _emailSettings.DisplayName);
+            message.To.Add(new MailAddress(mailobj.emailTo));
+            message.CC.Add(deptemp.Email);
+            message.Subject = mailobj.emailSubject;
+            message.IsBodyHtml = false;
+            message.Body = mailobj.emailBody;
+            smtp.Port = _emailSettings.Port;
+            smtp.Host = _emailSettings.Host;
+            smtp.EnableSsl = true;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new NetworkCredential(_emailSettings.Mail, _emailSettings.Password);
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            await smtp.SendMailAsync(message);
+        }
+
+       
+
+
+
 
     }
 }

@@ -189,7 +189,6 @@ namespace SSIS_BOOT.Controllers
             {
                 throw new Exception("Sorry, there is no Disbursement matching the provided date for this department.");
             }
-            // send email to the department rep (PENDING)
             return dlist;
         }
 

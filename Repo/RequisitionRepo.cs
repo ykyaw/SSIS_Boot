@@ -20,7 +20,7 @@ namespace SSIS_BOOT.Repo
         public Requisition findreqformByReqID(int reqId)
         {
             Requisition req = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product)
-                .Include(m => m.Department).Include(m => m.ReqByEmp).Include(m => m.CollectionPoint).Include(m => m.ApprovedBy).Where(m => m.Id == reqId).FirstOrDefault();
+                .Include(m => m.Department).Include(m => m.ReqByEmp).Include(m => m.CollectionPoint).Include(m => m.ApprovedBy).Include(m=>m.ReceivedByRep).Where(m => m.Id == reqId).FirstOrDefault();
             return req;
         }
 
@@ -33,7 +33,7 @@ namespace SSIS_BOOT.Repo
 
         public List<Requisition> findreqformByDeptID(string deptID)
         {
-            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department).Include(m => m.ReqByEmp).Where(m => m.DepartmentId == deptID).ToList();
+            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department).Include(m => m.ReqByEmp).Include(m => m.ReceivedByRep).Where(m => m.DepartmentId == deptID).ToList();
             return lr;
             // .Include(m => m.ReqByEmp).Include(m => m.ApprovedBy).Include(m => m.ProcessedByClerk).Include(m => m.RequisitionDetails)
         }
@@ -42,13 +42,15 @@ namespace SSIS_BOOT.Repo
             List<Requisition> lr = dbcontext.Requisitions.Include(m => m.RequisitionDetails)
                 .ThenInclude(m => m.Product)
                 .Include(m => m.Department)
+                .Include(m => m.ReceivedByRep)
                 .Where(m => m.CollectionDate == date && m.ProcessedByClerkId == clerkid && m.Status == reqStatus).ToList();
             return lr;
         }
 
         public Requisition findreqByReqId(int reqId)
         {
-            Requisition req = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product).Include(m => m.ReqByEmp).Include(m => m.Department).FirstOrDefault(m => m.Id == reqId);
+            Requisition req = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product).Include(m => m.ReceivedByRep)
+                .Include(m => m.ReqByEmp).Include(m => m.Department).FirstOrDefault(m => m.Id == reqId);
             return req;
         }
 
@@ -59,11 +61,11 @@ namespace SSIS_BOOT.Repo
             return req;
         }
 
-        public bool updaterequisitioncollectiontime(Requisition r1)
+        public Requisition updaterequisitioncollectiontime(Requisition r1)
         {
             try
             {
-                var original = dbcontext.Requisitions.Find(r1.Id);
+                var original = dbcontext.Requisitions.Include(m=>m.Department).Include(m=>m.CollectionPoint).Include(m=>m.ReceivedByRep).FirstOrDefault(m=>m.Id == r1.Id);
                 if (original == null)
                 {
                     throw new Exception();
@@ -73,7 +75,7 @@ namespace SSIS_BOOT.Repo
                 original.ProcessedByClerkId = r1.ProcessedByClerkId;
                 //dbcontext.Entry(original).CurrentValues.SetValues(r1);
                 dbcontext.SaveChanges();
-                return true;
+                return original;
             }
             catch
             {
