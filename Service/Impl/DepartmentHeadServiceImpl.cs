@@ -86,5 +86,12 @@ namespace SSIS_BOOT.Service.Impl
                 throw e;
             }
         }
+
+        public Employee GetCurrentDelegate(string deptid)
+        {
+            long currentdate = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            Employee del = erepo.getcurrentdelegate(currentdate, deptid);
+            return del;
+        }
     }
 }
