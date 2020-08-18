@@ -20,7 +20,7 @@ namespace SSIS_BOOT.Repo
 
         public Employee Login(Employee emp)
         {
-            return dbcontext.Employees.Include(m=>m.Department)
+            return dbcontext.Employees.Include(m => m.Department)
                 .Where(item => item.Email == emp.Email && item.Password == emp.Password)
                 .FirstOrDefault();
         }
@@ -35,10 +35,10 @@ namespace SSIS_BOOT.Repo
         {
             return dbcontext.Employees.Where(item => item.Id == empid).FirstOrDefault();
         }
-        
+
         public Employee findSupervisorByEmpId(int empId)
         {
-            Employee emp= dbcontext.Employees.FirstOrDefault(x => x.Id == empId);
+            Employee emp = dbcontext.Employees.FirstOrDefault(x => x.Id == empId);
             if (emp.ManagerId != null)
             {
                 int supervisorid = (int)emp.ManagerId;
@@ -49,11 +49,11 @@ namespace SSIS_BOOT.Repo
 
         public List<Employee> findEmpByDept(string deptid)
         {
-            List<Employee> emplist = dbcontext.Employees.Include(m=>m.Department).Include(m=>m.Manager).Where(m => m.DepartmentId == deptid).ToList();
+            List<Employee> emplist = dbcontext.Employees.Include(m => m.Department).Include(m => m.Manager).Where(m => m.DepartmentId == deptid).ToList();
             return emplist;
         }
 
-        public bool AssignDelegateDate(Employee emp)
+        public Employee AssignDelegateDate(Employee emp)
         {
             try
             {
@@ -64,13 +64,27 @@ namespace SSIS_BOOT.Repo
                     original.DelegateToDate = emp.DelegateToDate;
                 }
                 dbcontext.SaveChanges();
-                return true;
+                return original;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw new Exception("Error saving delegate dates");
-            }        
+            }
 
+        }
+        public Employee getcurrentdelegate(long submitdate, string deptid)
+        {
+            Employee e = new Employee();
+            List<Employee> allempindept = dbcontext.Employees.Where(m => m.DepartmentId == deptid).ToList();
+            foreach (Employee emp in allempindept)
+            {
+                if (submitdate > emp.DelegateFromDate && submitdate < emp.DelegateToDate)
+                {
+                    e = emp;
+                    break;
+                }
+            }
+            return e;
         }
     }
 }
