@@ -28,7 +28,7 @@ namespace SSIS_BOOT.Repo
 
         public List<RequisitionDetail> retrievedisbursementlist(string deptId, long collectiondate)
         {
-            List<RequisitionDetail> dlist = dbcontext.RequisitionDetails.Include(m => m.Requisition).Include(m => m.Product)
+            List<RequisitionDetail> dlist = dbcontext.RequisitionDetails.Include(m => m.Requisition).ThenInclude(m=>m.ReceivedByRep).Include(m => m.Product)
                 .Include(m => m.Retrieval).Where(m => m.Requisition.DepartmentId == deptId && m.Requisition.CollectionDate == collectiondate).ToList();
             return dlist;
         }
