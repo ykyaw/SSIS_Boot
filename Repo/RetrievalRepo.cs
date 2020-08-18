@@ -67,7 +67,7 @@ namespace SSIS_BOOT.Repo
         {
             return dbcontext.Retrievals.Include(m => m.Clerk)
                 .Include(m => m.RequisitionDetails).ThenInclude(m => m.Product).ThenInclude(m => m.Category)
-                .Include(m => m.RequisitionDetails).ThenInclude(m => m.Requisition)
+                .Include(m => m.RequisitionDetails).ThenInclude(m => m.Requisition).ThenInclude(m=>m.Department)
                 .FirstOrDefault(m=>m.Id == retrivId);
         }
     }

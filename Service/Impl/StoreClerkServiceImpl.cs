@@ -11,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SSIS_BOOT.Service.Impl
@@ -239,10 +240,12 @@ namespace SSIS_BOOT.Service.Impl
         {
             try
             {
+                
                 retrivrepo.UpdateRetrieval(r1);
                 foreach (RequisitionDetail rd in r1.RequisitionDetails)
                 {
                     rdrepo.updaterequsitiondetail(rd);
+                    UpdateStockCardUponRetrieval(rd, r1);
                 }
                 return true;
             }
@@ -250,6 +253,28 @@ namespace SSIS_BOOT.Service.Impl
             {
                 throw exception;
             }
+        }
+
+        public bool UpdateStockCardUponRetrieval(RequisitionDetail rd, Retrieval r)
+        {
+            Retrieval retrieval = retrivrepo.GetRetrievalById(r.Id);
+            Transaction t_new = new Transaction();
+            t_new.ProductId = rd.ProductId;
+            t_new.Date = (long)retrieval.RetrievedDate;
+
+            StringBuilder builder = new StringBuilder();
+            t_new.Description = builder.Append("Disbursement to ").Append(retrieval.RequisitionDetails[0].Requisition.Department.Name).ToString();
+
+            t_new.Qty = (int)rd.QtyDisbursed;
+
+            Transaction t_old = trepo.GetLatestTransactionByProductId(rd.ProductId);
+            t_new.Balance = t_old.Balance - t_new.Qty;
+
+            t_new.UpdatedByEmpId = retrieval.ClerkId;
+            t_new.RefCode = retrieval.Id.ToString();
+
+            trepo.savenewtransaction(t_new);
+            return true;
         }
 
         public List<TenderQuotation> gettop3suppliers(string productId)
