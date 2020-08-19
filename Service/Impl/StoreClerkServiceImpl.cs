@@ -124,11 +124,13 @@ namespace SSIS_BOOT.Service.Impl
             }
             else
             {
-                List<PurchaseRequestDetail> pnull = prdlistwithnull.GroupBy(m => m.SupplierId).SelectMany(m => m).ToList();
+                //List<PurchaseRequestDetail> pnull = prdlistwithnull.GroupBy(m => m.SupplierId).SelectMany(m => m).ToList(); 
+                List<PurchaseRequestDetail> pnull = prdlistwithnull.OrderBy(m => m.SupplierId).ToList(); //IMPROVED      
                 Dictionary<string, List<PurchaseRequestDetail>> pdict = new Dictionary<string, List<PurchaseRequestDetail>>();
 
                 foreach (PurchaseRequestDetail prd in pnull)
                 {
+                    prd.Product = prepo.FindProductById(prd.ProductId);
                     if (!pdict.ContainsKey(prd.SupplierId))
                     {
                         List<PurchaseRequestDetail> prdlist1 = new List<PurchaseRequestDetail>();
@@ -147,7 +149,7 @@ namespace SSIS_BOOT.Service.Impl
                     Supplier supplier = srepo.findsupplierbyId(r.Value[0].SupplierId);
                     Employee clerk = erepo.findempById(r.Value[0].CreatedByClerkId);
                     EmailModel email = new EmailModel();
-                    List<PurchaseRequestDetail> List_of_PR_tosend = pdict[r.Key];
+                    List<PurchaseRequestDetail> List_of_PR_tosend = pdict[r.Key]; 
                     Task.Run(async () =>
                     {
                         EmailTemplates.RequestQuoteTemplate rfq = new EmailTemplates.RequestQuoteTemplate(clerk, supplier, List_of_PR_tosend);
