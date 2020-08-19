@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SSIS_BOOT.Email;
+using SSIS_BOOT.Email.EmailTemplates;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Repo;
 using SSIS_BOOT.Service.Interfaces;
@@ -15,21 +17,43 @@ namespace SSIS_BOOT.Service.Impl
         private RequisitionDetailRepo rdrepo;
         private EmployeeRepo erepo;
         private DepartmentRepo drepo;
+        protected IMailer mailservice;
 
-        public DepartmentHeadServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, EmployeeRepo erepo, DepartmentRepo drepo)
+        public DepartmentHeadServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, EmployeeRepo erepo, DepartmentRepo drepo, IMailer mailservice)
         {
             this.rrepo = rrepo;
             this.rdrepo = rdrepo;
             this.erepo = erepo;
             this.drepo = drepo;
+            this.mailservice = mailservice;
         }
 
         public bool ApprovRejRequisition(Requisition req)
         {
             try
             {
-                rrepo.DeptHeadApprovRejRequisition(req);
+                //add the current date to be the approved date.
+                DateTime dateTime = DateTime.UtcNow.Date;
+                DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
+                long date = dt.ToUnixTimeMilliseconds();
+                req.ApprovalDate = date;
+
+                Requisition updatedreq = rrepo.DeptHeadApprovRejRequisition(req);
+                Employee deptemp = updatedreq.ReqByEmp;
+                Employee depthead = updatedreq.ApprovedBy;
+                EmailModel email = new EmailModel();
+
+                //need to check on the delegate emp
+                Task.Run(async () =>
+                {
+                    EmailTemplates.ProcessedreqTemplate prt = new EmailTemplates.ProcessedreqTemplate(updatedreq,deptemp,depthead);
+                    email.emailTo = deptemp.Email;
+                    email.emailSubject = prt.subject;
+                    email.emailBody = prt.body;
+                    await mailservice.SendEmailAsync(email);
+                });
                 return true;
+
             }
             catch (Exception m)
             {
@@ -65,7 +89,17 @@ namespace SSIS_BOOT.Service.Impl
             }
             try
             {
-                erepo.AssignDelegateDate(emp);
+                Employee delegateemp = erepo.AssignDelegateDate(emp);
+                //EmailModel email = new EmailModel();
+
+                //Task.Run(async () =>
+                //{
+                //    EmailTemplates.ProcessedreqTemplate prt = new EmailTemplates.ProcessedreqTemplate(updatedreq, deptemp, depthead);
+                //    email.emailTo = deptemp.Email;
+                //    email.emailSubject = prt.subject;
+                //    email.emailBody = prt.body;
+                //    await mailservice.SendEmailAsync(email);
+                //});
                 return true;
             }
             catch(Exception e)
