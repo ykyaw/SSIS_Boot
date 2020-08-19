@@ -24,5 +24,10 @@ namespace SSIS_BOOT.Repo
             return plist;
         }
 
+        public Product FindProductById(string pdtid)
+        {
+            return dbcontext.Products.Find(pdtid);
+        }
+
     }
 }

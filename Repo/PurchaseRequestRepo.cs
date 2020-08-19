@@ -75,5 +75,11 @@ namespace SSIS_BOOT.Repo
             dbcontext.SaveChanges();
             return true;
         }
+
+        public PurchaseRequestDetail GetPurchaseRequestDetailById(int prdid)
+        {
+            return dbcontext.PurchaseRequestDetails.Find(prdid);
+
+        }
     }
 }

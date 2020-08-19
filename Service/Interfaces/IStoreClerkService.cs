@@ -9,6 +9,8 @@ namespace SSIS_BOOT.Service.Interfaces
     public interface IStoreClerkService
     {
         public List<Product> getallcat();
+        List<Transaction> getlatesttransaction(List<Product> pdt);
+
         public List<PurchaseRequestDetail> getpurchasereq();
         public List<PurchaseRequestDetail> getprdetails(long prid);
         public List<PurchaseOrder> getpurchaseorders();

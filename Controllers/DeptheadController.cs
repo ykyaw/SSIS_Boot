@@ -85,7 +85,7 @@ namespace SSIS_BOOT.Controllers
 
         [HttpPut]
         [Route("/depthead/adr/{empid}")]
-        public bool AssignDeptRep(int empid)
+        public bool AssignDeptRep(int empid) //CHECK WHETHER HTTPPUT CAN PASS IN FROM URI WITHOUT BODY
         {
             try
             {
