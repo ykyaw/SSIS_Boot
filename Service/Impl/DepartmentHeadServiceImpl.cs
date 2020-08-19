@@ -18,14 +18,16 @@ namespace SSIS_BOOT.Service.Impl
         private EmployeeRepo erepo;
         private DepartmentRepo drepo;
         protected IMailer mailservice;
+        private CollectionPointRepo crepo;
 
-        public DepartmentHeadServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, EmployeeRepo erepo, DepartmentRepo drepo, IMailer mailservice)
+        public DepartmentHeadServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, EmployeeRepo erepo, DepartmentRepo drepo, IMailer mailservice, CollectionPointRepo crepo)
         {
             this.rrepo = rrepo;
             this.rdrepo = rdrepo;
             this.erepo = erepo;
             this.drepo = drepo;
             this.mailservice = mailservice;
+            this.crepo = crepo;
         }
 
         public bool ApprovRejRequisition(Requisition req)
@@ -40,13 +42,12 @@ namespace SSIS_BOOT.Service.Impl
 
                 Requisition updatedreq = rrepo.DeptHeadApprovRejRequisition(req);
                 Employee deptemp = updatedreq.ReqByEmp;
-                Employee depthead = updatedreq.ApprovedBy;
+                Employee approvedby = updatedreq.ApprovedBy;
                 EmailModel email = new EmailModel();
 
-                //need to check on the delegate emp
                 Task.Run(async () =>
                 {
-                    EmailTemplates.ProcessedreqTemplate prt = new EmailTemplates.ProcessedreqTemplate(updatedreq,deptemp,depthead);
+                    EmailTemplates.ProcessedreqTemplate prt = new EmailTemplates.ProcessedreqTemplate(updatedreq,deptemp, approvedby);
                     email.emailTo = deptemp.Email;
                     email.emailSubject = prt.subject;
                     email.emailBody = prt.body;
@@ -90,16 +91,17 @@ namespace SSIS_BOOT.Service.Impl
             try
             {
                 Employee delegateemp = erepo.AssignDelegateDate(emp);
-                //EmailModel email = new EmailModel();
+                Employee depthead = erepo.findSupervisorByEmpId(delegateemp.Id);
+                EmailModel email = new EmailModel();
 
-                //Task.Run(async () =>
-                //{
-                //    EmailTemplates.ProcessedreqTemplate prt = new EmailTemplates.ProcessedreqTemplate(updatedreq, deptemp, depthead);
-                //    email.emailTo = deptemp.Email;
-                //    email.emailSubject = prt.subject;
-                //    email.emailBody = prt.body;
-                //    await mailservice.SendEmailAsync(email);
-                //});
+                Task.Run(async () =>
+                {
+                    EmailTemplates.AssignDelTemplate adt = new EmailTemplates.AssignDelTemplate(delegateemp, depthead);
+                    email.emailTo = delegateemp.Email;
+                    email.emailSubject = adt.subject;
+                    email.emailBody = adt.body;
+                    await mailservice.SendEmailwithccallAsync(email, emplist);
+                });
                 return true;
             }
             catch(Exception e)
@@ -113,6 +115,22 @@ namespace SSIS_BOOT.Service.Impl
             try
             {
                 drepo.AssignDeptRep(empid, deptid);
+                Employee deptrep = erepo.findempById(empid);
+                Employee depthead = erepo.findSupervisorByEmpId(deptrep.Id);
+
+                //find collectionpoint
+                Department dp = drepo.findDeptbyRepID(deptrep.Id);
+                CollectionPoint deptCP = crepo.getdeptcollectionpoint(dp); 
+                EmailModel email = new EmailModel();
+
+                Task.Run(async () =>
+                {
+                    EmailTemplates.AssignDeptRepTemplate adt = new EmailTemplates.AssignDeptRepTemplate(deptrep, depthead, deptCP);
+                    email.emailTo = deptrep.Email;
+                    email.emailSubject = adt.subject;
+                    email.emailBody = adt.body;
+                    await mailservice.SendEmailAsync(email);
+                });
                 return true;
             }
             catch (Exception e)

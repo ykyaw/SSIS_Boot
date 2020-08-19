@@ -12,5 +12,7 @@ namespace SSIS_BOOT.Email
         Task SendRFQEmailAsync(EmailModel mailobj, Employee cc);
 
         Task SendEmailwithccAsync(EmailModel mailobj, Employee deptemp);
+
+        Task SendEmailwithccallAsync(EmailModel mailobj, List<Employee> emplist);
     }
 }

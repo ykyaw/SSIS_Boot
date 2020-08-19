@@ -19,8 +19,11 @@ namespace SSIS_BOOT.Service.Impl
         private PurchaseOrderRepo porepo;
         private SupplierRepo srepo;
         private CollectionPointRepo crepo;
+        protected IMailer mailservice;
+        private PurchaseOrderDetailRepo podrepo;
 
-        public StoreSupServiceImpl(AdjustmentVoucherRepo avrepo, EmployeeRepo erepo, PurchaseRequestRepo purreqrepo, PurchaseOrderRepo porepo, SupplierRepo srepo, CollectionPointRepo crepo)
+        public StoreSupServiceImpl(AdjustmentVoucherRepo avrepo, EmployeeRepo erepo, PurchaseRequestRepo purreqrepo, 
+            PurchaseOrderRepo porepo, SupplierRepo srepo, CollectionPointRepo crepo, IMailer mailservice, PurchaseOrderDetailRepo podrepo)
         {
             this.avrepo = avrepo;
             this.erepo = erepo;
@@ -28,6 +31,8 @@ namespace SSIS_BOOT.Service.Impl
             this.porepo = porepo;
             this.srepo = srepo;
             this.crepo = crepo;
+            this.mailservice = mailservice;
+            this.podrepo = podrepo;
         }
 
         public AdjustmentVoucher getAdjVouchById(string id)
@@ -120,29 +125,48 @@ namespace SSIS_BOOT.Service.Impl
                     {
                         totalprice += pr.TotalPrice;
                     }
+                    //generate the list of purchase order details
                     PurchaseOrder newpo = porepo.create(po, clerkid, supplierid, ordereddate, collectionpointid, totalprice);
                     List<PurchaseRequestDetail> List_of_PRD_toaddinPO = pdict[r.Key];
                     newpo = porepo.addpodinPO(List_of_PRD_toaddinPO, newpo.Id);
+                    List<PurchaseOrderDetail> pod = podrepo.findpodetails(newpo.Id);
+                   
 
                     Employee clerk = erepo.findempById(r.Value[0].CreatedByClerkId);
                     Supplier supplier = srepo.findsupplierbyId(r.Value[0].SupplierId);
-                    //EmailModel email = new EmailModel();
 
-                    //Task.Run(async () =>
-                    //{
-                    //    EmailTemplates.ApprovePOtemplate rfq = new EmailTemplates.ApprovePOtemplate(clerk, supplier, newpo);
-                    //    email.emailTo = supplier.Email;
-                    //    email.emailSubject = rfq.subject;
-                    //    email.emailBody = rfq.body;
-                    //    await mailservice.SendRFQEmailAsync(email, clerk);
-                    //}
+                    EmailModel email = new EmailModel();
+
+                    Task.Run(async () =>
+                    {
+                        EmailTemplates.ApprovedPRtemplate apt = new EmailTemplates.ApprovedPRtemplate(clerk, supplier, pod, newpo);
+                        email.emailTo = supplier.Email;
+                        email.emailSubject = apt.subject;
+                        email.emailBody = apt.body;
+                        await mailservice.SendEmailwithccAsync(email, clerk);
+                    });
                 }
             }
 
             else //when rejected
             {
-                string remarks = prdlist[0].Remarks; //reason for rejection
-                //add email to reject 
+                // to pull out purchase request id and date
+                int prid = prdlist[0].Id;
+                long submitdate = (long) prdlist[0].SubmitDate;
+
+                string remarks = prdlist[0].Remarks;
+                Employee clerk = erepo.findempById(prdlist[0].CreatedByClerkId);
+                Employee sup = erepo.findempById(supid);
+                EmailModel email = new EmailModel();
+
+                Task.Run(async () =>
+                {
+                    EmailTemplates.RejectedPRtemplate apt = new EmailTemplates.RejectedPRtemplate(clerk, sup, prid,submitdate,remarks);
+                    email.emailTo = clerk.Email;
+                    email.emailSubject = apt.subject;
+                    email.emailBody = apt.body;
+                    await mailservice.SendEmailAsync(email);
+                });
             }
             return true;
         }

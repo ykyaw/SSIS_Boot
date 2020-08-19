@@ -55,8 +55,8 @@ namespace SSIS_BOOT.Controllers
         {
             try
             {
-                int deptHeadId = (int)HttpContext.Session.GetInt32("Id");
-                req.ApprovedById = deptHeadId;
+                int approvedbyid = (int)HttpContext.Session.GetInt32("Id");
+                req.ApprovedById = approvedbyid;
                 dhservice.ApprovRejRequisition(req);
                 return true;
             }

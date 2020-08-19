@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Internal;
 using SSIS_BOOT.Common;
+using SSIS_BOOT.Email;
+using SSIS_BOOT.Email.EmailTemplates;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Repo;
 using SSIS_BOOT.Service.Interfaces;
@@ -19,8 +22,10 @@ namespace SSIS_BOOT.Service.Impl
         private EmployeeRepo erepo;
         private DepartmentRepo drepo;
         private CollectionPointRepo cprepo;
+        protected IMailer mailservice;
 
-        public DepartmentEmpServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, ProductRepo prepo, EmployeeRepo erepo, DepartmentRepo drepo, CollectionPointRepo cprepo)
+        public DepartmentEmpServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, ProductRepo prepo, EmployeeRepo erepo, 
+            DepartmentRepo drepo, CollectionPointRepo cprepo, IMailer mailservice)
         {
             this.rrepo = rrepo;
             this.rdrepo = rdrepo;
@@ -28,6 +33,7 @@ namespace SSIS_BOOT.Service.Impl
             this.erepo = erepo;
             this.drepo = drepo;
             this.cprepo = cprepo;
+            this.mailservice = mailservice;
         }
         public List<Requisition> getdeptreqlist(string deptId)
         {
@@ -104,14 +110,47 @@ namespace SSIS_BOOT.Service.Impl
             int requisitionId = (int)rdlist[0].RequisitionId;
             Requisition req = rrepo.findreqByReqId(requisitionId);
             req.Status = Status.RequsitionStatus.pendapprov;
+            
+            //add the current date to be the submitted date.
+            DateTime dateTime = DateTime.UtcNow.Date;
+            DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
+            long submitdate = dt.ToUnixTimeMilliseconds();
+            req.SubmittedDate = submitdate;
 
-            //Finding supervisor Email address to send auto email
+            //Finding deptemp 
             Requisition updatedreq = rrepo.updateRequisition(req);
-            int deptemp = updatedreq.ReqByEmpId;
-            Employee depthead = erepo.findSupervisorByEmpId(deptemp);
+            int deptempid = updatedreq.ReqByEmpId;
+            Employee deptemp = erepo.findempById(deptempid);
 
-            //send email to dept manager(PENDING)
-            // if (supervisor !=null){}
+            //send to manager
+            Employee depthead = erepo.findSupervisorByEmpId(deptempid);
+
+            EmailModel email = new EmailModel();
+            Task.Run(async () =>
+            {
+                EmailTemplates.SubmitreqformTemplate srf = new EmailTemplates.SubmitreqformTemplate(updatedreq, depthead, deptemp);
+                email.emailTo = depthead.Email;
+                email.emailSubject = srf.subject;
+                email.emailBody = srf.body;
+                await mailservice.SendEmailAsync(email);
+            });
+
+            //check if there is delegate
+            Employee delegateemp = erepo.getcurrentdelegate(submitdate, deptemp.DepartmentId);
+            if (delegateemp != null)
+            {
+
+                //send email to delegate 
+                EmailModel email2 = new EmailModel();
+                Task.Run(async () =>
+                {
+                    EmailTemplates.SubmitreqformTemplate srf = new EmailTemplates.SubmitreqformTemplate(updatedreq, delegateemp, deptemp);
+                    email.emailTo = delegateemp.Email;
+                    email.emailSubject = srf.subject;
+                    email.emailBody = srf.body;
+                    await mailservice.SendEmailAsync(email);
+                });
+            }
             return true;                  
         }
 

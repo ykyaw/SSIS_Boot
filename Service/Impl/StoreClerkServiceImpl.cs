@@ -489,7 +489,20 @@ namespace SSIS_BOOT.Service.Impl
 
         public bool ClerkSubmitAdjustmentVoucher(string adjustmentVoucherId)
         {
-            avrepo.ClerkSubmitAdjustmentVoucher(adjustmentVoucherId);
+            AdjustmentVoucher av = avrepo.ClerkSubmitAdjustmentVoucher(adjustmentVoucherId);
+            // sending email to store supervisor
+            Employee clerk = av.InitiatedClerk;
+            Employee sup = av.InitiatedClerk.Manager;
+            EmailModel email = new EmailModel();
+
+            Task.Run(async () =>
+            {
+                EmailTemplates.SubmitAV sav = new EmailTemplates.SubmitAV(sup, clerk);
+                email.emailTo = sup.Email;
+                email.emailSubject = sav.subject;
+                email.emailBody = sav.body;
+                await mailservice.SendEmailAsync(email);
+            });
             return true;
         }
 

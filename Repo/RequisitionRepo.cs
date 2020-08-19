@@ -89,7 +89,7 @@ namespace SSIS_BOOT.Repo
             return req;
         }
 
-        public bool DeptHeadApprovRejRequisition(Requisition req)
+        public Requisition DeptHeadApprovRejRequisition(Requisition req)
         {
             try
             {
@@ -101,7 +101,7 @@ namespace SSIS_BOOT.Repo
                 original.Remarks = req.Remarks;
                 original.Status = req.Status;
                 dbcontext.SaveChanges();
-                return true;
+                return original;
             }
             catch
             {

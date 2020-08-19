@@ -90,8 +90,8 @@ namespace SSIS_BOOT.Controllers
             //int supid = 2;
 
             int supid = (int)HttpContext.Session.GetInt32("Id");
-            long approveddate = (long)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            ssservice.updatepr(prdlist, supid, approveddate);
+            long responsedate = (long)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            ssservice.updatepr(prdlist, supid, responsedate);
             return true;
         }
 

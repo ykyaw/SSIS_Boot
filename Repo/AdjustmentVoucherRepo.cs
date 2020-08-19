@@ -169,7 +169,7 @@ namespace SSIS_BOOT.Repo
             }
         }
 
-        public void ClerkSubmitAdjustmentVoucher(string AdjustmentVoucherId)
+        public AdjustmentVoucher ClerkSubmitAdjustmentVoucher(string AdjustmentVoucherId)
         {
             try
             {
@@ -181,7 +181,7 @@ namespace SSIS_BOOT.Repo
                 av.Status = Status.AdjVoucherStatus.pendapprov;
                 dbcontext.Update(av);
                 dbcontext.SaveChanges();
-
+                return av;
             }
             catch
             {
