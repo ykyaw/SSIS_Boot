@@ -338,11 +338,16 @@ namespace SSIS_BOOT.Email.EmailTemplates
             public string subject = "Adjustment Voucher pending for manager approval";
             public PendingManagerApprovalAVTemplate(AdjustmentVoucher av, Employee manager,Employee sup)
             {
+                long InitiatedDate = (long)av.InitiatedDate;
+                DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+                DateTime InitiatedDate1 = startTime.AddMilliseconds(Convert.ToDouble(InitiatedDate));
+                string InitiatedDate2 = InitiatedDate1.ToString("dd MMM yyyy");
+
                 if (av.Reason == null)
                 {
                     this.body =
                      "Dear " + manager.Name + System.Environment.NewLine + System.Environment.NewLine +
-                    "A new adjustment voucher submitted on "+ av.InitiatedDate+" is pending your further action." + System.Environment.NewLine + System.Environment.NewLine +
+                    "A new adjustment voucher submitted on "+ InitiatedDate2 + " is pending your further action." + System.Environment.NewLine + System.Environment.NewLine +
                     "Thank you." + System.Environment.NewLine + System.Environment.NewLine +
                     "Store supervisor" + System.Environment.NewLine + sup.Name;
                 }
@@ -350,7 +355,7 @@ namespace SSIS_BOOT.Email.EmailTemplates
                 {
                     this.body =
                      "Dear " + manager.Name + System.Environment.NewLine + System.Environment.NewLine +
-                    "A new adjustment voucher submitted on " + av.InitiatedDate + " is pending your further action. The reason provided by the supervisor is " + av.Reason + "."
+                    "A new adjustment voucher submitted on " + InitiatedDate2 + " is pending your further action. The reason provided by the supervisor is " + av.Reason + "."
                      + System.Environment.NewLine + System.Environment.NewLine +
                     "Thank you." + System.Environment.NewLine + System.Environment.NewLine +
                     "Store supervisor" + System.Environment.NewLine + sup.Name;

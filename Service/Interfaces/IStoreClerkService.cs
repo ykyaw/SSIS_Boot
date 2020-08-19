@@ -42,7 +42,7 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public bool updatepurchaseorderdetailitem(PurchaseOrderDetail pod);
 
-        public bool generatequotefrompr(List<PurchaseRequestDetail> prd);
+        public bool generatequotefrompr(List<PurchaseRequestDetail> prd,int clerkid);
 
 
         public AdjustmentVoucher createadjustmentvoucher(int clerkid);

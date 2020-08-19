@@ -107,7 +107,7 @@ namespace SSIS_BOOT.Service.Impl
         }
 
         //to run this mtd as async
-        public bool generatequotefrompr(List<PurchaseRequestDetail> prdlist)
+        public bool generatequotefrompr(List<PurchaseRequestDetail> prdlist,int clerkid)
         {
             List<PurchaseRequestDetail> prdlistwithnull = new List<PurchaseRequestDetail>();
 
@@ -147,7 +147,7 @@ namespace SSIS_BOOT.Service.Impl
                 foreach (var r in pdict)
                 {
                     Supplier supplier = srepo.findsupplierbyId(r.Value[0].SupplierId);
-                    Employee clerk = erepo.findempById(r.Value[0].CreatedByClerkId);
+                    Employee clerk = erepo.findempById(clerkid);
                     EmailModel email = new EmailModel();
                     List<PurchaseRequestDetail> List_of_PR_tosend = pdict[r.Key]; 
                     Task.Run(async () =>

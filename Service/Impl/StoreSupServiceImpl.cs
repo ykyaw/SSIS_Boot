@@ -64,13 +64,14 @@ namespace SSIS_BOOT.Service.Impl
                 if (av.Status == Status.AdjVoucherStatus.pendmanapprov)
                 {
                     //SEND MANAGER EMAIL TO BE FOLLOWED UP
+                    AdjustmentVoucher av1 = avrepo.findAdjustmentVoucherById(av.Id);
                     Employee manager = erepo.findSupervisorByEmpId(emp.Id);
                     Employee sup = erepo.findempById(emp.Id);
                     EmailModel email = new EmailModel();
 
                     Task.Run(async () =>
                     {
-                        EmailTemplates.PendingManagerApprovalAVTemplate apt = new EmailTemplates.PendingManagerApprovalAVTemplate(av,manager, sup);
+                        EmailTemplates.PendingManagerApprovalAVTemplate apt = new EmailTemplates.PendingManagerApprovalAVTemplate(av1, manager, sup);
                         email.emailTo = manager.Email;
                         email.emailSubject = apt.subject;
                         email.emailBody = apt.body;
@@ -79,21 +80,19 @@ namespace SSIS_BOOT.Service.Impl
                 }
                 else //approved or rejected
                 {
-                    Employee clerk = erepo.findempById(av.InitiatedClerkId);
-                    Employee sup = erepo.findempById((int) av.ApprovedSupId);
+                    AdjustmentVoucher av1= avrepo.findAdjustmentVoucherById(av.Id);
+                    Employee clerk = erepo.findempById(av1.InitiatedClerkId);
+                    Employee sup = erepo.findempById((int) av1.ApprovedSupId);
                     EmailModel email = new EmailModel();
 
                     Task.Run(async () =>
                     {
-                        EmailTemplates.ApproveRejectAVTemplate apt = new EmailTemplates.ApproveRejectAVTemplate(av, clerk, sup);
+                        EmailTemplates.ApproveRejectAVTemplate apt = new EmailTemplates.ApproveRejectAVTemplate(av1, clerk, sup);
                         email.emailTo = clerk.Email;
                         email.emailSubject = apt.subject;
                         email.emailBody = apt.body;
                         await mailservice.SendEmailwithccAsync(email,sup);
                     });
-
-
-
 
                 }
 

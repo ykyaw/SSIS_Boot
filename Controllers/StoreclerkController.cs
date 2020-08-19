@@ -281,8 +281,8 @@ namespace SSIS_BOOT.Controllers
             //prd.Add(new PurchaseRequestDetail(1593617400000, 1, "E032", "OMEG", 80, 100, "MF032", 100.00, 1593617400000, 1593691200000, 2, "approved", null));
             //scservice.generatequotefrompr(prd);
             //// END OF TEST
-
-            scservice.generatequotefrompr(prdlist);
+            int clerkid = (int)HttpContext.Session.GetInt32("Id");
+            scservice.generatequotefrompr(prdlist,clerkid);
             return true;
         }
 
