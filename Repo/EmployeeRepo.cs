@@ -81,10 +81,11 @@ namespace SSIS_BOOT.Repo
                 if (submitdate > emp.DelegateFromDate && submitdate < emp.DelegateToDate)
                 {
                     e = emp;
-                    break;
+                    return e;
                 }
             }
-            return e;
+            return null;
+
         }
     }
 }

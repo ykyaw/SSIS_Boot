@@ -12,7 +12,7 @@ namespace SSIS_BOOT.Controllers
     public class DeptheadController : Controller
     {
         private IDepartmentHeadService dhservice;
-        public DeptheadController (IDepartmentHeadService dhservice)
+        public DeptheadController(IDepartmentHeadService dhservice)
         {
             this.dhservice = dhservice;
         }
@@ -27,7 +27,7 @@ namespace SSIS_BOOT.Controllers
             //to be replaced by session of the user's departmentId
             //string deptid = "CPSC";
             string deptid = HttpContext.Session.GetString("DeptId");
-            List <Requisition> reqlist = dhservice.getdeptreqlist(deptid);
+            List<Requisition> reqlist = dhservice.getdeptreqlist(deptid);
             return reqlist;
         }
         [HttpGet]
@@ -96,6 +96,22 @@ namespace SSIS_BOOT.Controllers
             catch (Exception e)
             {
                 throw new Exception(e.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("/depthead/cdel")]
+        public Employee GetCurrentDelegate()
+        {
+            string deptid = (string)HttpContext.Session.GetString("DeptId");
+            Employee emp = dhservice.GetCurrentDelegate(deptid);
+            if (emp != null)
+            {
+                return emp;
+            }
+            else
+            {
+                throw new Exception("No department delegate assigned within this period");
             }
         }
 
