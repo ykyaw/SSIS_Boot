@@ -29,7 +29,9 @@ namespace SSIS_BOOT.Controllers
             //string deptid = "CPSC";
             string deptid = HttpContext.Session.GetString("DeptId");
             List<Requisition> reqlist = deservice.getdeptreqlist(deptid);
-            return reqlist;
+            List<Requisition> sortedreqlist = reqlist.OrderByDescending(m => m.CreatedDate).ToList();
+            return sortedreqlist;
+
         }
         [HttpGet]
         [Route("/deptemp/rfld/{reqId}")]
@@ -49,7 +51,7 @@ namespace SSIS_BOOT.Controllers
         //[HttpGet] //if testing
         [HttpPost]
         [Route("/deptemp/createRF")]
-        public Requisition createRF()
+        public Requisition createRF() //[FROMBODY] is not included since it will be null anyway
         {
             try
             {

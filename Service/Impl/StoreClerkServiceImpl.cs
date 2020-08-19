@@ -60,6 +60,24 @@ namespace SSIS_BOOT.Service.Impl
         {
             return prepo.findallcat();
         }
+        public List<Transaction> getlatesttransaction(List<Product> pdt)
+        {
+            List<Transaction> tlist = new List<Transaction>();
+            foreach(Product p in pdt)
+            {
+                Transaction t = trepo.GetLatestTransactionByProductId(p.Id);
+                if(t== null)
+                {
+                    t = new Transaction();
+                    t.ProductId = p.Id;
+                    t.Balance = 0;
+                    t.Description = "No record of transaction in stock card for " + p.Id;
+                }
+                tlist.Add(t);
+            }
+            return tlist;
+        }
+
 
         public List<PurchaseOrderDetail> getpoddetails(int poId)
         {
@@ -198,7 +216,7 @@ namespace SSIS_BOOT.Service.Impl
         public Retrieval genretrievalform(long date, int clerkid, List<Requisition> listreq) //UPDATED LOGIC
         {
             Retrieval r_exist = retrivrepo.GetRetrieval(date, clerkid, Status.RetrievalStatus.created); // check if there already exist a retrieval with "created" status and processed by clerkid
-            
+
             if (r_exist != null) //If an existing retrieval form for the collection date has been created, update existing requisition with same date with the existing retrievalformId 
             {
                 foreach (Requisition re in listreq)//listreq is passed in from controller, which is a list of requisition with "confirmed" status, on the selected date and processed by the clerk in session
@@ -240,7 +258,7 @@ namespace SSIS_BOOT.Service.Impl
         {
             try
             {
-                
+
                 retrivrepo.UpdateRetrieval(r1);
                 foreach (RequisitionDetail rd in r1.RequisitionDetails)
                 {
@@ -323,7 +341,7 @@ namespace SSIS_BOOT.Service.Impl
             {
                 prd.SubmitDate = date;
                 PurchaseRequestDetail pr = purreqrepo.updatepurchaserequestitem(prd);
-                updatedprlist.Add(pr);  
+                updatedprlist.Add(pr);
             }
             string prdstatus = prdlist[0].Status;
 
@@ -379,18 +397,18 @@ namespace SSIS_BOOT.Service.Impl
             try
             {
                 Requisition original = rrepo.updaterequisitioncollectiontime(r1);
-                
+
                 Employee drep = erepo.findempById((int)original.Department.RepId);
                 Employee deptemp = erepo.findempById(original.ReqByEmpId);
                 EmailModel email = new EmailModel();
 
                 Task.Run(async () =>
                 {
-                    EmailTemplates.CollectionTimeTemplate ctt = new EmailTemplates.CollectionTimeTemplate(original,drep);
+                    EmailTemplates.CollectionTimeTemplate ctt = new EmailTemplates.CollectionTimeTemplate(original, drep);
                     email.emailTo = drep.Email;
                     email.emailSubject = ctt.subject;
                     email.emailBody = ctt.body;
-                    await mailservice.SendEmailwithccAsync(email,deptemp);
+                    await mailservice.SendEmailwithccAsync(email, deptemp);
                 });
                 return true;
             }
@@ -438,14 +456,14 @@ namespace SSIS_BOOT.Service.Impl
 
                 var uniquereqid = rdl.Select(m => m.RequisitionId).Distinct().ToList();
                 List<Requisition> reqlist = new List<Requisition>();
-                foreach(var i in uniquereqid)
+                foreach (var i in uniquereqid)
                 {
                     Requisition r = rrepo.findreqByReqId((int)i);
                     reqlist.Add(r);
                 }
                 Employee drep = reqlist[0].ReceivedByRep;
                 EmailModel email = new EmailModel();
-                
+
                 Task.Run(async () =>
                 {
                     EmailTemplates.AckCompletedReq ctt = new EmailTemplates.AckCompletedReq(reqlist, drep);
@@ -507,5 +525,7 @@ namespace SSIS_BOOT.Service.Impl
         {
             return tqrepo.getFirstTenderbyProdutId(ProductId);
         }
+
+
     }
 }

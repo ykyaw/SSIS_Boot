@@ -27,13 +27,24 @@ namespace SSIS_BOOT.Controllers
         {
             return View();
         }
-        [HttpGet]
+        [HttpGet]        
         [Route("/storeclerk/catalogue")]
         public List<Product> getcatalogue()
         {
             List<Product> pdt = scservice.getallcat();
             return pdt;
         }
+        [HttpGet]
+        [Route("/storeclerk/glt")]
+        public List<Transaction> getlatesttransaction()
+        {
+            List<Product> pdt = scservice.getallcat();
+            List<Transaction> latesttrans = scservice.getlatesttransaction(pdt);
+            return latesttrans;
+
+        }
+
+
         [HttpGet]
         [Route("/storeclerk/pr")]
         public List<PurchaseRequestDetail> getallpurchasereq()
@@ -68,14 +79,18 @@ namespace SSIS_BOOT.Controllers
         public List<Requisition> getallreqform()
         {
             List<Requisition> reqlist = scservice.getallreqform();
-            return reqlist;
+            //sort by date
+            List<Requisition> sortedreqlist = reqlist.OrderByDescending(m => m.CreatedDate).ToList();
+            return sortedreqlist;
         }
         [HttpGet]
         [Route("/storeclerk/rf/{deptID}")]
         public List<Requisition> getreqformByDeptId(string deptID)
         {
             List<Requisition> reqlist = scservice.getReqformByDeptId(deptID);
-            return reqlist;
+            //sort by date
+            List<Requisition> sortedreqlist = reqlist.OrderByDescending(m=>m.CreatedDate).ToList();
+            return sortedreqlist;
         }
 
         [HttpGet]
@@ -245,7 +260,7 @@ namespace SSIS_BOOT.Controllers
         //[HttpGet] //For testing oly
         [HttpPost]
         [Route("/storeclerk/generatequote")]
-        public bool generatequotefrompr(List<PurchaseRequestDetail> prdlist)
+        public bool generatequotefrompr([FromBody] List<PurchaseRequestDetail> prdlist)
         {
             ////Testing with fake value
             //List<PurchaseRequestDetail> prd = new List<PurchaseRequestDetail>();
