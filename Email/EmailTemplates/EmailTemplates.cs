@@ -331,33 +331,64 @@ namespace SSIS_BOOT.Email.EmailTemplates
 
             }
         }
+        public class PendingManagerApprovalAVTemplate
+        {
+            public string name;
+            public string body;
+            public string subject = "Adjustment Voucher pending for manager approval";
+            public PendingManagerApprovalAVTemplate(AdjustmentVoucher av, Employee manager,Employee sup)
+            {
+                if (av.Reason == null)
+                {
+                    this.body =
+                     "Dear " + manager.Name + System.Environment.NewLine + System.Environment.NewLine +
+                    "A new adjustment voucher submitted on "+ av.InitiatedDate+" is pending your further action." + System.Environment.NewLine + System.Environment.NewLine +
+                    "Thank you." + System.Environment.NewLine + System.Environment.NewLine +
+                    "Store supervisor" + System.Environment.NewLine + sup.Name;
+                }
+                else
+                {
+                    this.body =
+                     "Dear " + manager.Name + System.Environment.NewLine + System.Environment.NewLine +
+                    "A new adjustment voucher submitted on " + av.InitiatedDate + " is pending your further action. The reason provided by the supervisor is " + av.Reason + "."
+                     + System.Environment.NewLine + System.Environment.NewLine +
+                    "Thank you." + System.Environment.NewLine + System.Environment.NewLine +
+                    "Store supervisor" + System.Environment.NewLine + sup.Name;
+                }
+            }
+        }
 
-
-
-
-
-
-
-        //for store supervisor to send out email on approved PR
-        // create a new class
-        //public ApprovePOtemplate(Employee clerk, Supplier S, PurchaseOrder po)
-        //{
-        //    StringBuilder builder = new StringBuilder();
-        //    foreach (PurchaseOrderDetail r in po.PurchaseOrderDetails.ToList())
-        //    {
-        //        builder.Append(r.Product.Description).Append(":").Append("  ").Append(r.QtyPurchased).Append(System.Environment.NewLine);
-        //    }
-        //    string result = builder.ToString();
-        //    this.name = S.Name;
-        //    this.body =
-        //        "Dear " + S.Name + System.Environment.NewLine + System.Environment.NewLine +
-        //        "Please supply the following items:" + System.Environment.NewLine + System.Environment.NewLine +
-        //        result + System.Environment.NewLine +
-        //        "Please provide a quotation based on your existing stock and send to " + clerk.Email + "." + System.Environment.NewLine + System.Environment.NewLine +
-        //        "Thank you" + System.Environment.NewLine +
-        //        "Store Clerk " + clerk.Name;
-        //}
-
+        public class ApproveRejectAVTemplate
+        {
+            public string name;
+            public string body;
+            public string subject = "Outcome of Adjustment Voucher";
+            public ApproveRejectAVTemplate(AdjustmentVoucher av, Employee clerk, Employee sup)
+            {
+                long InitiatedDate = (long)av.InitiatedDate;
+                DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+                DateTime InitiatedDate1 = startTime.AddMilliseconds(Convert.ToDouble(InitiatedDate));
+                string InitiatedDate2 = InitiatedDate1.ToString("dd MMM yyyy");
+               
+                if (av.Reason == null)
+                {
+                    this.body =
+                     "Dear " + clerk.Name + System.Environment.NewLine + System.Environment.NewLine +
+                    "Your adjustment voucher with id: " + av.Id + " dated " + InitiatedDate2 + " has been " + av.Status + "." +
+                    System.Environment.NewLine + System.Environment.NewLine +
+                    "Thank you.";
+                }
+                else
+                {
+                    this.body =
+                     "Dear " + clerk.Name + System.Environment.NewLine + System.Environment.NewLine +
+                    "Your adjustment voucher with id: " + av.Id + " dated " + InitiatedDate2 + " has been " + av.Status +
+                    ". The reason provided is " + av.Reason + "."
+                     + System.Environment.NewLine + System.Environment.NewLine +
+                    "Thank you.";
+                }
+            }
+        }
 
     }
 }

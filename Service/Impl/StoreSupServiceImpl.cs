@@ -64,8 +64,39 @@ namespace SSIS_BOOT.Service.Impl
                 if (av.Status == Status.AdjVoucherStatus.pendmanapprov)
                 {
                     //SEND MANAGER EMAIL TO BE FOLLOWED UP
-                    //SEND EMAIL TO ALL TO BE FOLLOWED UP
+                    Employee manager = erepo.findSupervisorByEmpId(emp.Id);
+                    Employee sup = erepo.findempById(emp.Id);
+                    EmailModel email = new EmailModel();
+
+                    Task.Run(async () =>
+                    {
+                        EmailTemplates.PendingManagerApprovalAVTemplate apt = new EmailTemplates.PendingManagerApprovalAVTemplate(av,manager, sup);
+                        email.emailTo = manager.Email;
+                        email.emailSubject = apt.subject;
+                        email.emailBody = apt.body;
+                        await mailservice.SendEmailAsync(email);
+                    });
                 }
+                else //approved or rejected
+                {
+                    Employee clerk = erepo.findempById(av.InitiatedClerkId);
+                    Employee sup = erepo.findempById((int) av.ApprovedSupId);
+                    EmailModel email = new EmailModel();
+
+                    Task.Run(async () =>
+                    {
+                        EmailTemplates.ApproveRejectAVTemplate apt = new EmailTemplates.ApproveRejectAVTemplate(av, clerk, sup);
+                        email.emailTo = clerk.Email;
+                        email.emailSubject = apt.subject;
+                        email.emailBody = apt.body;
+                        await mailservice.SendEmailwithccAsync(email,sup);
+                    });
+
+
+
+
+                }
+
                 return true;
             }
             catch (Exception m)
