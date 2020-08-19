@@ -651,11 +651,16 @@ namespace SSIS_BOOT.DB
             //public PurchaseOrderDetail(int? PurchaseOrderId, int? PurchaseRequestDetailId, string ProductId, int QtyPurchased, int? QtyReceived,
             //double TotalPrice, int? SupplierDeliveryNo, string? Remark, string Status)
 
-            PurchaseOrderDetail poDet1 = new PurchaseOrderDetail(1, 1, "E032", 100, null, 100.00, null, "Only 80 left in 1st supplier", Status.PurchaseOrderStatus.approved);
-            PurchaseOrderDetail poDet2 = new PurchaseOrderDetail(1, 3, "C001", 15, null, 30.00, null, null, Status.PurchaseOrderStatus.approved);
-            PurchaseOrderDetail poDet3 = new PurchaseOrderDetail(2, 2, "D001", 30, null, 300.00, null, null, Status.PurchaseOrderStatus.approved);
-            PurchaseOrderDetail poDet4 = new PurchaseOrderDetail(3, 4, "C001", 15, null, 30.00, null, null, Status.PurchaseOrderStatus.approved);
-            PurchaseOrderDetail poDet5 = new PurchaseOrderDetail(4, 5, "P043", 500, null, 500.00, null, null, Status.PurchaseOrderStatus.approved);
+            //PurchaseOrderDetail poDet1 = new PurchaseOrderDetail(1, 1, "E032", 100, null, 100.00, null, "Only 80 left in 1st supplier", Status.PurchaseOrderStatus.approved);
+            //PurchaseOrderDetail poDet2 = new PurchaseOrderDetail(1, 3, "C001", 15, null, 30.00, null, null, Status.PurchaseOrderStatus.approved);
+            //PurchaseOrderDetail poDet3 = new PurchaseOrderDetail(2, 2, "D001", 30, null, 300.00, null, null, Status.PurchaseOrderStatus.approved);
+            //PurchaseOrderDetail poDet4 = new PurchaseOrderDetail(3, 4, "C001", 15, null, 30.00, null, null, Status.PurchaseOrderStatus.approved);
+            //PurchaseOrderDetail poDet5 = new PurchaseOrderDetail(4, 5, "P043", 500, null, 500.00, null, null, Status.PurchaseOrderStatus.approved);
+            PurchaseOrderDetail poDet1 = new PurchaseOrderDetail(1, 1, "E032", 100, null, 100.00, null, "Only 80 left in 1st supplier", Status.PurchaseOrderDetailStatus.pending);
+            PurchaseOrderDetail poDet2 = new PurchaseOrderDetail(1, 3, "C001", 15, null, 30.00, null, null, Status.PurchaseOrderDetailStatus.pending);
+            PurchaseOrderDetail poDet3 = new PurchaseOrderDetail(2, 2, "D001", 30, null, 300.00, null, null, Status.PurchaseOrderDetailStatus.pending);
+            PurchaseOrderDetail poDet4 = new PurchaseOrderDetail(3, 4, "C001", 15, null, 30.00, null, null, Status.PurchaseOrderDetailStatus.pending);
+            PurchaseOrderDetail poDet5 = new PurchaseOrderDetail(4, 5, "P043", 500, null, 500.00, null, null, Status.PurchaseOrderDetailStatus.pending);
             dbcontext.Add(poDet1);
             dbcontext.Add(poDet2);
             dbcontext.Add(poDet3);

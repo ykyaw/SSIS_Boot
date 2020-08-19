@@ -144,29 +144,40 @@ namespace SSIS_BOOT.Service.Impl
 
                 foreach (var r in pdict) //for each string in the dictionary
                 {
-                    PurchaseOrder po = new PurchaseOrder();
-                    int clerkid = r.Value[0].CreatedByClerkId;
-                    string supplierid = r.Value[0].SupplierId;
-                    long ordereddate = approveddate;
-                    string status = Status.PurchaseOrderStatus.approved;
-                    int collectionpointid = crepo.getstorecollectionpoint().Id;
-                    double totalprice = 0;
-                    foreach(PurchaseRequestDetail pr in pdict[r.Key])
+                    //PurchaseOrder po = new PurchaseOrder();
+                    //int clerkid = r.Value[0].CreatedByClerkId;
+                    //string supplierid = r.Value[0].SupplierId;
+                    //long ordereddate = approveddate;
+                    ////string status = Status.PurchaseOrderStatus.approved;
+                    //int collectionpointid = crepo.getstorecollectionpoint().Id;
+                    //double totalprice = 0;
+                    //foreach(PurchaseRequestDetail pr in pdict[r.Key])
+                    //{
+                    //    totalprice += pr.TotalPrice;
+                    //}
+                    ////generate the list of purchase order details
+                    //PurchaseOrder newpo = porepo.create(po, clerkid, supplierid, ordereddate, collectionpointid, totalprice);
+
+                    PurchaseOrder po = new PurchaseOrder(); // Edited by TK
+                    po.OrderedByClerkId = r.Value[0].CreatedByClerkId;
+                    po.SupplierId = r.Value[0].SupplierId;
+                    po.OrderedDate = approveddate;
+                    po.Status = Status.PurchaseOrderStatus.pending;
+                    po.CollectionPointId = crepo.getstorecollectionpoint().Id;
+                    double totalprice = 0;                    
+                    foreach (PurchaseRequestDetail pr in pdict[r.Key])
                     {
                         totalprice += pr.TotalPrice;
                     }
-                    //generate the list of purchase order details
-                    PurchaseOrder newpo = porepo.create(po, clerkid, supplierid, ordereddate, collectionpointid, totalprice);
+                    po.TotalPrice = totalprice;
+                    PurchaseOrder newpo = porepo.create(po);
                     List<PurchaseRequestDetail> List_of_PRD_toaddinPO = pdict[r.Key];
                     newpo = porepo.addpodinPO(List_of_PRD_toaddinPO, newpo.Id);
                     List<PurchaseOrderDetail> pod = podrepo.findpodetails(newpo.Id);
                    
-
                     Employee clerk = erepo.findempById(r.Value[0].CreatedByClerkId);
                     Supplier supplier = srepo.findsupplierbyId(r.Value[0].SupplierId);
-
                     EmailModel email = new EmailModel();
-
                     Task.Run(async () =>
                     {
                         EmailTemplates.ApprovedPRtemplate apt = new EmailTemplates.ApprovedPRtemplate(clerk, supplier, pod, newpo);

@@ -261,11 +261,17 @@ namespace SSIS_BOOT.Service.Impl
             try
             {
 
+                DateTime dateTime = DateTime.UtcNow.Date;
+                DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
+                r1.RetrievedDate = dt.ToUnixTimeMilliseconds();
                 retrivrepo.UpdateRetrieval(r1);
                 foreach (RequisitionDetail rd in r1.RequisitionDetails)
                 {
                     rdrepo.updaterequsitiondetail(rd);
-                    UpdateStockCardUponRetrieval(rd, r1);
+                    if(r1.Status == Status.RetrievalStatus.retrieved)
+                    {
+                        UpdateStockCardUponFinaliseRetrieval(rd, r1);
+                    }
                 }
                 return true;
             }
@@ -275,7 +281,7 @@ namespace SSIS_BOOT.Service.Impl
             }
         }
 
-        public bool UpdateStockCardUponRetrieval(RequisitionDetail rd, Retrieval r)
+        public bool UpdateStockCardUponFinaliseRetrieval(RequisitionDetail rd, Retrieval r)
         {
             Retrieval retrieval = retrivrepo.GetRetrievalById(r.Id);
             Transaction t_new = new Transaction();
@@ -372,6 +378,19 @@ namespace SSIS_BOOT.Service.Impl
             try
             {
                 podrepo.Updatepurchaseorderdetail(pod);
+                PurchaseOrder po = porepo.findPObyPOid((int)pod.PurchaseOrderId);
+                foreach(PurchaseOrderDetail pod1 in po.PurchaseOrderDetails)
+                {
+                    //Checks for anymore pending status in PurchaseOrderDetail. If yes, PO status is saved as pending and break the loop
+                    if (pod1.Status == Status.PurchaseOrderDetailStatus.pending) 
+                    {
+                        po.Status = Status.PurchaseOrderStatus.pending;
+                        porepo.updatePoStatus(po);
+                        return true;
+                    }
+                    po.Status = Status.PurchaseOrderStatus.completed; //If all PurchaseOrderDetal has status of received, if statement is not triggered. PO status is saved as completed
+                    porepo.updatePoStatus(po);
+                }
                 return true;
             }
             catch (Exception exception)
