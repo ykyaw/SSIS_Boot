@@ -326,8 +326,83 @@ namespace SSIS_BOOT.DB
             dbcontext.SaveChanges();
             //seed transaction
             //public Transaction(string ProductId, DateTime Date, string Description, int Qty, int Balance, int UpdatedByEmpId, string? RefCode)
-            
+
             //corr/to retr1
+
+            Transaction t1 = new Transaction("C001", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t2 = new Transaction("C002", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t3 = new Transaction("C003", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t4 = new Transaction("C004", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t5 = new Transaction("E001", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t6 = new Transaction("E002", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t7 = new Transaction("E003", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t8 = new Transaction("E004", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t9 = new Transaction("E020", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t10 = new Transaction("E021", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t11 = new Transaction("E030", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t12 = new Transaction("E031", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t13 = new Transaction("E032", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t14 = new Transaction("E033", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t15 = new Transaction("F020", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t16 = new Transaction("F021", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t17 = new Transaction("F022", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t18 = new Transaction("F023", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t19 = new Transaction("H011", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t20 = new Transaction("H012", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t21 = new Transaction("H013", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t22 = new Transaction("H014", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t23 = new Transaction("H031", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t24 = new Transaction("H032", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t25 = new Transaction("H033", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t26 = new Transaction("P010", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t27 = new Transaction("P011", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t28 = new Transaction("P012", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t29 = new Transaction("P013", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t30 = new Transaction("P043", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t31 = new Transaction("D001", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            dbcontext.Add(t1);
+            dbcontext.Add(t2);
+            dbcontext.Add(t3);
+            dbcontext.Add(t4);
+            dbcontext.Add(t5);
+            dbcontext.Add(t6);
+            dbcontext.Add(t7);
+            dbcontext.Add(t8);
+            dbcontext.Add(t9);
+            dbcontext.Add(t10);
+            dbcontext.Add(t11);
+            dbcontext.Add(t12);
+            dbcontext.Add(t13);
+            dbcontext.Add(t14);
+            dbcontext.Add(t15);
+            dbcontext.Add(t16);
+            dbcontext.Add(t17);
+            dbcontext.Add(t18);
+            dbcontext.Add(t19);
+            dbcontext.Add(t20);
+            dbcontext.Add(t21);
+            dbcontext.Add(t22);
+            dbcontext.Add(t23);
+            dbcontext.Add(t24);
+            dbcontext.Add(t25);
+            dbcontext.Add(t26);
+            dbcontext.Add(t27);
+            dbcontext.Add(t28);
+            dbcontext.Add(t29);
+            dbcontext.Add(t30);
+            dbcontext.Add(t31);
+            dbcontext.SaveChanges();
+
+
+
+
+
+
+
+
+
+
+
             Transaction trans1 = new Transaction("E032", 1594724400000, "supply from ALPHA", 40, 80, 1, null);//14/7/2020 @ 11:00am (UTC)
             dbcontext.Add(trans1);
             dbcontext.SaveChanges();
@@ -604,15 +679,15 @@ namespace SSIS_BOOT.DB
 
             //1/7/2020@3:30pm Purchase request of paper"E032" x100 and spoilt diskettes "D001"x20, and "C001"x15,
             //approved on 2/7/2020@12pm, supply by 15/7,received on 14 / 7 / 2020 @ 11:00am(UTC)
-            PurchaseRequestDetail PRDet1 = new PurchaseRequestDetail(1593617400000, 1, "E032", "ALPA", 80, 100, "MF032", 100.00, 1593617400000, 1593691200000, 2, Status.PurchaseRequestStatus.approved, null);
-            PurchaseRequestDetail PRDet2 = new PurchaseRequestDetail(1593617400000, 1, "D001", "OMEG", 10, 30, "MFD001", 300.00, 1593617400000, 1593691200000, 2, Status.PurchaseRequestStatus.approved, null);
-            PurchaseRequestDetail PRDet3 = new PurchaseRequestDetail(1594800000000, 1, "C001", "ALPA", 50, 15, "MFC001", 30.00, 1594800000000, 1593691200000, 2, Status.PurchaseRequestStatus.approved, null);
+            PurchaseRequestDetail PRDet1 = new PurchaseRequestDetail(37943271428, 1, "E032", "ALPA", 80, 100, "MF032", 100.00, 1593617400000, 1593691200000, 2, Status.PurchaseRequestStatus.approved, null);
+            PurchaseRequestDetail PRDet2 = new PurchaseRequestDetail(37943271428, 1, "D001", "OMEG", 10, 30, "MFD001", 300.00, 1593617400000, 1593691200000, 2, Status.PurchaseRequestStatus.approved, null);
+            PurchaseRequestDetail PRDet3 = new PurchaseRequestDetail(37971428571, 1, "C001", "ALPA", 50, 15, "MFC001", 30.00, 1594800000000, 1593691200000, 2, Status.PurchaseRequestStatus.approved, null);
 
             // 15/7 / 2020 @ 8:00am Purchase request of Clip "C001"x15, supply by 31/7/2020 @00:00, Approved on 17/7@10:00 recieved on 29/7/2020 @ 9:30am(trans13)
-            PurchaseRequestDetail PRDet4 = new PurchaseRequestDetail(1593617400000, 1, "C001", "ALPA", 3, 15, "MFC001", 30.00, 1593617400000, 1596153600000, 2, Status.PurchaseRequestStatus.approved, null);
+            PurchaseRequestDetail PRDet4 = new PurchaseRequestDetail(37943271428, 1, "C001", "ALPA", 3, 15, "MFC001", 30.00, 1593617400000, 1596153600000, 2, Status.PurchaseRequestStatus.approved, null);
 
             // 29/7@9:30am  Purchase order of "P043"x500 Requested, supply by 12/8/2020,approved on 30/7, received on 3/8/2020@8:30am (trans1)
-            PurchaseRequestDetail PRDet5 = new PurchaseRequestDetail(1595926800000, 16, "P043", "BANE", 50, 500, "MF043", 500.00, 1595926800000, 1596441600000, 2, Status.PurchaseRequestStatus.approved, null);
+            PurchaseRequestDetail PRDet5 = new PurchaseRequestDetail(37998257142, 16, "P043", "BANE", 50, 500, "MF043", 500.00, 1595926800000, 1596441600000, 2, Status.PurchaseRequestStatus.approved, null);
             dbcontext.Add(PRDet1);
             dbcontext.SaveChanges();
             dbcontext.Add(PRDet2);
