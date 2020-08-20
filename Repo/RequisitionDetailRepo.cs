@@ -72,7 +72,10 @@ namespace SSIS_BOOT.Repo
         public List<RequisitionDetail> GetDisbursementByDate(string deptid, long longdate)
         {
             Requisition rq = dbcontext.Requisitions.Where(m => m.DepartmentId == deptid && m.CollectionDate == longdate).FirstOrDefault();
-            List<RequisitionDetail> rdl = dbcontext.RequisitionDetails.Where(m=>m.RequisitionId == rq.Id).ToList();
+            List<RequisitionDetail> rdl = dbcontext.RequisitionDetails.Include(m => m.Requisition).ThenInclude(m => m.ReceivedByRep)
+                .Include(m => m.Requisition).ThenInclude(m => m.ReqByEmp)
+                .Include(m => m.Requisition).ThenInclude(m => m.AckByClerk)
+                .Include(m=>m.Product).Where(m=>m.RequisitionId == rq.Id).ToList();
             return rdl;
         }
 
