@@ -59,7 +59,7 @@ namespace SSIS_BOOT.Repo
         public Requisition findreqByReqId(int reqId)
         {
             Requisition req = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product).Include(m => m.ReceivedByRep)
-                .Include(m => m.ReqByEmp).Include(m => m.Department).FirstOrDefault(m => m.Id == reqId);
+                .Include(m => m.ReqByEmp).Include(m => m.Department).Include(m=>m.CollectionPoint).FirstOrDefault(m => m.Id == reqId);
             return req;
         }
 
