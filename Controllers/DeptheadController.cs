@@ -28,7 +28,8 @@ namespace SSIS_BOOT.Controllers
             //string deptid = "CPSC";
             string deptid = HttpContext.Session.GetString("DeptId");
             List<Requisition> reqlist = dhservice.getdeptreqlist(deptid);
-            return reqlist;
+            List<Requisition> sortedreqlist = reqlist.OrderByDescending(m => m.CreatedDate).ToList();
+            return sortedreqlist;
         }
         [HttpGet]
         [Route("/depthead/rfld/{reqId}")]
@@ -43,9 +44,19 @@ namespace SSIS_BOOT.Controllers
         public List<Employee> GetAllDeptEmployee()
         {
             //For testing
-            //string deptid = "COMM";
+            //string deptid = "ENGL";
+            //int empid = 5;
             string deptid = HttpContext.Session.GetString("DeptId");
+            int empid = (int)HttpContext.Session.GetInt32("Id");
             List<Employee> empList = dhservice.GetAllDeptEmployee(deptid);
+            foreach(Employee e in empList)
+            {
+                if(e.Id == empid)
+                {
+                    empList.Remove(e);
+                    break;
+                }
+            }
             return empList;
         }
 
