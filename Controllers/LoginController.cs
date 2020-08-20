@@ -71,14 +71,22 @@ namespace SSIS_BOOT.Controllers
          * @author WUYUDING
          */
          [HttpPost]
-        public string Verify([FromBody] Employee employee)
+        public Dictionary<string, Object> Verify([FromBody] Employee employee)
         {
             employee = employeeService.Login(employee);
             if (employee != null)
             {
                 string token = authService.GenerateToken(employee);
+                Dictionary<string, Object> result = new Dictionary<string, object>();
+                result.Add("token", token);
+                employee = new Employee()
+                {
+                    Name = employee.Name,
+                    Role = employee.Role
+                };
+                result.Add("employee", employee);
                 Response.Cookies.Append("token", token);
-                return token;
+                return result;
             }
             else
             {
