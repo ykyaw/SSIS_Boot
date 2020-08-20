@@ -29,7 +29,9 @@ namespace SSIS_BOOT.Controllers
             //string deptid = "CPSC";
             string deptid = HttpContext.Session.GetString("DeptId");
             List<Requisition> reqlist = deservice.getdeptreqlist(deptid);
-            return reqlist;
+            List<Requisition> sortedreqlist = reqlist.OrderByDescending(m => m.CreatedDate).ToList();
+            return sortedreqlist;
+
         }
         [HttpGet]
         [Route("/deptemp/rfld/{reqId}")]
@@ -49,7 +51,7 @@ namespace SSIS_BOOT.Controllers
         //[HttpGet] //if testing
         [HttpPost]
         [Route("/deptemp/createRF")]
-        public Requisition createRF()
+        public Requisition createRF() //[FROMBODY] is not included since it will be null anyway
         {
             try
             {
@@ -126,7 +128,7 @@ namespace SSIS_BOOT.Controllers
         //[HttpGet]
         [HttpPut]
         [Route("/deptemp/ucp")]
-        public Department UpdateCollectionPoint([FromBody] CollectionPoint cp)
+        public bool UpdateCollectionPoint([FromBody] CollectionPoint cp)
         {
             //// FOR TESTING //
             //CollectionPoint c6 = new CollectionPoint("University Hospital", "11:30AM");
@@ -136,11 +138,16 @@ namespace SSIS_BOOT.Controllers
             //Department d1 = deservice.GetDepartment(deptid);
             //return d1;
             ////END OF TEST
-
             string deptid = HttpContext.Session.GetString("DeptId");
-            deservice.UpdateCollectionPoint(deptid, cp);
-            Department d1 = deservice.GetDepartment(deptid);
-            return d1;
+            try
+            {
+                deservice.UpdateCollectionPoint(deptid, cp);
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return true;
         }
 
         [HttpGet]
@@ -168,6 +175,18 @@ namespace SSIS_BOOT.Controllers
             {
                 throw new Exception(e.Message);
             }
+        }
+
+
+        [HttpGet]
+        [Route("/deptemp/drep")]
+        public Employee GetCurrentDeptRep()
+        {
+            string deptid = (string)HttpContext.Session.GetString("DeptId");
+            Department d1 = deservice.GetDepartment(deptid);
+            Employee drep = deservice.FindEmployeeById((int)d1.RepId);
+
+            return drep;
         }
     }
 }

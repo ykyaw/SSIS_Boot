@@ -14,8 +14,10 @@ namespace SSIS_BOOT.Models
         public string? DepartmentId { get; set; }
         [ForeignKey("ReqByEmp")]
         public int ReqByEmpId { get; set; }
+        public long? SubmittedDate { get; set; }
         [ForeignKey("ApprovedBy")]
         public int? ApprovedById { get; set; }
+        public long? ApprovalDate { get; set; }
         public string? Remarks { get; set; }
 
         [ForeignKey("ProcessedByClerk")]

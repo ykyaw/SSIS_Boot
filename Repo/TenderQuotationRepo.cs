@@ -82,5 +82,28 @@ namespace SSIS_BOOT.Repo
             List<TenderQuotation> tqlist = dbcontext.TenderQuotations.Include(m=>m.Product).Include(m => m.Supplier).Where(m => m.ProductId == pdtid).ToList();
             return tqlist;
         }
+
+        public TenderQuotation getFirstTenderbyProdutId(string ProductId)
+        {
+
+            DateTime now = DateTime.Today;
+            int year = now.Year;
+            try
+            {
+                TenderQuotation firsttq = (from tq in dbcontext.TenderQuotations
+                                           where tq.ProductId == ProductId && tq.Year == year && tq.Rank != null
+                                           orderby tq.Rank ascending
+                                           select tq).Include(m => m.Product).Include(m => m.Supplier).Take(1).FirstOrDefault();
+                if (firsttq == null)
+                {
+                    throw new Exception();
+                }
+                return firsttq;
+            }
+            catch
+            {
+                throw new Exception("Error finding tender quotation by this product id");
+            }
+        }
     }
 }

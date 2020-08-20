@@ -38,5 +38,39 @@ namespace SSIS_BOOT.Repo
                 .Where(m => m.AdjustmentVoucherId.Equals(advId)).ToList();
             return advdetails;
         }
+
+        public bool hasDetails(string AdjustmentVoucherId)
+        {
+            AdjustmentVoucherDetail advdetail = dbcontext.AdjustmentVoucherDetails
+                .Include(m => m.AdjustmentVoucher).Include(m => m.Product)
+                .Where(m => m.AdjustmentVoucherId.Equals(AdjustmentVoucherId)).FirstOrDefault();
+            if (advdetail != null)
+                return true;
+            else
+                return false;
+        }
+        
+
+        public void deleteAdvDetailsbyAdvId(string AdjustmentVoucherId) {
+
+            List<AdjustmentVoucherDetail> advdetails = findAdvDetailsbyAdvId(AdjustmentVoucherId);
+            foreach (AdjustmentVoucherDetail detail in advdetails)
+            {
+                dbcontext.AdjustmentVoucherDetails.Remove(detail);
+                dbcontext.SaveChanges();
+            }
+
+        }
+
+        public void updateAdjustmentVoucherDeatail(AdjustmentVoucherDetail avdetail)
+        {
+            dbcontext.AdjustmentVoucherDetails.Add(avdetail);
+            dbcontext.SaveChanges();
+
+        }
+
+
+
+
     }
 }

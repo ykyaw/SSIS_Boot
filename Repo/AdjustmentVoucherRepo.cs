@@ -1,5 +1,5 @@
 
-﻿using SSIS_BOOT.DB;
+using SSIS_BOOT.DB;
 using SSIS_BOOT.Models;
 using System;
 using System.Collections.Generic;
@@ -7,8 +7,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using SSIS_BOOT.Common;
 
 namespace SSIS_BOOT.Repo
 {
@@ -31,7 +32,7 @@ namespace SSIS_BOOT.Repo
         }
         public string createnewid()
         {
-            // 029_006_2020
+            // 029_06_2020
             AdjustmentVoucher lastcreatedvoucher = dbcontext.AdjustmentVouchers.OrderByDescending(x => x.InitiatedDate).Take(1).FirstOrDefault();
             string lastcreatedid = lastcreatedvoucher.Id;
 
@@ -39,11 +40,11 @@ namespace SSIS_BOOT.Repo
             //string s1 = lastcreatedid.Substring(8,2);
 
             int lastnum = int.Parse(lastcreatedid.Substring(0, 3));
-            int lastcreatedmonth = int.Parse(lastcreatedid.Substring(4, 3));
-            int lastcreatedyear = int.Parse(lastcreatedid.Substring(8, 4));
-           
+            int lastcreatedmonth = int.Parse(lastcreatedid.Substring(4, 2));
+            int lastcreatedyear = int.Parse(lastcreatedid.Substring(7, 4));
 
-            int num = 001;
+
+            string num = "001";
             int initiatedatemonth = int.Parse(DateTime.Now.ToString("MM"));
             int initiatedateyear = int.Parse(DateTime.Now.ToString("yyyy"));
 
@@ -52,15 +53,15 @@ namespace SSIS_BOOT.Repo
                 lastnum++;
                 if (lastnum >= 10)
                 {
-                    string newid = string.Format("0{0}_{1}_{2}", lastnum, lastcreatedid.Substring(4, 3), initiatedateyear);
+                    string newid = string.Format("0{0}_{1}_{2}", lastnum, DateTime.Now.ToString("MM"), initiatedateyear);
                     return newid;
                 }
                 else
                 {
-                    string newid = string.Format("00{0}_{1}_{2}", lastnum, lastcreatedid.Substring(4, 3), initiatedateyear);
+                    string newid = string.Format("00{0}_{1}_{2}", lastnum, DateTime.Now.ToString("MM"), initiatedateyear);
                     return newid;
                 }
-                
+
             }
             else
             {
@@ -75,20 +76,34 @@ namespace SSIS_BOOT.Repo
         {
             List<AdjustmentVoucher> advlist = dbcontext.AdjustmentVouchers.Include(m => m.InitiatedClerk)
                 .Include(m => m.ApprovedSup)
-                .Include(m=>m.ApprovedMgr)
-                .Include(m=>m.AdjustmentVoucherDetails)
+                .Include(m => m.ApprovedMgr)
+                .Include(m => m.AdjustmentVoucherDetails)
                 .ToList();
             return advlist;
         }
 
         public AdjustmentVoucher findAdjustmentVoucherById(string id)
         {
-                AdjustmentVoucher av = dbcontext.AdjustmentVouchers.Include(m => m.AdjustmentVoucherDetails).ThenInclude(m=>m.Product)
-                .Include(m=>m.ApprovedSup)
-                .Include(m=>m.ApprovedMgr)
-                .Include(m=>m.InitiatedClerk).FirstOrDefault(m => m.Id == id);
+            try
+            {
+                AdjustmentVoucher av = dbcontext.AdjustmentVouchers.Include(m => m.AdjustmentVoucherDetails).ThenInclude(m => m.Product)
+                .Include(m => m.ApprovedSup)
+                .Include(m => m.ApprovedMgr)
+                .Include(m => m.InitiatedClerk)
+                .FirstOrDefault(m => m.Id == id);
+                if (av == null)
+                {
+                    throw new Exception();
+                }
+
                 return av;
+            }
+            catch
+            {
+                throw new Exception("Error finding adjustment voucher by this id");
+            }
         }
+
 
         public bool SupervisorUpdateAdjustmentVoucherApprovals(AdjustmentVoucher av)
         {
@@ -132,6 +147,70 @@ namespace SSIS_BOOT.Repo
             catch
             {
                 throw new Exception("Error approving adjustment voucher by manager");
+            }
+        }
+
+        public void ClerkUpdateAdjustmentVoucherById(string AdjustmentVoucherId)
+        {
+            try
+            {
+                AdjustmentVoucher av = findAdjustmentVoucherById(AdjustmentVoucherId);
+                if (av == null)
+                {
+                    throw new Exception();
+                }
+                av.Status = Status.AdjVoucherStatus.created;
+                dbcontext.Update(av);
+                dbcontext.SaveChanges();
+            }
+            catch
+            {
+                throw new Exception("Error finding adjustment voucher by this id");
+            }
+        }
+
+        public AdjustmentVoucher ClerkSubmitAdjustmentVoucher(string AdjustmentVoucherId)
+        {
+            try
+            {
+                AdjustmentVoucher av = findAdjustmentVoucherById(AdjustmentVoucherId);
+                if (av == null)
+                {
+                    throw new Exception();
+                }
+                av.Status = Status.AdjVoucherStatus.pendapprov;
+                dbcontext.Update(av);
+                dbcontext.SaveChanges();
+                return av;
+            }
+            catch
+            {
+                throw new Exception("Error finding adjustment voucher by this id");
+            }
+
+        }
+
+        public List<AdjustmentVoucher> findAdjustmentVoucherByClerkId(int clerkid)
+        {
+            try
+            {
+                List<AdjustmentVoucher> avlist = dbcontext.AdjustmentVouchers
+                    .Include(m => m.AdjustmentVoucherDetails)
+                    .ThenInclude(m => m.Product)
+                .Include(m => m.ApprovedSup)
+                .Include(m => m.ApprovedMgr)
+                .Include(m => m.InitiatedClerk)
+                .Where(m => m.InitiatedClerkId == clerkid)
+                .ToList();
+                if (avlist == null)
+                {
+                    throw new Exception();
+                }
+                return avlist;
+            }
+            catch
+            {
+                throw new Exception("Error finding adjustment voucher by this clerk id");
             }
         }
 

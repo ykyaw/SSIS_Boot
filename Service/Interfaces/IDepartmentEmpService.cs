@@ -26,5 +26,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public List<RequisitionDetail> GetDisbursementByDate(string deptid, long longdate);
 
         public bool AckItemReceived(int empid, List<RequisitionDetail>rdlist);
+
+        public Employee FindEmployeeById(int RepId);
     }
 }

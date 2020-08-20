@@ -9,6 +9,8 @@ namespace SSIS_BOOT.Service.Interfaces
     public interface IStoreClerkService
     {
         public List<Product> getallcat();
+        List<Transaction> getlatesttransaction(List<Product> pdt);
+
         public List<PurchaseRequestDetail> getpurchasereq();
         public List<PurchaseRequestDetail> getprdetails(long prid);
         public List<PurchaseOrder> getpurchaseorders();
@@ -25,22 +27,22 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public List<Transaction> retrievestockcard(string productId);
 
-        public Retrieval genretrievalform(long date, int clerkid);
+        public Retrieval genretrievalform(long date, int clerkid, List<Requisition> listreq);
         public List<TenderQuotation> gettop3suppliers(string productId);
 
         public List<RequisitionDetail> retrievedisbursementlist(string deptId, long collectiondate);
 
         public bool savetransaction(Transaction t1);
 
-        public List<PurchaseRequestDetail> addpurchaserequest(List<String> productId,int clerkid);
+        public List<PurchaseRequestDetail> addpurchaserequest(List<String> productId, int clerkid);
         public bool updatepurchaserequestitem(List<PurchaseRequestDetail> prdlist);
 
         public bool updateretrieval(Retrieval r1);
-        public List<Requisition> getallreqformbydate(long date);
+        public List<Requisition> getallreqformbydateandstatus(long date, int clerkid, string reqStatus);
 
         public bool updatepurchaseorderdetailitem(PurchaseOrderDetail pod);
 
-        public bool generatequotefrompr(List<PurchaseRequestDetail> prd);
+        public bool generatequotefrompr(List<PurchaseRequestDetail> prd,int clerkid);
 
 
         public AdjustmentVoucher createadjustmentvoucher(int clerkid);
@@ -53,5 +55,13 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public bool AckCompletedRequisition(List<RequisitionDetail> rdl, int clerkId);
 
+        public bool updateAdjustmentVoucherDeatails(List<AdjustmentVoucherDetail> voucherDetails);
+
+        public bool ClerkSubmitAdjustmentVoucher(string adjustmentVoucherId);
+
+        public AdjustmentVoucher findAdjustmentVoucherById(string advId);
+        public List<AdjustmentVoucher> findAdjustmentVoucherByClerkId(int clerkid);
+
+        public TenderQuotation getFirstTenderbyProdutId(string ProductId);
     }
 }

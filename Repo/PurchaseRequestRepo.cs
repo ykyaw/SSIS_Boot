@@ -44,7 +44,7 @@ namespace SSIS_BOOT.Repo
             return prrequest;
         }
 
-        public bool updatepurchaserequestitem(PurchaseRequestDetail prd)
+        public PurchaseRequestDetail updatepurchaserequestitem(PurchaseRequestDetail prd)
         {
             var original = dbcontext.PurchaseRequestDetails.Find(prd.Id);
             if (original == null)
@@ -59,7 +59,7 @@ namespace SSIS_BOOT.Repo
             original.Status = prd.Status;
             original.SubmitDate = prd.SubmitDate;
             dbcontext.SaveChanges();
-            return true;
+            return original;
         }
         public bool updateapprovedpritems(PurchaseRequestDetail prd, int supid, long approveddate)
         {
@@ -74,6 +74,12 @@ namespace SSIS_BOOT.Repo
             original.ApprovedDate = approveddate;         
             dbcontext.SaveChanges();
             return true;
+        }
+
+        public PurchaseRequestDetail GetPurchaseRequestDetailById(int prdid)
+        {
+            return dbcontext.PurchaseRequestDetails.Find(prdid);
+
         }
     }
 }

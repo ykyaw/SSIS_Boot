@@ -11,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SSIS_BOOT.Service.Impl
@@ -59,6 +60,24 @@ namespace SSIS_BOOT.Service.Impl
         {
             return prepo.findallcat();
         }
+        public List<Transaction> getlatesttransaction(List<Product> pdt)
+        {
+            List<Transaction> tlist = new List<Transaction>();
+            foreach(Product p in pdt)
+            {
+                Transaction t = trepo.GetLatestTransactionByProductId(p.Id);
+                if(t== null)
+                {
+                    t = new Transaction();
+                    t.ProductId = p.Id;
+                    t.Balance = 0;
+                    t.Description = "No record of transaction in stock card for " + p.Id;
+                }
+                tlist.Add(t);
+            }
+            return tlist;
+        }
+
 
         public List<PurchaseOrderDetail> getpoddetails(int poId)
         {
@@ -88,7 +107,7 @@ namespace SSIS_BOOT.Service.Impl
         }
 
         //to run this mtd as async
-        public bool generatequotefrompr(List<PurchaseRequestDetail> prdlist)
+        public bool generatequotefrompr(List<PurchaseRequestDetail> prdlist,int clerkid)
         {
             List<PurchaseRequestDetail> prdlistwithnull = new List<PurchaseRequestDetail>();
 
@@ -105,11 +124,13 @@ namespace SSIS_BOOT.Service.Impl
             }
             else
             {
-                List<PurchaseRequestDetail> pnull = prdlistwithnull.GroupBy(m => m.SupplierId).SelectMany(m => m).ToList();
+                //List<PurchaseRequestDetail> pnull = prdlistwithnull.GroupBy(m => m.SupplierId).SelectMany(m => m).ToList(); 
+                List<PurchaseRequestDetail> pnull = prdlistwithnull.OrderBy(m => m.SupplierId).ToList(); //IMPROVED      
                 Dictionary<string, List<PurchaseRequestDetail>> pdict = new Dictionary<string, List<PurchaseRequestDetail>>();
 
                 foreach (PurchaseRequestDetail prd in pnull)
                 {
+                    prd.Product = prepo.FindProductById(prd.ProductId);
                     if (!pdict.ContainsKey(prd.SupplierId))
                     {
                         List<PurchaseRequestDetail> prdlist1 = new List<PurchaseRequestDetail>();
@@ -126,9 +147,9 @@ namespace SSIS_BOOT.Service.Impl
                 foreach (var r in pdict)
                 {
                     Supplier supplier = srepo.findsupplierbyId(r.Value[0].SupplierId);
-                    Employee clerk = erepo.findempById(r.Value[0].CreatedByClerkId);
+                    Employee clerk = erepo.findempById(clerkid);
                     EmailModel email = new EmailModel();
-                    List<PurchaseRequestDetail> List_of_PR_tosend = pdict[r.Key];
+                    List<PurchaseRequestDetail> List_of_PR_tosend = pdict[r.Key]; 
                     Task.Run(async () =>
                     {
                         EmailTemplates.RequestQuoteTemplate rfq = new EmailTemplates.RequestQuoteTemplate(clerk, supplier, List_of_PR_tosend);
@@ -147,9 +168,9 @@ namespace SSIS_BOOT.Service.Impl
             return rrepo.findallreqform();
         }
 
-        public List<Requisition> getallreqformbydate(long date)
+        public List<Requisition> getallreqformbydateandstatus(long date, int clerkid, string reqStatus)
         {
-            return rrepo.findrequsitionbycollectiondate(date);
+            return rrepo.findrequsitionbycollectiondateandstatus(date, clerkid, reqStatus);
         }
 
         public List<Requisition> getReqformByDeptId(string deptID)
@@ -163,30 +184,123 @@ namespace SSIS_BOOT.Service.Impl
         }
 
 
-        public Retrieval genretrievalform(long date, int clerkid)
+        //public Retrieval genretrievalform(long date, int clerkid, List<Requisition> listreq) //ORIGINAL LOGIC
+        //{
+        //    Retrieval r_exist = retrivrepo.GetRetrieval(date, clerkid, Status.RetrievalStatus.created); // check if there already exist a retrieval with "created" status and processed by clerkid
+        //    if (r_exist != null)
+        //    {
+        //        //delete old requisitiondetail
+        //        //add new requisition detail
+
+        //        return r_exist;
+        //    }
+        //    Retrieval r1 = new Retrieval();
+        //    r1.ClerkId = clerkid;
+        //    r1.DisbursedDate = date;
+        //    r1.Status = Status.RetrievalStatus.created;
+        //    Retrieval newRetrieval = retrivrepo.genretrievalandreturn(r1); //creates empty retrieval form and returns it
+
+        //    foreach (Requisition re in listreq)//listreq is passed in from controller, which is a list of requisition with "confirmed" status, on the selected date and processed by the clerk in session
+        //    {
+        //        foreach (RequisitionDetail detail in re.RequisitionDetails)
+        //        {
+        //            detail.RetrievalId = newRetrieval.Id; //assign the newly created retrieval Id to each requsitiondetail belonging to a confirmed retrieval 
+        //            RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
+        //        }
+        //    }
+        //    Retrieval updatedRetrieval = retrivrepo.GetRetrievalById(newRetrieval.Id); //Get back the latest created retrieval with all the related objects
+        //    updatedRetrieval.RequisitionDetails = updatedRetrieval.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
+        //    return updatedRetrieval;
+        //}
+
+
+
+        public Retrieval genretrievalform(long date, int clerkid, List<Requisition> listreq) //UPDATED LOGIC
         {
-            Retrieval r_exist = retrivrepo.GetRetrieval(date);
-            if (r_exist != null)
+            Retrieval r_exist = retrivrepo.GetRetrieval(date, clerkid, Status.RetrievalStatus.created); // check if there already exist a retrieval with "created" status and processed by clerkid
+
+            if (r_exist != null) //If an existing retrieval form for the collection date has been created, update existing requisition with same date with the existing retrievalformId 
             {
-                return r_exist;
-            }
-            Retrieval r1 = new Retrieval();
-            r1.ClerkId = clerkid;
-            r1.DisbursedDate = date;
-            r1.Status = Status.RetrievalStatus.created;
-            Retrieval r2 = retrivrepo.genretrievalandreturn(r1); //creates retrieval form and returns it
-            List<Requisition> req1 = rrepo.findrequsitionbycollectiondate(date);
-            foreach (Requisition re in req1)
-            {
-                foreach (RequisitionDetail detail in re.RequisitionDetails)
+                foreach (Requisition re in listreq)//listreq is passed in from controller, which is a list of requisition with "confirmed" status, on the selected date and processed by the clerk in session
                 {
-                    detail.RetrievalId = r2.Id; //assign the newly created retrieval Id to each requsitiondetail 
-                    RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
+                    foreach (RequisitionDetail detail in re.RequisitionDetails)
+                    {
+                        detail.RetrievalId = r_exist.Id; //assign the newly created retrieval Id to each requsitiondetail belonging to a confirmed retrieval 
+                        RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
+                    }
                 }
+                Retrieval updatedRetrieval = retrivrepo.GetRetrievalById(r_exist.Id); //Get back the latest created retrieval with all the related objects
+                updatedRetrieval.RequisitionDetails = updatedRetrieval.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
+                return updatedRetrieval;
             }
-            Retrieval r3 = retrivrepo.GetRetrieval(date);
-            r3.RequisitionDetails = r3.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
-            return r3;
+
+            else //If there is no retrieval form for the collection date, create a new retrieval form and update existing requisition with same date with the newly created retrievalformId 
+            {
+                Retrieval r1 = new Retrieval();
+                r1.ClerkId = clerkid;
+                r1.DisbursedDate = date;
+                r1.Status = Status.RetrievalStatus.created;
+                Retrieval newRetrieval = retrivrepo.genretrievalandreturn(r1); //creates empty retrieval form and returns it
+
+                foreach (Requisition re in listreq)//listreq is passed in from controller, which is a list of requisition with "confirmed" status, on the selected date and processed by the clerk in session
+                {
+                    foreach (RequisitionDetail detail in re.RequisitionDetails)
+                    {
+                        detail.RetrievalId = newRetrieval.Id; //assign the newly created retrieval Id to each requsitiondetail belonging to a confirmed retrieval 
+                        RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
+                    }
+                }
+                Retrieval updatedRetrieval = retrivrepo.GetRetrievalById(newRetrieval.Id); //Get back the latest created retrieval with all the related objects
+                updatedRetrieval.RequisitionDetails = updatedRetrieval.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
+                return updatedRetrieval;
+            }
+        }
+
+        public bool updateretrieval(Retrieval r1)
+        {
+            try
+            {
+
+                DateTime dateTime = DateTime.UtcNow.Date;
+                DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
+                r1.RetrievedDate = dt.ToUnixTimeMilliseconds();
+                retrivrepo.UpdateRetrieval(r1);
+                foreach (RequisitionDetail rd in r1.RequisitionDetails)
+                {
+                    rdrepo.updaterequsitiondetail(rd);
+                    if(r1.Status == Status.RetrievalStatus.retrieved)
+                    {
+                        UpdateStockCardUponFinaliseRetrieval(rd, r1);
+                    }
+                }
+                return true;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        public bool UpdateStockCardUponFinaliseRetrieval(RequisitionDetail rd, Retrieval r)
+        {
+            Retrieval retrieval = retrivrepo.GetRetrievalById(r.Id);
+            Transaction t_new = new Transaction();
+            t_new.ProductId = rd.ProductId;
+            t_new.Date = (long)retrieval.RetrievedDate;
+
+            StringBuilder builder = new StringBuilder();
+            t_new.Description = builder.Append("Disbursement to ").Append(retrieval.RequisitionDetails[0].Requisition.Department.Name).ToString();
+
+            t_new.Qty = (int)rd.QtyDisbursed;
+
+            Transaction t_old = trepo.GetLatestTransactionByProductId(rd.ProductId);
+            t_new.Balance = t_old.Balance - t_new.Qty;
+
+            t_new.UpdatedByEmpId = retrieval.ClerkId;
+            t_new.RefCode = retrieval.Id.ToString();
+
+            trepo.savenewtransaction(t_new);
+            return true;
         }
 
         public List<TenderQuotation> gettop3suppliers(string productId)
@@ -230,52 +344,53 @@ namespace SSIS_BOOT.Service.Impl
             DateTime dateTime = DateTime.UtcNow.Date;
             DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
             long date = dt.ToUnixTimeMilliseconds();
+            List<PurchaseRequestDetail> updatedprlist = new List<PurchaseRequestDetail>();
             foreach (PurchaseRequestDetail prd in prdlist)
             {
                 prd.SubmitDate = date;
-                purreqrepo.updatepurchaserequestitem(prd);
+                PurchaseRequestDetail pr = purreqrepo.updatepurchaserequestitem(prd);
+                updatedprlist.Add(pr);
             }
-
-            //retrieve the current status of prd
-            IEnumerable<string> status = from prd in prdlist
-                                         select prd.Status;
-            string prdstatus = status.First();
+            string prdstatus = prdlist[0].Status;
 
             if (prdstatus == Status.PurchaseRequestStatus.pendapprov)
             {
-                IEnumerable<int> clerkid = from prd in prdlist
-                                           select prd.CreatedByClerkId;
-                int clerkId = clerkid.First();
+                Employee supervisor = erepo.findempById((int)updatedprlist[0].CreatedByClerk.ManagerId);
+                EmailModel email = new EmailModel();
 
-                Employee supervisor = erepo.findSupervisorByEmpId(clerkId);
-                //send email to supervisor(PENDING)
-                // if (supervisor !=null){}
+                Task.Run(async () =>
+                {
+                    EmailTemplates.UpdatePRStatusTemplate ctt = new EmailTemplates.UpdatePRStatusTemplate(updatedprlist, supervisor);
+                    email.emailTo = supervisor.Email;
+                    email.emailSubject = ctt.subject;
+                    email.emailBody = ctt.body;
+                    await mailservice.SendEmailAsync(email);
+                });
+
 
             }
             return true;
         }
 
-        public bool updateretrieval(Retrieval r1)
-        {
-            try
-            {
-                retrivrepo.UpdateRetrieval(r1);
-                foreach (RequisitionDetail rd in r1.RequisitionDetails)
-                {
-                    rdrepo.updaterequsitiondetail(rd);
-                }
-                return true;
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
-        }
+
         public bool updatepurchaseorderdetailitem(PurchaseOrderDetail pod)
         {
             try
             {
                 podrepo.Updatepurchaseorderdetail(pod);
+                PurchaseOrder po = porepo.findPObyPOid((int)pod.PurchaseOrderId);
+                foreach(PurchaseOrderDetail pod1 in po.PurchaseOrderDetails)
+                {
+                    //Checks for anymore pending status in PurchaseOrderDetail. If yes, PO status is saved as pending and break the loop
+                    if (pod1.Status == Status.PurchaseOrderDetailStatus.pending) 
+                    {
+                        po.Status = Status.PurchaseOrderStatus.pending;
+                        porepo.updatePoStatus(po);
+                        return true;
+                    }
+                    po.Status = Status.PurchaseOrderStatus.completed; //If all PurchaseOrderDetal has status of received, if statement is not triggered. PO status is saved as completed
+                    porepo.updatePoStatus(po);
+                }
                 return true;
             }
             catch (Exception exception)
@@ -302,11 +417,20 @@ namespace SSIS_BOOT.Service.Impl
         {
             try
             {
-                rrepo.updaterequisitioncollectiontime(r1);
+                Requisition original = rrepo.updaterequisitioncollectiontime(r1);
 
+                Employee drep = erepo.findempById((int)original.Department.RepId);
+                Employee deptemp = erepo.findempById(original.ReqByEmpId);
+                EmailModel email = new EmailModel();
 
-                //IMPLEMENT EMAIL SERVICE TO INFORM REP OF COLLECTION TIME
-
+                Task.Run(async () =>
+                {
+                    EmailTemplates.CollectionTimeTemplate ctt = new EmailTemplates.CollectionTimeTemplate(original, drep);
+                    email.emailTo = drep.Email;
+                    email.emailSubject = ctt.subject;
+                    email.emailBody = ctt.body;
+                    await mailservice.SendEmailwithccAsync(email, deptemp);
+                });
                 return true;
             }
             catch (Exception exception)
@@ -350,6 +474,27 @@ namespace SSIS_BOOT.Service.Impl
                     rdrepo.ClerkSaveRequisitionDetailRemarksOnCompletion(rd);
                     rrepo.ClerkCompleteRequisition(clerkId, (int)rd.RequisitionId, date, Status.RequsitionStatus.received);
                 }
+
+                var uniquereqid = rdl.Select(m => m.RequisitionId).Distinct().ToList();
+                List<Requisition> reqlist = new List<Requisition>();
+                foreach (var i in uniquereqid)
+                {
+                    Requisition r = rrepo.findreqByReqId((int)i);
+                    reqlist.Add(r);
+                }
+                Employee drep = reqlist[0].ReceivedByRep;
+                EmailModel email = new EmailModel();
+
+                Task.Run(async () =>
+                {
+                    EmailTemplates.AckCompletedReq ctt = new EmailTemplates.AckCompletedReq(reqlist, drep);
+                    email.emailTo = drep.Email;
+                    email.emailSubject = ctt.subject;
+                    email.emailBody = ctt.body;
+                    await mailservice.SendEmailAsync(email);
+                });
+
+
                 return true;
             }
             catch (Exception m)
@@ -357,5 +502,64 @@ namespace SSIS_BOOT.Service.Impl
                 throw m;
             }
         }
+        public void deleteOriginalDetails(string AdjustmentVoucherId)
+        {
+
+            avdetrepo.deleteAdvDetailsbyAdvId(AdjustmentVoucherId);
+
+        }
+
+        public bool updateAdjustmentVoucherDeatails(List<AdjustmentVoucherDetail> voucherDetails)
+        {
+            string AdjustmentVoucherId = voucherDetails[0].AdjustmentVoucherId;
+            //if there are details in this adjustment voucher
+            if (avdetrepo.hasDetails(AdjustmentVoucherId))
+            {
+                avdetrepo.deleteAdvDetailsbyAdvId(AdjustmentVoucherId);
+            }
+            foreach (AdjustmentVoucherDetail avdetail in voucherDetails)
+            {
+                avdetrepo.updateAdjustmentVoucherDeatail(avdetail);
+            }
+            avrepo.ClerkUpdateAdjustmentVoucherById(AdjustmentVoucherId);
+            return true;
+
+        }
+
+        public bool ClerkSubmitAdjustmentVoucher(string adjustmentVoucherId)
+        {
+            AdjustmentVoucher av = avrepo.ClerkSubmitAdjustmentVoucher(adjustmentVoucherId);
+            // sending email to store supervisor
+            Employee clerk = av.InitiatedClerk;
+            Employee sup = av.InitiatedClerk.Manager;
+            EmailModel email = new EmailModel();
+
+            Task.Run(async () =>
+            {
+                EmailTemplates.SubmitAV sav = new EmailTemplates.SubmitAV(sup, clerk);
+                email.emailTo = sup.Email;
+                email.emailSubject = sav.subject;
+                email.emailBody = sav.body;
+                await mailservice.SendEmailAsync(email);
+            });
+            return true;
+        }
+
+        public AdjustmentVoucher findAdjustmentVoucherById(string advId)
+        {
+            return avrepo.findAdjustmentVoucherById(advId);
+        }
+
+        public List<AdjustmentVoucher> findAdjustmentVoucherByClerkId(int clerkid)
+        {
+            return avrepo.findAdjustmentVoucherByClerkId(clerkid);
+        }
+
+        public TenderQuotation getFirstTenderbyProdutId(string ProductId)
+        {
+            return tqrepo.getFirstTenderbyProdutId(ProductId);
+        }
+
+
     }
 }

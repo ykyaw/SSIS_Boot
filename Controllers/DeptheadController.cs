@@ -12,7 +12,7 @@ namespace SSIS_BOOT.Controllers
     public class DeptheadController : Controller
     {
         private IDepartmentHeadService dhservice;
-        public DeptheadController (IDepartmentHeadService dhservice)
+        public DeptheadController(IDepartmentHeadService dhservice)
         {
             this.dhservice = dhservice;
         }
@@ -27,7 +27,7 @@ namespace SSIS_BOOT.Controllers
             //to be replaced by session of the user's departmentId
             //string deptid = "CPSC";
             string deptid = HttpContext.Session.GetString("DeptId");
-            List <Requisition> reqlist = dhservice.getdeptreqlist(deptid);
+            List<Requisition> reqlist = dhservice.getdeptreqlist(deptid);
             return reqlist;
         }
         [HttpGet]
@@ -55,8 +55,8 @@ namespace SSIS_BOOT.Controllers
         {
             try
             {
-                int deptHeadId = (int)HttpContext.Session.GetInt32("Id");
-                req.ApprovedById = deptHeadId;
+                int approvedbyid = (int)HttpContext.Session.GetInt32("Id");
+                req.ApprovedById = approvedbyid;
                 dhservice.ApprovRejRequisition(req);
                 return true;
             }
@@ -85,7 +85,7 @@ namespace SSIS_BOOT.Controllers
 
         [HttpPut]
         [Route("/depthead/adr/{empid}")]
-        public bool AssignDeptRep(int empid)
+        public bool AssignDeptRep(int empid) //CHECK WHETHER HTTPPUT CAN PASS IN FROM URI WITHOUT BODY
         {
             try
             {
@@ -99,8 +99,30 @@ namespace SSIS_BOOT.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("/depthead/cdel")]
+        public Employee GetCurrentDelegate()
+        {
+            string deptid = (string)HttpContext.Session.GetString("DeptId");
+            Employee emp = dhservice.GetCurrentDelegate(deptid);
+            if (emp != null)
+            {
+                return emp;
+            }
+            else
+            {
+                throw new Exception("No department delegate assigned within this period");
+            }
+        }
 
 
+        [HttpGet]
+        [Route("/depthead/alldept")]
+        public List<Department> GetAllDepartment()
+        {
+            List<Department> dlist = dhservice.GetAllDepartment();
+            return dlist;
+        }
 
 
     }

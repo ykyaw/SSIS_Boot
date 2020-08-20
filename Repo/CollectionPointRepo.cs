@@ -29,6 +29,12 @@ namespace SSIS_BOOT.Repo
             return storecp;
         }
 
+        public CollectionPoint getdeptcollectionpoint(Department dp)
+        {
+            CollectionPoint cp = dbcontext.CollectionPoints.Where(m => m.Id == dp.CollectionPointId).FirstOrDefault();
+            return cp;
+        }
+
 
     }
 }

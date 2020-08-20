@@ -22,13 +22,24 @@ namespace SSIS_BOOT.Repo
                 .Include(m => m.ApprovedBySup).Include(m => m.PurchaseOrderDetails).ToList();
             return polist;
         }
-        public PurchaseOrder create(PurchaseOrder po, int clerkid, string supplierid, long ordereddate, int collectionpointid,double totalprice)
+        //public PurchaseOrder create(PurchaseOrder po, int clerkid, string supplierid, long ordereddate, int collectionpointid,double totalprice)
+        //{
+        //    po.OrderedByClerkId = clerkid;
+        //    po.SupplierId = supplierid;
+        //    po.OrderedDate = ordereddate;
+        //    po.CollectionPointId = collectionpointid;
+        //    po.TotalPrice = totalprice;
+        //    dbcontext.PurchaseOrders.Add(po);
+        //    dbcontext.SaveChanges();
+        //    int id = po.Id;
+
+        //    PurchaseOrder newpo = dbcontext.PurchaseOrders.FirstOrDefault(m => m.Id == id);
+        //    return newpo;
+        //}
+
+
+        public PurchaseOrder create(PurchaseOrder po)
         {
-            po.OrderedByClerkId = clerkid;
-            po.SupplierId = supplierid;
-            po.OrderedDate = ordereddate;
-            po.CollectionPointId = collectionpointid;
-            po.TotalPrice = totalprice;
             dbcontext.PurchaseOrders.Add(po);
             dbcontext.SaveChanges();
             int id = po.Id;
@@ -52,6 +63,23 @@ namespace SSIS_BOOT.Repo
             PurchaseOrder po = dbcontext.PurchaseOrders.Include(m => m.CollectionPoint).Include(m => m.Supplier).Include(m => m.OrderedByClerk)
                 .Include(m => m.ApprovedBySup).Include(m => m.PurchaseOrderDetails).Where(m => m.Id == poid).FirstOrDefault();
             return po;
+        }
+
+        public PurchaseOrder findPObyPOid(int po_id)
+        {
+            return dbcontext.PurchaseOrders.Find(po_id);
+        }
+
+        public bool updatePoStatus(PurchaseOrder po)
+        {
+            var original = dbcontext.PurchaseOrders.Find(po.Id);
+            if (original == null)
+            {
+                throw new Exception();
+            }
+            original.Status = po.Status;
+            dbcontext.SaveChanges();
+            return true;
         }
 
     }

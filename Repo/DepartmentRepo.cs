@@ -63,5 +63,10 @@ namespace SSIS_BOOT.Repo
             }
         }
 
+        public Department findDeptbyRepID(int empid)
+        {
+            Department dp = dbcontext.Departments.Where(m => m.RepId == empid).FirstOrDefault();
+            return dp;
+        }
     }
 }

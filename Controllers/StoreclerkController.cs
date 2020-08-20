@@ -27,13 +27,24 @@ namespace SSIS_BOOT.Controllers
         {
             return View();
         }
-        [HttpGet]
+        [HttpGet]        
         [Route("/storeclerk/catalogue")]
         public List<Product> getcatalogue()
         {
             List<Product> pdt = scservice.getallcat();
             return pdt;
         }
+        [HttpGet]
+        [Route("/storeclerk/glt")]
+        public List<Transaction> getlatesttransaction()
+        {
+            List<Product> pdt = scservice.getallcat();
+            List<Transaction> latesttrans = scservice.getlatesttransaction(pdt);
+            return latesttrans;
+
+        }
+
+
         [HttpGet]
         [Route("/storeclerk/pr")]
         public List<PurchaseRequestDetail> getallpurchasereq()
@@ -68,14 +79,18 @@ namespace SSIS_BOOT.Controllers
         public List<Requisition> getallreqform()
         {
             List<Requisition> reqlist = scservice.getallreqform();
-            return reqlist;
+            //sort by date
+            List<Requisition> sortedreqlist = reqlist.OrderByDescending(m => m.CreatedDate).ToList();
+            return sortedreqlist;
         }
         [HttpGet]
         [Route("/storeclerk/rf/{deptID}")]
         public List<Requisition> getreqformByDeptId(string deptID)
         {
             List<Requisition> reqlist = scservice.getReqformByDeptId(deptID);
-            return reqlist;
+            //sort by date
+            List<Requisition> sortedreqlist = reqlist.OrderByDescending(m=>m.CreatedDate).ToList();
+            return sortedreqlist;
         }
 
         [HttpGet]
@@ -121,12 +136,12 @@ namespace SSIS_BOOT.Controllers
         public Retrieval genretrievalform([FromBody] long date)
         {
             int clerkid = (int)HttpContext.Session.GetInt32("Id");
-            List<Requisition> rq = scservice.getallreqformbydate(date);
-            if (rq == null || rq.Count == 0)
+            List<Requisition> listreq = scservice.getallreqformbydateandstatus(date, clerkid, Status.RequsitionStatus.confirmed); //retrieve requisition where status is confirmed 
+            if (listreq == null || listreq.Count == 0)
             {
-                throw new Exception("Sorry, there is no Requisition matching the provided date. Please try again");
+                throw new Exception("Sorry, you currently don't have any confirmed requisition on this provided date that requires retrieval");
             }
-            Retrieval r1 = scservice.genretrievalform(date, clerkid);
+            Retrieval r1 = scservice.genretrievalform(date, clerkid, listreq);
             return r1;
         }
 
@@ -167,7 +182,6 @@ namespace SSIS_BOOT.Controllers
                 string msg = m.Message;
                 throw new Exception(msg);
             }
-
         }
 
         [HttpGet]
@@ -181,7 +195,6 @@ namespace SSIS_BOOT.Controllers
         [Route("/storeclerk/disbursement")]
         public List<RequisitionDetail> retrievedisbursementlist([FromBody]Requisition r1)
         {
-
             string deptId = r1.DepartmentId;
             long collectiondate = (long)r1.CollectionDate;
             //string deptId = "CPSC";
@@ -191,7 +204,6 @@ namespace SSIS_BOOT.Controllers
             {
                 throw new Exception("Sorry, there is no Disbursement matching the provided date for this department.");
             }
-            // send email to the department rep (PENDING)
             return dlist;
         }
 
@@ -248,7 +260,7 @@ namespace SSIS_BOOT.Controllers
         //[HttpGet] //For testing oly
         [HttpPost]
         [Route("/storeclerk/generatequote")]
-        public bool generatequotefrompr(List<PurchaseRequestDetail> prdlist)
+        public bool generatequotefrompr([FromBody] List<PurchaseRequestDetail> prdlist)
         {
             ////Testing with fake value
             //List<PurchaseRequestDetail> prd = new List<PurchaseRequestDetail>();
@@ -269,8 +281,8 @@ namespace SSIS_BOOT.Controllers
             //prd.Add(new PurchaseRequestDetail(1593617400000, 1, "E032", "OMEG", 80, 100, "MF032", 100.00, 1593617400000, 1593691200000, 2, "approved", null));
             //scservice.generatequotefrompr(prd);
             //// END OF TEST
-
-            scservice.generatequotefrompr(prdlist);
+            int clerkid = (int)HttpContext.Session.GetInt32("Id");
+            scservice.generatequotefrompr(prdlist,clerkid);
             return true;
         }
 
@@ -343,6 +355,49 @@ namespace SSIS_BOOT.Controllers
             {
                 throw new Exception(e.Message);
             }
+        }
+
+        [HttpPut]
+        [Route("/storeclerk/UpdateAdjustmentDetails/")]
+        public bool UpdataeAdjustmentDetails([FromBody]List<AdjustmentVoucherDetail> voucherDetails)
+        {
+
+            //int clerkid = (int)HttpContext.Session.GetInt32("Id");
+            return scservice.updateAdjustmentVoucherDeatails(voucherDetails);
+        }
+
+        [HttpPut]
+        [Route("/storeclerk/SubmitAdjustmentDetails/")]
+        public bool SubmitAdjustmentDetails([FromBody]List<AdjustmentVoucherDetail> voucherDetails)
+        {
+            UpdataeAdjustmentDetails(voucherDetails);
+            string adjustmentVoucherId = voucherDetails[0].AdjustmentVoucherId;
+            scservice.ClerkSubmitAdjustmentVoucher(adjustmentVoucherId);
+            return true;
+        }
+
+        [HttpGet]
+        [Route("/storeclerk/findAdjustmentVoucher/{advId}")]
+        public AdjustmentVoucher findAdjustmentVoucherById(string advId)
+        {
+            AdjustmentVoucher av = scservice.findAdjustmentVoucherById(advId);
+            return av;
+        }
+
+        [HttpGet]
+        [Route("/storeclerk/findAdjustmentVoucherbyClerk/")]
+        public List<AdjustmentVoucher> findAdjustmentVoucherByClerkId()
+        {
+            int clerkid = (int)HttpContext.Session.GetInt32("Id");
+            return scservice.findAdjustmentVoucherByClerkId(clerkid);
+        }
+
+
+        [HttpGet]
+        [Route("/storeclerk/FirstTenderbyProdutId/{ProductId}")]
+        public TenderQuotation getFirstTenderbyProdutId(string ProductId)
+        {
+           return scservice.getFirstTenderbyProdutId(ProductId);
         }
 
     }

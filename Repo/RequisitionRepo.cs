@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SSIS_BOOT.Common;
 using SSIS_BOOT.DB;
 using SSIS_BOOT.Models;
 using System;
@@ -19,7 +20,7 @@ namespace SSIS_BOOT.Repo
         public Requisition findreqformByReqID(int reqId)
         {
             Requisition req = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product)
-                .Include(m => m.Department).Include(m => m.ReqByEmp).Include(m => m.CollectionPoint).Include(m => m.ApprovedBy).Where(m => m.Id == reqId).FirstOrDefault();
+                .Include(m => m.Department).Include(m => m.ReqByEmp).Include(m => m.CollectionPoint).Include(m => m.ApprovedBy).Include(m=>m.ReceivedByRep).Where(m => m.Id == reqId).FirstOrDefault();
             return req;
         }
 
@@ -32,19 +33,24 @@ namespace SSIS_BOOT.Repo
 
         public List<Requisition> findreqformByDeptID(string deptID)
         {
-            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department).Include(m => m.ReqByEmp).Where(m => m.DepartmentId == deptID).ToList();
+            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department).Include(m => m.ReqByEmp).Include(m => m.ReceivedByRep).Where(m => m.DepartmentId == deptID).ToList();
             return lr;
             // .Include(m => m.ReqByEmp).Include(m => m.ApprovedBy).Include(m => m.ProcessedByClerk).Include(m => m.RequisitionDetails)
         }
-        public List<Requisition> findrequsitionbycollectiondate(long date)
+        public List<Requisition> findrequsitionbycollectiondateandstatus(long date, int clerkid, string reqStatus)
         {
-            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product).Include(m => m.Department).Where(m => m.CollectionDate == date).ToList();
+            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.RequisitionDetails)
+                .ThenInclude(m => m.Product)
+                .Include(m => m.Department)
+                .Include(m => m.ReceivedByRep)
+                .Where(m => m.CollectionDate == date && m.ProcessedByClerkId == clerkid && m.Status == reqStatus).ToList();
             return lr;
         }
 
         public Requisition findreqByReqId(int reqId)
         {
-            Requisition req = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product).Include(m => m.ReqByEmp).Include(m => m.Department).FirstOrDefault(m => m.Id == reqId);
+            Requisition req = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product).Include(m => m.ReceivedByRep)
+                .Include(m => m.ReqByEmp).Include(m => m.Department).FirstOrDefault(m => m.Id == reqId);
             return req;
         }
 
@@ -55,11 +61,11 @@ namespace SSIS_BOOT.Repo
             return req;
         }
 
-        public bool updaterequisitioncollectiontime(Requisition r1)
+        public Requisition updaterequisitioncollectiontime(Requisition r1)
         {
             try
             {
-                var original = dbcontext.Requisitions.Find(r1.Id);
+                var original = dbcontext.Requisitions.Include(m=>m.Department).Include(m=>m.CollectionPoint).Include(m=>m.ReceivedByRep).FirstOrDefault(m=>m.Id == r1.Id);
                 if (original == null)
                 {
                     throw new Exception();
@@ -69,7 +75,7 @@ namespace SSIS_BOOT.Repo
                 original.ProcessedByClerkId = r1.ProcessedByClerkId;
                 //dbcontext.Entry(original).CurrentValues.SetValues(r1);
                 dbcontext.SaveChanges();
-                return true;
+                return original;
             }
             catch
             {
@@ -83,7 +89,7 @@ namespace SSIS_BOOT.Repo
             return req;
         }
 
-        public bool DeptHeadApprovRejRequisition(Requisition req)
+        public Requisition DeptHeadApprovRejRequisition(Requisition req)
         {
             try
             {
@@ -95,7 +101,7 @@ namespace SSIS_BOOT.Repo
                 original.Remarks = req.Remarks;
                 original.Status = req.Status;
                 dbcontext.SaveChanges();
-                return true;
+                return original;
             }
             catch
             {
@@ -142,6 +148,27 @@ namespace SSIS_BOOT.Repo
             dbcontext.SaveChanges();
             return true;
 
+        }
+
+        public bool DeptRepUpdateRequisitionCollectionPoint(string deptid, int collectionpointId)
+        {
+            try
+            {
+                List<Requisition> deptreqlist = dbcontext.Requisitions.Where(m => m.DepartmentId == deptid).ToList();
+                IEnumerable<Requisition> reqlist = from r in deptreqlist
+                                                   where r.Status == Status.RequsitionStatus.created || r.Status == Status.RequsitionStatus.pendapprov
+                                                   select r;
+                foreach (Requisition rq in reqlist)
+                {
+                    rq.CollectionPointId = collectionpointId;
+                }
+            }
+            catch
+            {
+                throw new Exception("Error updating collection point for existing pending or creating requisition.");
+            }
+            dbcontext.SaveChanges();
+            return true;
         }
     }
     
