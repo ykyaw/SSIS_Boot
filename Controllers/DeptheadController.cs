@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SSIS_BOOT.Common;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Service.Interfaces;
 
@@ -28,6 +29,13 @@ namespace SSIS_BOOT.Controllers
             //string deptid = "CPSC";
             string deptid = HttpContext.Session.GetString("DeptId");
             List<Requisition> reqlist = dhservice.getdeptreqlist(deptid);
+            foreach(Requisition r in reqlist)
+            {
+                if(r.Status == Status.RequsitionStatus.created)
+                {
+                    reqlist.Remove(r);
+                }
+            }
             List<Requisition> sortedreqlist = reqlist.OrderByDescending(m => m.CreatedDate).ToList();
             return sortedreqlist;
         }

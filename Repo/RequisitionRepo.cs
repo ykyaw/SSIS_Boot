@@ -26,21 +26,28 @@ namespace SSIS_BOOT.Repo
 
         public List<Requisition> findallreqform() //not loading properly. maybe too much info. need to relook
         {
-            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department).ToList();
+            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department).Include(m => m.CollectionPoint).ToList();
             return lr;
             // .Include(m => m.ReqByEmp).Include(m => m.ApprovedBy).Include(m => m.ProcessedByClerk).Include(m => m.RequisitionDetails).
         }
 
         public List<Requisition> findreqformByDeptID(string deptID)
         {
-            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department).Include(m => m.ReqByEmp).Include(m => m.ReceivedByRep).Where(m => m.DepartmentId == deptID).ToList();
+            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department)
+                .Include(m => m.ReqByEmp)
+                .Include(m => m.CollectionPoint)
+                .Include(m => m.ReceivedByRep)
+                .Where(m => m.DepartmentId == deptID).ToList();
             return lr;
             // .Include(m => m.ReqByEmp).Include(m => m.ApprovedBy).Include(m => m.ProcessedByClerk).Include(m => m.RequisitionDetails)
         }
 
         public List<Requisition> finddisbursementByDeptID(string deptID)
         {
-            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department).Include(m => m.ReqByEmp).Include(m => m.ReceivedByRep)
+            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department)
+                .Include(m => m.ReqByEmp)
+                .Include(m => m.ReceivedByRep)
+                .Include(m => m.CollectionPoint)
                 .Where(m => m.DepartmentId == deptID)
                 .Where(m=>m.Status == Status.RequsitionStatus.confirmed || m.Status == Status.RequsitionStatus.received || m.Status == Status.RequsitionStatus.completed).ToList();
             return lr;
@@ -50,6 +57,7 @@ namespace SSIS_BOOT.Repo
         {
             List<Requisition> lr = dbcontext.Requisitions.Include(m => m.RequisitionDetails)
                 .ThenInclude(m => m.Product)
+                .Include(m => m.CollectionPoint)
                 .Include(m => m.Department)
                 .Include(m => m.ReceivedByRep)
                 .Where(m => m.CollectionDate == date && m.ProcessedByClerkId == clerkid && m.Status == reqStatus).ToList();
@@ -58,7 +66,7 @@ namespace SSIS_BOOT.Repo
 
         public Requisition findreqByReqId(int reqId)
         {
-            Requisition req = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product).Include(m => m.ReceivedByRep)
+            Requisition req = dbcontext.Requisitions.Include(m=>m.CollectionPoint).Include(m => m.RequisitionDetails).ThenInclude(m => m.Product).Include(m => m.ReceivedByRep)
                 .Include(m => m.ReqByEmp).Include(m => m.Department).Include(m=>m.CollectionPoint).FirstOrDefault(m => m.Id == reqId);
             return req;
         }
