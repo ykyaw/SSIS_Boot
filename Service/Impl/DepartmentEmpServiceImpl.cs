@@ -39,6 +39,13 @@ namespace SSIS_BOOT.Service.Impl
         {
             return rrepo.findreqformByDeptID(deptId);
         }
+
+        public List<Requisition> getdeptdisbursementlist(string deptId)
+        {
+            List<Requisition> lr = rrepo.finddisbursementByDeptID(deptId);
+            return lr;
+        }
+
         public Requisition getrfdetail(int reqId)
         {
             Requisition req = rrepo.findreqByReqId(reqId);
@@ -214,5 +221,7 @@ namespace SSIS_BOOT.Service.Impl
             Employee drep = erepo.findempById(RepId);
             return drep;
         }
+
+
     }
 }

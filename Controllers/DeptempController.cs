@@ -31,8 +31,20 @@ namespace SSIS_BOOT.Controllers
             List<Requisition> reqlist = deservice.getdeptreqlist(deptid);
             List<Requisition> sortedreqlist = reqlist.OrderByDescending(m => m.CreatedDate).ToList();
             return sortedreqlist;
-
         }
+
+        [HttpGet]
+        [Route("/deptemp/dis")]
+        public List<Requisition> getdeptdisbursement()
+        {
+            //to be replaced by session of the user's departmentId
+            //string deptid = "CPSC";
+            string deptid = HttpContext.Session.GetString("DeptId");
+            List<Requisition> dislist = deservice.getdeptdisbursementlist(deptid);
+            List<Requisition> sorteddislist = dislist.OrderByDescending(m => m.CreatedDate).ToList();
+            return sorteddislist;
+        }
+
         [HttpGet]
         [Route("/deptemp/rfld/{reqId}")]
         public Requisition GetRequisitionDetails(int reqId)
