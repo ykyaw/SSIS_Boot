@@ -208,5 +208,11 @@ namespace SSIS_BOOT.Service.Impl
                 throw m;
             }
         }
+
+        public Employee FindEmployeeById(int RepId)
+        {
+            Employee drep = erepo.findempById(RepId);
+            return drep;
+        }
     }
 }

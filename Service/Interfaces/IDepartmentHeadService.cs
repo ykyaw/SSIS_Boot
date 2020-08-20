@@ -21,5 +21,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public bool AssignDeptRep(int empid, string deptid);
 
         public Employee GetCurrentDelegate(string deptid);
+
+        public List<Department> GetAllDepartment();
     }
 }

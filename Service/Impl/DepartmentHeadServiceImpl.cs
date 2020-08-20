@@ -145,5 +145,11 @@ namespace SSIS_BOOT.Service.Impl
             Employee del = erepo.getcurrentdelegate(currentdate, deptid);
             return del;
         }
+
+        public List<Department> GetAllDepartment()
+        {
+            List<Department> dlist = drepo.findalldepartment();
+            return dlist;
+        }
     }
 }

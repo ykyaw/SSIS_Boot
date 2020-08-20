@@ -116,7 +116,13 @@ namespace SSIS_BOOT.Controllers
         }
 
 
-
+        [HttpGet]
+        [Route("/depthead/alldept")]
+        public List<Department> GetAllDepartment()
+        {
+            List<Department> dlist = dhservice.GetAllDepartment();
+            return dlist;
+        }
 
 
     }

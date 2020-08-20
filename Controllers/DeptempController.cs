@@ -176,5 +176,17 @@ namespace SSIS_BOOT.Controllers
                 throw new Exception(e.Message);
             }
         }
+
+
+        [HttpGet]
+        [Route("/deptemp/drep")]
+        public Employee GetCurrentDeptRep()
+        {
+            string deptid = (string)HttpContext.Session.GetString("DeptId");
+            Department d1 = deservice.GetDepartment(deptid);
+            Employee drep = deservice.FindEmployeeById((int)d1.RepId);
+
+            return drep;
+        }
     }
 }
