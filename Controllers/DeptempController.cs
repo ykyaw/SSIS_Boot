@@ -41,7 +41,7 @@ namespace SSIS_BOOT.Controllers
             //string deptid = "CPSC";
             string deptid = HttpContext.Session.GetString("DeptId");
             List<Requisition> dislist = deservice.getdeptdisbursementlist(deptid);
-            List<Requisition> sorteddislist = dislist.OrderByDescending(m => m.CreatedDate).ToList();
+            List<Requisition> sorteddislist = dislist.OrderByDescending(m => m.CollectionDate).ThenByDescending(m=>m.CreatedDate).ToList();
             return sorteddislist;
         }
 
