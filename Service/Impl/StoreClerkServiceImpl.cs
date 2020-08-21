@@ -279,6 +279,17 @@ namespace SSIS_BOOT.Service.Impl
         {
             try
             {
+                foreach (RequisitionDetail rd in r1.RequisitionDetails) //Check for sufficient balance in stock
+                {
+                    RequisitionDetail i = rdrepo.GetRequisitionDetailById(rd.Id);
+                    Transaction t = trepo.GetLatestTransactionByProductId(i.ProductId);
+                    if(rd.QtyDisbursed > t.Balance)
+                    {
+                        throw new Exception("Unable to update retrieval due to insufficient stocks");
+                    }
+                }
+                
+                /* if there is insufficient stocks based on transactions, error will be thrown, bottom code will not execute, retrieval form will not be updated */
 
                 DateTime dateTime = DateTime.UtcNow.Date;
                 DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
