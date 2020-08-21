@@ -165,7 +165,17 @@ namespace SSIS_BOOT.Service.Impl
 
         public List<Requisition> getallreqform()
         {
-            return rrepo.findallreqform();
+            List<Requisition> lr = rrepo.findallreqform();
+            List<Requisition> lr2 = new List<Requisition>();
+
+            foreach(Requisition r in lr) //clerk should only be able to see all those requisitio after approved status
+            {
+                if (r.Status == Status.RequsitionStatus.approved || r.Status == Status.RequsitionStatus.confirmed || r.Status == Status.RequsitionStatus.received|| r.Status == Status.RequsitionStatus.completed)
+                {
+                    lr2.Add(r);
+                }
+            }
+            return lr2;
         }
 
         public List<Requisition> getallreqformbydateandstatus(long date, int clerkid, string reqStatus)
@@ -175,7 +185,16 @@ namespace SSIS_BOOT.Service.Impl
 
         public List<Requisition> getReqformByDeptId(string deptID)
         {
-            return rrepo.findreqformByDeptID(deptID);
+            List<Requisition> lr = rrepo.findreqformByDeptID(deptID);
+            List<Requisition> lr2 = new List<Requisition>();
+            foreach (Requisition r in lr) //clerk should only be able to see all those requisitio after approved status
+            {
+                if (r.Status == Status.RequsitionStatus.approved || r.Status == Status.RequsitionStatus.confirmed || r.Status == Status.RequsitionStatus.received || r.Status == Status.RequsitionStatus.completed)
+                {
+                    lr2.Add(r);
+                }
+            }
+            return lr2;
         }
 
         public List<Transaction> retrievestockcard(string productId)

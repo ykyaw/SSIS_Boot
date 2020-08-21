@@ -95,6 +95,8 @@ namespace SSIS_BOOT.Service.Impl
             newform.CreatedDate = date;
             newform.DepartmentId = deptid;
             newform.Status = Status.RequsitionStatus.created;
+            Department dept = drepo.findDepartmentById(deptid);
+            newform.CollectionPointId = dept.CollectionPointId;
 
             return rrepo.saveNewRequisition(newform);
         }

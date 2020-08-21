@@ -49,6 +49,10 @@ namespace SSIS_BOOT.Repo
                 original.NeedAdjustment = r1.NeedAdjustment;
                 original.Remark = r1.Remark;
                 original.ClerkId = r1.ClerkId;
+                if(r1.RetrievedDate != null)
+                {
+                    original.RetrievedDate = r1.RetrievedDate;
+                }
                 if(r1.Status == Status.RetrievalStatus.retrieved)
                 {
                     original.Status = r1.Status;

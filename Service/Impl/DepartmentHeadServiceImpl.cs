@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SSIS_BOOT.Common;
 using SSIS_BOOT.Email;
 using SSIS_BOOT.Email.EmailTemplates;
 using SSIS_BOOT.Models;
@@ -34,11 +35,6 @@ namespace SSIS_BOOT.Service.Impl
         {
             try
             {
-                //add the current date to be the approved date.
-                DateTime dateTime = DateTime.UtcNow.Date;
-                DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
-                long date = dt.ToUnixTimeMilliseconds();
-                req.ApprovalDate = date;
 
                 Requisition updatedreq = rrepo.DeptHeadApprovRejRequisition(req);
                 Employee deptemp = updatedreq.ReqByEmp;
@@ -68,9 +64,10 @@ namespace SSIS_BOOT.Service.Impl
             return emplist;
         }
 
-        public List<Requisition> getdeptreqlist(string deptId)
+        public List<Requisition> DeptHeadGetdeptReqlist(string deptId)
         {
-            return rrepo.findreqformByDeptID(deptId);
+            List<Requisition> lr = rrepo.DeptHeadfindreqformByDeptID(deptId);
+            return lr;
         }
 
         public List<Requisition> getdeptdisbursementlist(string deptid)
