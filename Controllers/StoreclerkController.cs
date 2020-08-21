@@ -131,9 +131,8 @@ namespace SSIS_BOOT.Controllers
             return plist;
         }
 
-        [HttpPost]
-        [Route("/storeclerk/ret")]
-        public Retrieval genretrievalform([FromBody] long date)
+        [Route("/storeclerk/ret/{date}")]
+        public Retrieval genretrievalform(long date)
         {
             int clerkid = (int)HttpContext.Session.GetInt32("Id");
             List<Requisition> listreq = scservice.getallreqformbydateandstatus(date, clerkid, Status.RequsitionStatus.confirmed); //retrieve requisition where status is confirmed 
