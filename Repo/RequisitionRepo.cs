@@ -129,7 +129,11 @@ namespace SSIS_BOOT.Repo
                 var original = dbcontext.Requisitions.Find(req.Id);
                 if (original == null)
                 {
-                    throw new Exception();
+                    throw new Exception("Error approving or rejecting requisition");
+                }
+                if(original.ReqByEmpId == req.ApprovedById)
+                {
+                    throw new Exception("Sorry, you are not allowed to approve or reject your own requisition");
                 }
                 original.Remarks = req.Remarks;
                 original.Status = req.Status;
@@ -138,9 +142,9 @@ namespace SSIS_BOOT.Repo
                 dbcontext.SaveChanges();
                 return original;
             }
-            catch
+            catch (Exception m)
             {
-                throw new Exception("Error approving or rejecting requisition");
+                throw new Exception(m.Message);
             }
         }
 
