@@ -534,10 +534,17 @@ namespace SSIS_BOOT.Service.Impl
                 throw m;
             }
         }
-        public void deleteOriginalDetails(string AdjustmentVoucherId)
+        public bool SaveEmptyAdjustmentDetails(string AdjustmentVoucherId)
         {
-
-            avdetrepo.deleteAdvDetailsbyAdvId(AdjustmentVoucherId);
+            if (avdetrepo.hasDetails(AdjustmentVoucherId))
+            {
+                avdetrepo.deleteAdvDetailsbyAdvId(AdjustmentVoucherId);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
         }
 
