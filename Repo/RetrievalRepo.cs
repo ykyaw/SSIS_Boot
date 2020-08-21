@@ -74,5 +74,10 @@ namespace SSIS_BOOT.Repo
                 .Include(m => m.RequisitionDetails).ThenInclude(m => m.Requisition).ThenInclude(m=>m.Department)
                 .FirstOrDefault(m=>m.Id == retrivId);
         }
+
+        public List<Retrieval> GetRetrievalThatNeedAdjustmentVoucher()
+        {
+            return dbcontext.Retrievals.Where(m => m.NeedAdjustment == true).ToList();
+        }
     }
 }

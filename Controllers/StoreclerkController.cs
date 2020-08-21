@@ -120,9 +120,6 @@ namespace SSIS_BOOT.Controllers
 
         }
 
-
-
-
         [HttpGet]
         [Route("/storeclerk/sc/{productId}")]
         public List<Transaction> retrievestockcard(string productId)
@@ -398,6 +395,22 @@ namespace SSIS_BOOT.Controllers
         {
            return scservice.getFirstTenderbyProdutId(ProductId);
         }
+
+        [HttpGet]
+        [Route("/storeclerk/retformav")]
+        public List<Retrieval> GetRetrievalFormCommentsForAdjustmentVoucher()
+        {
+            List<Retrieval> retrievalwithcomments = scservice.GetRetrievalFormCommentsForAdjustmentVoucher();
+            if(retrievalwithcomments != null || retrievalwithcomments.Count !=0)
+            {
+                return retrievalwithcomments;
+            }
+            else
+            {
+                return new List<Retrieval>(); //if no retrieval with comments, return empty list so front end don't need to handle error
+            }
+        }
+
 
     }
 }

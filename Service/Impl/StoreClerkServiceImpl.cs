@@ -599,6 +599,10 @@ namespace SSIS_BOOT.Service.Impl
             return tqrepo.getFirstTenderbyProdutId(ProductId);
         }
 
-
+        public List<Retrieval> GetRetrievalFormCommentsForAdjustmentVoucher()
+        {
+            List<Retrieval> rlistwithcomments = retrivrepo.GetRetrievalThatNeedAdjustmentVoucher();
+            return rlistwithcomments;
+        }
     }
 }
