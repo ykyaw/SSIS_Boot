@@ -63,5 +63,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public List<AdjustmentVoucher> findAdjustmentVoucherByClerkId(int clerkid);
 
         public TenderQuotation getFirstTenderbyProdutId(string ProductId);
+
+        public bool SaveEmptyAdjustmentDetails(string AdjustmentVoucherId);
     }
 }

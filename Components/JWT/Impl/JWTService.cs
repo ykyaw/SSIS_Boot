@@ -119,6 +119,7 @@ namespace SSIS_BOOT.Components.JWT.Impl
             {
                 Claims = new Claim[]
                 {
+                    //new Claim(ClaimTypes.NameIdentifier,emp.Id.ToString()),
                     new Claim(ClaimTypes.Name,emp.Name),
                     new Claim(ClaimTypes.Email,emp.Email),
                     new Claim(ClaimTypes.Role,emp.Role),
