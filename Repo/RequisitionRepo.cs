@@ -20,7 +20,11 @@ namespace SSIS_BOOT.Repo
         public Requisition findreqformByReqID(int reqId)
         {
             Requisition req = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product)
-                .Include(m => m.Department).Include(m => m.ReqByEmp).Include(m => m.CollectionPoint).Include(m => m.ApprovedBy).Include(m=>m.ReceivedByRep).Where(m => m.Id == reqId).FirstOrDefault();
+                .Include(m => m.Department)
+                .Include(m => m.ReqByEmp)
+                .Include(m => m.CollectionPoint)
+                .Include(m => m.ApprovedBy)
+                .Include(m=>m.ReceivedByRep).Where(m => m.Id == reqId).FirstOrDefault();
             return req;
         }
 
@@ -38,6 +42,18 @@ namespace SSIS_BOOT.Repo
                 .Include(m => m.CollectionPoint)
                 .Include(m => m.ReceivedByRep)
                 .Where(m => m.DepartmentId == deptID).ToList();
+            return lr;
+            // .Include(m => m.ReqByEmp).Include(m => m.ApprovedBy).Include(m => m.ProcessedByClerk).Include(m => m.RequisitionDetails)
+        }
+
+        public List<Requisition> DeptHeadfindreqformByDeptID(string deptID)
+        {
+            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department)
+                .Include(m => m.ReqByEmp)
+                .Include(m => m.CollectionPoint)
+                .Where(m => m.DepartmentId == deptID)
+                .Where(m=>m.Status != Status.RequsitionStatus.created)
+                .ToList();
             return lr;
             // .Include(m => m.ReqByEmp).Include(m => m.ApprovedBy).Include(m => m.ProcessedByClerk).Include(m => m.RequisitionDetails)
         }
@@ -113,16 +129,22 @@ namespace SSIS_BOOT.Repo
                 var original = dbcontext.Requisitions.Find(req.Id);
                 if (original == null)
                 {
-                    throw new Exception();
+                    throw new Exception("Error approving or rejecting requisition");
+                }
+                if(original.ReqByEmpId == req.ApprovedById)
+                {
+                    throw new Exception("Sorry, you are not allowed to approve or reject your own requisition");
                 }
                 original.Remarks = req.Remarks;
                 original.Status = req.Status;
+                original.ApprovedById = req.ApprovedById;
+                original.ApprovalDate = req.ApprovalDate;
                 dbcontext.SaveChanges();
                 return original;
             }
-            catch
+            catch (Exception m)
             {
-                throw new Exception("Error approving or rejecting requisition");
+                throw new Exception(m.Message);
             }
         }
 

@@ -28,14 +28,7 @@ namespace SSIS_BOOT.Controllers
             //to be replaced by session of the user's departmentId
             //string deptid = "CPSC";
             string deptid = HttpContext.Session.GetString("DeptId");
-            List<Requisition> reqlist = dhservice.getdeptreqlist(deptid);
-            foreach(Requisition r in reqlist)
-            {
-                if(r.Status == Status.RequsitionStatus.created)
-                {
-                    reqlist.Remove(r);
-                }
-            }
+            List<Requisition> reqlist = dhservice.DeptHeadGetdeptReqlist(deptid);
             List<Requisition> sortedreqlist = reqlist.OrderByDescending(m => m.CreatedDate).ToList();
             return sortedreqlist;
         }
@@ -86,8 +79,13 @@ namespace SSIS_BOOT.Controllers
         public bool ApprovRejRequisition([FromBody] Requisition req)
         {
             try
-            {
+            {     
+                //add the current date to be the approved date.
+                DateTime dateTime = DateTime.UtcNow.Date;
+                DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
+                long date = dt.ToUnixTimeMilliseconds();
                 int approvedbyid = (int)HttpContext.Session.GetInt32("Id");
+                req.ApprovalDate = date;
                 req.ApprovedById = approvedbyid;
                 dhservice.ApprovRejRequisition(req);
                 return true;

@@ -165,7 +165,17 @@ namespace SSIS_BOOT.Service.Impl
 
         public List<Requisition> getallreqform()
         {
-            return rrepo.findallreqform();
+            List<Requisition> lr = rrepo.findallreqform();
+            List<Requisition> lr2 = new List<Requisition>();
+
+            foreach(Requisition r in lr) //clerk should only be able to see all those requisitio after approved status
+            {
+                if (r.Status == Status.RequsitionStatus.approved || r.Status == Status.RequsitionStatus.confirmed || r.Status == Status.RequsitionStatus.received|| r.Status == Status.RequsitionStatus.completed)
+                {
+                    lr2.Add(r);
+                }
+            }
+            return lr2;
         }
 
         public List<Requisition> getallreqformbydateandstatus(long date, int clerkid, string reqStatus)
@@ -175,7 +185,16 @@ namespace SSIS_BOOT.Service.Impl
 
         public List<Requisition> getReqformByDeptId(string deptID)
         {
-            return rrepo.findreqformByDeptID(deptID);
+            List<Requisition> lr = rrepo.findreqformByDeptID(deptID);
+            List<Requisition> lr2 = new List<Requisition>();
+            foreach (Requisition r in lr) //clerk should only be able to see all those requisitio after approved status
+            {
+                if (r.Status == Status.RequsitionStatus.approved || r.Status == Status.RequsitionStatus.confirmed || r.Status == Status.RequsitionStatus.received || r.Status == Status.RequsitionStatus.completed)
+                {
+                    lr2.Add(r);
+                }
+            }
+            return lr2;
         }
 
         public List<Transaction> retrievestockcard(string productId)
@@ -260,6 +279,17 @@ namespace SSIS_BOOT.Service.Impl
         {
             try
             {
+                foreach (RequisitionDetail rd in r1.RequisitionDetails) //Check for sufficient balance in stock
+                {
+                    RequisitionDetail i = rdrepo.GetRequisitionDetailById(rd.Id);
+                    Transaction t = trepo.GetLatestTransactionByProductId(i.ProductId);
+                    if(rd.QtyDisbursed > t.Balance)
+                    {
+                        throw new Exception("Unable to update retrieval due to insufficient stocks");
+                    }
+                }
+                
+                /* if there is insufficient stocks based on transactions, error will be thrown, bottom code will not execute, retrieval form will not be updated */
 
                 DateTime dateTime = DateTime.UtcNow.Date;
                 DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
