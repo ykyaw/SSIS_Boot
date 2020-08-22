@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SSIS_BOOT.Common;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Service.Interfaces;
 
@@ -27,9 +28,14 @@ namespace SSIS_BOOT.Controllers
         {
             //to be replaced by session of the user's departmentId
             //string deptid = "CPSC";
+            int empid = (int)HttpContext.Session.GetInt32("Id");
             string deptid = HttpContext.Session.GetString("DeptId");
             List<Requisition> reqlist = deservice.getdeptreqlist(deptid);
-            List<Requisition> sortedreqlist = reqlist.OrderByDescending(m => m.CreatedDate).ToList();
+            IEnumerable <Requisition> removed = from r in reqlist
+                                          where r.Status == Status.RequsitionStatus.created && r.ReqByEmpId != empid //filter away requisition with status "created" that does not belong to the owner
+                                          select r;
+            List<Requisition> reqlist2 = reqlist.Except(removed.ToList()).ToList();
+            List <Requisition> sortedreqlist = reqlist2.OrderByDescending(m => m.CreatedDate).ToList();
             return sortedreqlist;
         }
 

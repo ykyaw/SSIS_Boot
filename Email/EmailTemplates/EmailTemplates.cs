@@ -157,7 +157,9 @@ namespace SSIS_BOOT.Email.EmailTemplates
                 this.body =
                     "Dear " + sup.Name + System.Environment.NewLine + System.Environment.NewLine +
                     "A new adjustment voucher was received, pending your further action." + System.Environment.NewLine + System.Environment.NewLine +
-                    "Simply respond by clicking here to view the outstanding adjustment voucher."
+                    "Please log in to the LU Stationary Portal in the link below to access them."
+                    + System.Environment.NewLine + System.Environment.NewLine +
+                    "http://localhost:51118/"
                     + System.Environment.NewLine + System.Environment.NewLine +
                     "Thank you." + System.Environment.NewLine + System.Environment.NewLine +
                    "Store Clerk " + System.Environment.NewLine + clerk.Name;

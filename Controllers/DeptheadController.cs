@@ -41,7 +41,7 @@ namespace SSIS_BOOT.Controllers
             //string deptid = "ENGL";
             string deptid = HttpContext.Session.GetString("DeptId");
             List<Requisition> dislist = dhservice.getdeptdisbursementlist(deptid);
-            List<Requisition> sorteddislist = dislist.OrderByDescending(m => m.CreatedDate).ToList();
+            List<Requisition> sorteddislist = dislist.OrderByDescending(m => m.CollectionDate).ToList();
             return sorteddislist;
         }
 

@@ -48,11 +48,9 @@ namespace SSIS_BOOT.Repo
 
         public List<Requisition> DeptHeadfindreqformByDeptID(string deptID)
         {
-            List<Requisition> lr = dbcontext.Requisitions.Include(m => m.Department)
+            List<Requisition> lr = dbcontext.Requisitions
                 .Include(m => m.ReqByEmp)
-                .Include(m => m.CollectionPoint)
-                .Where(m => m.DepartmentId == deptID)
-                .Where(m => m.Status != Status.RequsitionStatus.created)
+                .Where(m => m.DepartmentId == deptID && m.Status != Status.RequsitionStatus.created)
                 .ToList();
             return lr;
             // .Include(m => m.ReqByEmp).Include(m => m.ApprovedBy).Include(m => m.ProcessedByClerk).Include(m => m.RequisitionDetails)

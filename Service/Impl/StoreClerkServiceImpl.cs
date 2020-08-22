@@ -587,7 +587,8 @@ namespace SSIS_BOOT.Service.Impl
             AdjustmentVoucher av = avrepo.ClerkSubmitAdjustmentVoucher(adjustmentVoucherId);
             // sending email to store supervisor
             Employee clerk = av.InitiatedClerk;
-            Employee sup = av.InitiatedClerk.Manager;
+            //Employee sup = av.InitiatedClerk.Manager;
+            Employee sup = erepo.findempById((int)clerk.ManagerId);
             EmailModel email = new EmailModel();
 
             Task.Run(async () =>

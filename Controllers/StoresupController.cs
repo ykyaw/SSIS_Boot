@@ -101,7 +101,15 @@ namespace SSIS_BOOT.Controllers
         public List<AdjustmentVoucher> getAllAdjustmentVoucher()
         {
             List<AdjustmentVoucher> advlist = ssservice.getAllAdjustmentVoucher();
-            return advlist;
+            List<AdjustmentVoucher> advlist2 = new List<AdjustmentVoucher>();
+            foreach(AdjustmentVoucher a in advlist)
+            {
+                if(a.Status != Status.AdjVoucherStatus.created) //Supervisor/manager should not see adjustment voucher under creation status
+                {
+                    advlist2.Add(a);
+                }
+            }
+            return advlist2;
         }
 
     }
