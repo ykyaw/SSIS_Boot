@@ -102,9 +102,9 @@ namespace SSIS_BOOT
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            dbcontext.Database.EnsureDeleted();
-            dbcontext.Database.EnsureCreated();
-            new SSISSeeder(dbcontext);
+            //dbcontext.Database.EnsureDeleted();
+            //dbcontext.Database.EnsureCreated();
+            //new SSISSeeder(dbcontext);
         }
     }
 }
