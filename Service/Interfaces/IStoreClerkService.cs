@@ -67,5 +67,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public bool SaveEmptyAdjustmentDetails(string AdjustmentVoucherId);
 
         public List<Retrieval> GetRetrievalFormCommentsForAdjustmentVoucher();
+
+        public List<Requisition> GetAllDisbursement();
     }
 }

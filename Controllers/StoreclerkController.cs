@@ -203,6 +203,17 @@ namespace SSIS_BOOT.Controllers
             return dlist;
         }
 
+
+
+        [HttpGet]
+        [Route("/storeclerk/alldis")]
+        public List<Requisition> GetAllDisbursement()
+        {
+            List<Requisition> alldisbursement = scservice.GetAllDisbursement();
+            return alldisbursement;
+        }
+
+
         [HttpPost]
         //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPOST] and pass in from body
         [Route("/storeclerk/updatesc")]

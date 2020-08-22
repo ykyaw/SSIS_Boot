@@ -621,5 +621,11 @@ namespace SSIS_BOOT.Service.Impl
             List<Retrieval> rlistwithcomments = retrivrepo.GetRetrievalThatNeedAdjustmentVoucher();
             return rlistwithcomments;
         }
+
+        public List<Requisition> GetAllDisbursement()
+        {
+            List<Requisition> disbursementlist = rrepo.findalldisbursement();
+            return disbursementlist;
+        }
     }
 }
