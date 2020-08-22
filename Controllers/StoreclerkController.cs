@@ -300,8 +300,8 @@ namespace SSIS_BOOT.Controllers
             foreach (PurchaseOrderDetail podid in podlist)
             {
                 podid.ReceivedByClerkId = clerkid;
-                scservice.updatepurchaseorderdetailitem(podid);
             }
+            scservice.updatepurchaseorderdetailitem(podlist);
             return true;
         }
 
