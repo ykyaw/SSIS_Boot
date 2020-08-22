@@ -325,7 +325,7 @@ namespace SSIS_BOOT.Service.Impl
             t_new.Balance = t_old.Balance + t_new.Qty;
 
             t_new.UpdatedByEmpId = retrieval.ClerkId;
-            t_new.RefCode = retrieval.Id.ToString();
+            t_new.RefCode = "Retrieval ID: " + retrieval.Id.ToString();
 
             trepo.savenewtransaction(t_new);
             return true;
