@@ -165,6 +165,7 @@ namespace SSIS_BOOT.Service.Impl
                     po.OrderedDate = approveddate;
                     po.Status = Status.PurchaseOrderStatus.pending;
                     po.CollectionPointId = crepo.getstorecollectionpoint().Id;
+                    po.ApprovedBySupId = supid;
                     double totalprice = 0;                    
                     foreach (PurchaseRequestDetail pr in pdict[r.Key])
                     {

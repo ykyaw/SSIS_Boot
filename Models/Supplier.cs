@@ -25,6 +25,7 @@ namespace SSIS_BOOT.Models
         {
             this.Id = Id;
             this.Name = Name;
+            this.ContactPersonName = ContactPersonName;
             this.PhoneNo = PhoneNo;
             this.FaxNo = FaxNo;
             this.Address = Address;
