@@ -288,51 +288,380 @@ namespace SSIS_BOOT.DB
 
             //seed tender quotation
             // public TenderQuotation(string SupplierId, int Year, string ProductId, string PricePerUom,int? Rank)
-            TenderQuotation tq1 = new TenderQuotation("BANE", 2020, "P043", 1.00,"Dozen", 1); //Bane-2020-pencial with eraser head, 1,$1
-            TenderQuotation tq2 = new TenderQuotation("ALPA", 2020, "C001", 2.00,"Dozen", 1);//ALPA-2020-Clip-1,$2
-            TenderQuotation tq3 = new TenderQuotation("AlPA", 2020, "P043", 1.00,"Dozen", 2);
-            TenderQuotation tq4 = new TenderQuotation("BANE", 2020, "C001", 2.20,"Dozen", 2);
-            TenderQuotation tq5 = new TenderQuotation("CHEP", 2020, "C001", 2.50,"Dozen", 3);
-            TenderQuotation tq6 = new TenderQuotation("CHEP", 2020, "P043", 1.20,"Dozen", 3);
-            TenderQuotation tq7 = new TenderQuotation("OMEG", 2020, "C001", 2.75,"Dozen", null);
-            TenderQuotation tq8 = new TenderQuotation("OMEG", 2020, "P043", 1.75,"Dozen", null);
-            TenderQuotation tq9 = new TenderQuotation("OMEG", 2020, "D001", 10.00,"Box", 1); //diskettes ,$10
-            TenderQuotation tq10 = new TenderQuotation("CHEP", 2020, "D001",10.10,"Box", 2);
-            dbcontext.Add(tq1);
-            dbcontext.Add(tq2);
-            dbcontext.Add(tq3);
-            dbcontext.Add(tq4);
-            dbcontext.Add(tq5);
-            dbcontext.Add(tq6);
-            dbcontext.Add(tq7);
-            dbcontext.Add(tq8);
-            dbcontext.Add(tq9);
-            dbcontext.Add(tq10);
+            //TenderQuotation tq1 = new TenderQuotation("BANE", 2020, "P043", 1.00,"Dozen", 1); //Bane-2020-pencial with eraser head, 1,$1
+            //TenderQuotation tq2 = new TenderQuotation("ALPA", 2020, "C001", 2.00,"Dozen", 1);//ALPA-2020-Clip-1,$2
+            //TenderQuotation tq3 = new TenderQuotation("AlPA", 2020, "P043", 1.00,"Dozen", 2);
+            //TenderQuotation tq4 = new TenderQuotation("BANE", 2020, "C001", 2.20,"Dozen", 2);
+            //TenderQuotation tq5 = new TenderQuotation("CHEP", 2020, "C001", 2.50,"Dozen", 3);
+            //TenderQuotation tq6 = new TenderQuotation("CHEP", 2020, "P043", 1.20,"Dozen", 3);
+            //TenderQuotation tq7 = new TenderQuotation("OMEG", 2020, "C001", 2.75,"Dozen", null);
+            //TenderQuotation tq8 = new TenderQuotation("OMEG", 2020, "P043", 1.75,"Dozen", null);
+            //TenderQuotation tq9 = new TenderQuotation("OMEG", 2020, "D001", 10.00,"Box", 1); //diskettes ,$10
+            //TenderQuotation tq10 = new TenderQuotation("CHEP", 2020, "D001",10.10,"Box", 2);
+            //dbcontext.Add(tq1);
+            //dbcontext.Add(tq2);
+            //dbcontext.Add(tq3);
+            //dbcontext.Add(tq4);
+            //dbcontext.Add(tq5);
+            //dbcontext.Add(tq6);
+            //dbcontext.Add(tq7);
+            //dbcontext.Add(tq8);
+            //dbcontext.Add(tq9);
+            //dbcontext.Add(tq10);
+            //dbcontext.SaveChanges();
+
+
+            //TenderQuotation tq11 = new TenderQuotation("BANE", 2020, "D001", 10.20,"Box", 3);
+            //TenderQuotation tq12 = new TenderQuotation("CHEP", 2020, "E032", 1.00,"Each", 1);//exercise book,$1
+            //TenderQuotation tq13 = new TenderQuotation("ALPA", 2020, "D001", 1.05,"Box", 2);
+            //TenderQuotation tq14 = new TenderQuotation("OMEG", 2020, "D001", 1.10,"Box", 3);
+            //TenderQuotation tq15 = new TenderQuotation("ALPA", 2020, "E032", 1.05,"EACH", 2);
+            //TenderQuotation tq16 = new TenderQuotation("BANE", 2020, "E032", 1.10,"EACH", 3);
+
+            ///* TO BE KEPT */
+            //TenderQuotation tq17 = new TenderQuotation("OMEG", 2020, "H011", 10, "Box", 1);
+            //TenderQuotation tq18 = new TenderQuotation("ALPA", 2020, "H011", 10.50, "Box", 2);
+            //TenderQuotation tq19 = new TenderQuotation("BANE", 2020, "H011", 11.00, "Box", 3);
+
+            //TenderQuotation tq20 = new TenderQuotation("OMEG", 2020, "H012", 10, "Box", 1);
+            //TenderQuotation tq21 = new TenderQuotation("ALPA", 2020, "H012", 11, "Box", 2);
+            //TenderQuotation tq22 = new TenderQuotation("BANE", 2020, "H012", 12, "Box", 3);
+
+            //dbcontext.Add(tq11);
+            //dbcontext.Add(tq12);
+            //dbcontext.Add(tq13);
+            //dbcontext.Add(tq14);
+            //dbcontext.Add(tq15);
+            //dbcontext.Add(tq16);
+            //dbcontext.SaveChanges();
+
+
+
+
+
+
+            //Product p1 = new Product("C001", "Clips Double 1", 1, 15, 15, "Dozen");
+            TenderQuotation q1a = new TenderQuotation("OMEG", 2020, "C001", 10, "Dozen", 1);
+            TenderQuotation q1b = new TenderQuotation("ALPA", 2020, "C001", 10.50, "Dozen", 2);
+            TenderQuotation q1c= new TenderQuotation("BANE", 2020, "C001", 11.00, "Dozen", 3);
+            TenderQuotation q1d = new TenderQuotation("CHEP", 2020, "C001", 11.00, "Dozen", null);
+            dbcontext.Add(q1a);
+            dbcontext.Add(q1b);
+            dbcontext.Add(q1c);
+
+            dbcontext.Add(q1d);
+
+            //Product p2 = new Product("C002", "Clips Double 2", 1, 30, 50, "Dozen");
+            TenderQuotation q2a = new TenderQuotation("OMEG", 2020, "C002", 10, "Dozen", 1);
+            TenderQuotation q2b = new TenderQuotation("ALPA", 2020, "C002", 10.50, "Dozen", 2);
+            TenderQuotation q2c = new TenderQuotation("BANE", 2020, "C002", 11.00, "Dozen", 3);
+            TenderQuotation q2d = new TenderQuotation("CHEP", 2020, "C002", 11.00, "Dozen", null);
+            dbcontext.Add(q2a);
+            dbcontext.Add(q2b);
+            dbcontext.Add(q2c);
+            dbcontext.Add(q2d);
+
+
+            //Product p3 = new Product("C003", "Clips Double 3/4", 1, 15, 15, "Dozen");
+            TenderQuotation q3a = new TenderQuotation("OMEG", 2020, "C003", 10, "Dozen", 1);
+            TenderQuotation q3b = new TenderQuotation("ALPA", 2020, "C003", 10.50, "Dozen", 2);
+            TenderQuotation q3c = new TenderQuotation("BANE", 2020, "C003", 11.00, "Dozen", 3);
+            TenderQuotation q3d = new TenderQuotation("CHEP", 2020, "C003", 11.00, "Dozen", null);
+            dbcontext.Add(q3a);
+            dbcontext.Add(q3b);
+            dbcontext.Add(q3c);
+            dbcontext.Add(q3d);
+
+
+            //Product p4 = new Product("C004", "Clips Paper Large", 1, 15, 15, "Box");
+            TenderQuotation q4a = new TenderQuotation("OMEG", 2020, "C004", 10, "Box", 1);
+            TenderQuotation q4b = new TenderQuotation("ALPA", 2020, "C004", 10.50, "Box", 2);
+            TenderQuotation q4c = new TenderQuotation("BANE", 2020, "C004", 11.00, "Box", 3);
+            TenderQuotation q4d = new TenderQuotation("CHEP", 2020, "C004", 11.00, "Box", null);
+            dbcontext.Add(q4a);
+            dbcontext.Add(q4b);
+            dbcontext.Add(q4c);
+            dbcontext.Add(q4d);
+
+            //Product p5 = new Product("E001", "Envelop Brown (3'x6')", 2, 100, 100, "Each");
+            TenderQuotation q5a = new TenderQuotation("OMEG", 2020, "E001", 10, "Each", 1);
+            TenderQuotation q5b = new TenderQuotation("ALPA", 2020, "E001", 10.50, "Each", 2);
+            TenderQuotation q5c = new TenderQuotation("BANE", 2020, "E001", 11.00, "Each", 3);
+            TenderQuotation q5d = new TenderQuotation("CHEP", 2020, "E001", 11.00, "Each", null);
+            dbcontext.Add(q5a);
+            dbcontext.Add(q5b);
+            dbcontext.Add(q5c);
+            dbcontext.Add(q5d);
+
+            //Product p6 = new Product("E002", "Envelop Brown (3'x6') w/Window", 2, 100, 100, "Each");
+            TenderQuotation q6a = new TenderQuotation("OMEG", 2020, "E002", 10, "Each", 1);
+            TenderQuotation q6b = new TenderQuotation("ALPA", 2020, "E002", 10.50, "Each", 2);
+            TenderQuotation q6c = new TenderQuotation("BANE", 2020, "E002", 11.00, "Each", 3);
+            TenderQuotation q6d = new TenderQuotation("CHEP", 2020, "E002", 11.00, "Each", null);
+            dbcontext.Add(q6a);
+            dbcontext.Add(q6b);
+            dbcontext.Add(q6c);
+            dbcontext.Add(q6d);
+
+            //Product p7 = new Product("E003", "Envelop Brown (6'x7')", 2, 100, 100, "Each");
+            TenderQuotation q7a = new TenderQuotation("OMEG", 2020, "E003", 10, "Each", 1);
+            TenderQuotation q7b = new TenderQuotation("ALPA", 2020, "E003", 10.50, "Each", 2);
+            TenderQuotation q7c = new TenderQuotation("BANE", 2020, "E003", 11.00, "Each", 3);
+            TenderQuotation q7d = new TenderQuotation("CHEP", 2020, "E003", 11.00, "Each", null);
+            dbcontext.Add(q7a);
+            dbcontext.Add(q7b);
+            dbcontext.Add(q7c);
+            dbcontext.Add(q7d);
+
+            //Product p8 = new Product("E004", "Envelop Brown (6'x7') w/Window", 2, 100, 100, "Each");
+            TenderQuotation q8a = new TenderQuotation("OMEG", 2020, "E004", 10, "Each", 1);
+            TenderQuotation q8b = new TenderQuotation("ALPA", 2020, "E004", 10.50, "Each", 2);
+            TenderQuotation q8c = new TenderQuotation("BANE", 2020, "E004", 11.00, "Each", 3);
+            TenderQuotation q8d = new TenderQuotation("CHEP", 2020, "E004", 11.00, "Each", null);
+            dbcontext.Add(q8a);
+            dbcontext.Add(q8b);
+            dbcontext.Add(q8c);
+            dbcontext.Add(q8d);
+
+            //Product p9 = new Product("E020", "Eraser (hard)", 3, 20, 50, "Each");
+            TenderQuotation q9a = new TenderQuotation("OMEG", 2020, "E020", 10, "Each", 1);
+            TenderQuotation q9b = new TenderQuotation("ALPA", 2020, "E020", 10.50, "Each", 2);
+            TenderQuotation q9c = new TenderQuotation("BANE", 2020, "E020", 11.00, "Each", 3);
+            TenderQuotation q9d = new TenderQuotation("CHEP", 2020, "E020", 11.00, "Each", null);
+            dbcontext.Add(q9a);
+            dbcontext.Add(q9b);
+            dbcontext.Add(q9c);
+            dbcontext.Add(q9d);
+
+            //Product p10 = new Product("E021", "Eraser (soft)", 3, 20, 50, "Each");
+            TenderQuotation q10a = new TenderQuotation("OMEG", 2020, "E021", 10, "Each", 1);
+            TenderQuotation q10b = new TenderQuotation("ALPA", 2020, "E021", 10.50, "Each", 2);
+            TenderQuotation q10c = new TenderQuotation("BANE", 2020, "E021", 11.00, "Each", 3);
+            TenderQuotation q10d = new TenderQuotation("CHEP", 2020, "E021", 11.00, "Each", null);
+            dbcontext.Add(q10a);
+            dbcontext.Add(q10b);
+            dbcontext.Add(q10c);
+            dbcontext.Add(q10d);
+
+            //Product p11 = new Product("E030", "Exercise Book (100pg)", 4, 100, 100, "Each");
+            TenderQuotation q11a = new TenderQuotation("OMEG", 2020, "E030", 10, "Each", 1);
+            TenderQuotation q11b = new TenderQuotation("ALPA", 2020, "E030", 10.50, "Each", 2);
+            TenderQuotation q11c = new TenderQuotation("BANE", 2020, "E030", 11.00, "Each", 3);
+            TenderQuotation q11d = new TenderQuotation("CHEP", 2020, "E030", 11.00, "Each", null);
+            dbcontext.Add(q11a);
+            dbcontext.Add(q11b);
+            dbcontext.Add(q11c);
+            dbcontext.Add(q11d);
+
+
+            //Product p12 = new Product("E031", "Exercise Book (120pg)", 4, 100, 100, "Each");
+            TenderQuotation q12a = new TenderQuotation("OMEG", 2020, "E031", 10, "Each", 1);
+            TenderQuotation q12b = new TenderQuotation("ALPA", 2020, "E031", 10.50, "Each", 2);
+            TenderQuotation q12c = new TenderQuotation("BANE", 2020, "E031", 11.00, "Each", 3);
+            TenderQuotation q12d = new TenderQuotation("CHEP", 2020, "E031", 11.00, "Each", null);
+            dbcontext.Add(q12a);
+            dbcontext.Add(q12b);
+            dbcontext.Add(q12c);
+            dbcontext.Add(q12d);
+
+            //Product p13 = new Product("E032", "Exercise Book A4 Hardcover (100 pg)", 4, 100, 100, "Each");
+            TenderQuotation q13a = new TenderQuotation("OMEG", 2020, "E032", 10, "Each", 1);
+            TenderQuotation q13b = new TenderQuotation("ALPA", 2020, "E032", 10.50, "Each", 2);
+            TenderQuotation q13c = new TenderQuotation("BANE", 2020, "E032", 11.00, "Each", 3);
+            TenderQuotation q13d = new TenderQuotation("CHEP", 2020, "E032", 11.00, "Each", null);
+            dbcontext.Add(q13a);
+            dbcontext.Add(q13b);
+            dbcontext.Add(q13c);
+            dbcontext.Add(q13d);
+
+            //Product p14 = new Product("E033", "Exercise Book A5 Hardcover (120 pg)", 4, 100, 100, "Each");
+            TenderQuotation q14a = new TenderQuotation("OMEG", 2020, "E033", 10, "Each", 1);
+            TenderQuotation q14b = new TenderQuotation("ALPA", 2020, "E033", 10.50, "Each", 2);
+            TenderQuotation q14c = new TenderQuotation("BANE", 2020, "E033", 11.00, "Each", 3);
+            TenderQuotation q14d = new TenderQuotation("CHEP", 2020, "E033", 11.00, "Each", null);
+            dbcontext.Add(q14a);
+            dbcontext.Add(q14b);
+            dbcontext.Add(q14c);
+            dbcontext.Add(q14d);
+
+            //Product p15 = new Product("F020", "File Separator", 5, 50, 100, "Set");
+            TenderQuotation q15a = new TenderQuotation("OMEG", 2020, "F020", 10, "Each", 1);
+            TenderQuotation q15b = new TenderQuotation("ALPA", 2020, "F020", 10.50, "Each", 2);
+            TenderQuotation q15c = new TenderQuotation("BANE", 2020, "F020", 11.00, "Each", 3);
+            TenderQuotation q15d = new TenderQuotation("CHEP", 2020, "F020", 11.00, "Each", null);
+            dbcontext.Add(q15a);
+            dbcontext.Add(q15b);
+            dbcontext.Add(q15c);
+            dbcontext.Add(q15d);
+
+            //Product p16 = new Product("F021", "File-Blue Plain", 5, 50, 100, "Each");
+            TenderQuotation q16a = new TenderQuotation("OMEG", 2020, "F021", 10, "Each", 1);
+            TenderQuotation q16b = new TenderQuotation("ALPA", 2020, "F021", 10.50, "Each", 2);
+            TenderQuotation q16c = new TenderQuotation("BANE", 2020, "F021", 11.00, "Each", 3);
+            TenderQuotation q16d = new TenderQuotation("CHEP", 2020, "F021", 11.00, "Each", null);
+            dbcontext.Add(q16a);
+            dbcontext.Add(q16b);
+            dbcontext.Add(q16c);
+            dbcontext.Add(q16d);
+
+            //Product p17 = new Product("F022", "File-Blue with Logo", 5, 100, 200, "Each");
+            TenderQuotation q17a = new TenderQuotation("OMEG", 2020, "F022", 10, "Each", 1);
+            TenderQuotation q17b = new TenderQuotation("ALPA", 2020, "F022", 10.50, "Each", 2);
+            TenderQuotation q17c = new TenderQuotation("BANE", 2020, "F022", 11.00, "Each", 3);
+            TenderQuotation q17d = new TenderQuotation("CHEP", 2020, "F022", 11.00, "Each", null);
+            dbcontext.Add(q17a);
+            dbcontext.Add(q17b);
+            dbcontext.Add(q17c);
+            dbcontext.Add(q17d);
+
+            //Product p18 = new Product("F023", "File-Brown w/o Logo", 5, 100, 200, "Each");
+            TenderQuotation q18a = new TenderQuotation("OMEG", 2020, "F023", 10, "Each", 1);
+            TenderQuotation q18b = new TenderQuotation("ALPA", 2020, "F023", 10.50, "Each", 2);
+            TenderQuotation q18c = new TenderQuotation("BANE", 2020, "F023", 11.00, "Each", 3);
+            TenderQuotation q18d = new TenderQuotation("CHEP", 2020, "F023", 11.00, "Each", null);
+            dbcontext.Add(q18a);
+            dbcontext.Add(q18b);
+            dbcontext.Add(q18c);
+            dbcontext.Add(q18d);
+
+            //Product p19 = new Product("H011", "Highlighter Blue", 6, 80, 100, "Box");//pen
+            TenderQuotation q19a = new TenderQuotation("OMEG", 2020, "H011", 10, "Box", 1);
+            TenderQuotation q19b = new TenderQuotation("ALPA", 2020, "H011", 10.50, "Box", 2);
+            TenderQuotation q19c = new TenderQuotation("BANE", 2020, "H011", 11.00, "Box", 3);
+            TenderQuotation q19d = new TenderQuotation("CHEP", 2020, "H011", 11.00, "Box", null);
+            dbcontext.Add(q19a);
+            dbcontext.Add(q19b);
+            dbcontext.Add(q19c);
+            dbcontext.Add(q19d);
+
+            //Product p20 = new Product("H012", "Highlighter Green", 6, 80, 100, "Box");
+            TenderQuotation q20a = new TenderQuotation("OMEG", 2020, "H012", 10, "Box", 1);
+            TenderQuotation q20b = new TenderQuotation("ALPA", 2020, "H012", 11, "Box", 2);
+            TenderQuotation q20c = new TenderQuotation("BANE", 2020, "H012", 12, "Box", 3);
+            TenderQuotation q20d = new TenderQuotation("CHEP", 2020, "H012", 11.00, "Box", null);
+            dbcontext.Add(q20a);
+            dbcontext.Add(q20b);
+            dbcontext.Add(q20c);
+            dbcontext.Add(q20d);
+
+            //Product p21 = new Product("H013", "Highlighter Pink", 6, 80, 100, "Box");
+            TenderQuotation q21a = new TenderQuotation("OMEG", 2020, "H013", 10, "Box", 1);
+            TenderQuotation q21b = new TenderQuotation("ALPA", 2020, "H013", 11, "Box", 2);
+            TenderQuotation q21c = new TenderQuotation("BANE", 2020, "H013", 12, "Box", 3);
+            TenderQuotation q21d = new TenderQuotation("CHEP", 2020, "H013", 11.00, "Box", null);
+            dbcontext.Add(q21a);
+            dbcontext.Add(q21b);
+            dbcontext.Add(q21c);
+            dbcontext.Add(q21d);
+
+            //Product p22 = new Product("H014", "Highlighter Yellow", 6, 80, 100, "Box");
+            TenderQuotation q22a = new TenderQuotation("OMEG", 2020, "H014", 10, "Box", 1);
+            TenderQuotation q22b = new TenderQuotation("ALPA", 2020, "H014", 11, "Box", 2);
+            TenderQuotation q22c = new TenderQuotation("BANE", 2020, "H014", 12, "Box", 3);
+            TenderQuotation q22d = new TenderQuotation("CHEP", 2020, "H014", 11.00, "Box", null);
+            dbcontext.Add(q22a);
+            dbcontext.Add(q22b);
+            dbcontext.Add(q22c);
+            dbcontext.Add(q22d);
+
+            //Product p23 = new Product("H031", "Hole Puncher 2 holes", 7, 20, 50, "Each");
+            TenderQuotation q23a = new TenderQuotation("OMEG", 2020, "H031", 10, "Each", 1);
+            TenderQuotation q23b = new TenderQuotation("ALPA", 2020, "H031", 11, "Each", 2);
+            TenderQuotation q23c = new TenderQuotation("BANE", 2020, "H031", 12, "Each", 3);
+            TenderQuotation q23d = new TenderQuotation("CHEP", 2020, "H031", 11.00, "Each", null);
+            dbcontext.Add(q23a);
+            dbcontext.Add(q23b);
+            dbcontext.Add(q23c);
+            dbcontext.Add(q23d);
+
+            //Product p24 = new Product("H032", "Hole Puncher 3 holes", 7, 20, 50, "Each");
+            TenderQuotation q24a = new TenderQuotation("OMEG", 2020, "H032", 10, "Each", 1);
+            TenderQuotation q24b = new TenderQuotation("ALPA", 2020, "H032", 11, "Each", 2);
+            TenderQuotation q24c = new TenderQuotation("BANE", 2020, "H032", 12, "Each", 3);
+            TenderQuotation q24d = new TenderQuotation("CHEP", 2020, "H032", 11.00, "Each", null);
+            dbcontext.Add(q24a);
+            dbcontext.Add(q24b);
+            dbcontext.Add(q24c);
+            dbcontext.Add(q24d);
+
+            //Product p25 = new Product("H033", "Hole Puncher Adjustable", 7, 20, 50, "Each");
+            TenderQuotation q25a = new TenderQuotation("OMEG", 2020, "H033", 10, "Each", 1);
+            TenderQuotation q25b = new TenderQuotation("ALPA", 2020, "H033", 11, "Each", 2);
+            TenderQuotation q25c = new TenderQuotation("BANE", 2020, "H033", 12, "Each", 3);
+            TenderQuotation q25d = new TenderQuotation("CHEP", 2020, "H033", 11.00, "Each", null);
+            dbcontext.Add(q25a);
+            dbcontext.Add(q25b);
+            dbcontext.Add(q25c);
+            dbcontext.Add(q25d);
+
+            //Product p26 = new Product("P010", "Pad Postit Memo 1'x2'", 8, 60, 100, "Packet");//8=pad
+            TenderQuotation q26a = new TenderQuotation("OMEG", 2020, "P010", 10, "Packet", 1);
+            TenderQuotation q26b = new TenderQuotation("ALPA", 2020, "P010", 11, "Packet", 2);
+            TenderQuotation q26c = new TenderQuotation("BANE", 2020, "P010", 12, "Packet", 3);
+            TenderQuotation q26d = new TenderQuotation("CHEP", 2020, "P010", 11.00, "Packet", null);
+            dbcontext.Add(q26a);
+            dbcontext.Add(q26b);
+            dbcontext.Add(q26c);
+            dbcontext.Add(q26d);
+
+            //Product p27 = new Product("P011", "Pad Postit Memo 1/2'x1'", 8, 60, 100, "Packet");
+            TenderQuotation q27a = new TenderQuotation("OMEG", 2020, "P011", 10, "Packet", 1);
+            TenderQuotation q27b = new TenderQuotation("ALPA", 2020, "P011", 11, "Packet", 2);
+            TenderQuotation q27c = new TenderQuotation("BANE", 2020, "P011", 12, "Packet", 3);
+            TenderQuotation q27d = new TenderQuotation("CHEP", 2020, "P011", 11.00, "Packet", null);
+            dbcontext.Add(q27a);
+            dbcontext.Add(q27b);
+            dbcontext.Add(q27c);
+            dbcontext.Add(q27d);
+
+            //Product p28 = new Product("P012", "Pad Postit Memo 1/2'x2'", 8, 60, 100, "Packet");
+            TenderQuotation q28a = new TenderQuotation("OMEG", 2020, "P012", 10, "Packet", 1);
+            TenderQuotation q28b = new TenderQuotation("ALPA", 2020, "P012", 11, "Packet", 2);
+            TenderQuotation q28c = new TenderQuotation("BANE", 2020, "P012", 12, "Packet", 3);
+            TenderQuotation q28d = new TenderQuotation("CHEP", 2020, "P012", 11.00, "Packet", null);
+            dbcontext.Add(q28a);
+            dbcontext.Add(q28b);
+            dbcontext.Add(q28c);
+            dbcontext.Add(q28d);
+
+            //Product p29 = new Product("P013", "Pad Postit Memo 2'x3'", 8, 60, 100, "Packet");
+            TenderQuotation q29a = new TenderQuotation("OMEG", 2020, "P013", 10, "Packet", 1);
+            TenderQuotation q29b = new TenderQuotation("ALPA", 2020, "P013", 11, "Packet", 2);
+            TenderQuotation q29c = new TenderQuotation("BANE", 2020, "P013", 12, "Packet", 3);
+            TenderQuotation q29d = new TenderQuotation("CHEP", 2020, "P013", 11.00, "Packet", null);
+            dbcontext.Add(q29a);
+            dbcontext.Add(q29b);
+            dbcontext.Add(q29c);
+            dbcontext.Add(q29d);
+
+            //Product p30 = new Product("P043", "Pencil 2b with Eraser End", 6, 100, 500, "Dozen");
+            TenderQuotation q30a = new TenderQuotation("OMEG", 2020, "P043", 10, "Dozen", 1);
+            TenderQuotation q30b = new TenderQuotation("ALPA", 2020, "P043", 11, "Dozen", 2);
+            TenderQuotation q30c = new TenderQuotation("BANE", 2020, "P043", 12, "Dozen", 3);
+            TenderQuotation q30d = new TenderQuotation("CHEP", 2020, "P043", 11.00, "Dozen", null);
+            dbcontext.Add(q30a);
+            dbcontext.Add(q30b);
+            dbcontext.Add(q30c);
+            dbcontext.Add(q30d);
+
+            //Product p31 = new Product("D001", "Diskettes 3.5 inch (HD)", 19, 20, 30, "Box");
+            TenderQuotation q31a = new TenderQuotation("OMEG", 2020, "D001", 10, "Box", 1);
+            TenderQuotation q31b = new TenderQuotation("ALPA", 2020, "D001", 11, "Box", 2);
+            TenderQuotation q31c = new TenderQuotation("BANE", 2020, "D001", 12, "Box", 3);
+            TenderQuotation q31d = new TenderQuotation("CHEP", 2020, "D001", 11.00, "Box", null);
+            dbcontext.Add(q31a);
+            dbcontext.Add(q31b);
+            dbcontext.Add(q31c);
+            dbcontext.Add(q31d);
+
+
             dbcontext.SaveChanges();
 
 
-            TenderQuotation tq11 = new TenderQuotation("BANE", 2020, "D001", 10.20,"Box", 3);
-            TenderQuotation tq12 = new TenderQuotation("CHEP", 2020, "E032", 1.00,"Each", 1);//exercise book,$1
-            TenderQuotation tq13 = new TenderQuotation("ALPA", 2020, "D001", 1.05,"Box", 2);
-            TenderQuotation tq14 = new TenderQuotation("OMEG", 2020, "D001", 1.10,"Box", 3);
-            TenderQuotation tq15 = new TenderQuotation("ALPA", 2020, "E032", 1.05,"EACH", 2);
-            TenderQuotation tq16 = new TenderQuotation("BANE", 2020, "E032", 1.10,"EACH", 3);
 
-            TenderQuotation tq17 = new TenderQuotation("OMEG", 2020, "H011", 10, "Box", 1);
-            TenderQuotation tq18 = new TenderQuotation("ALPA", 2020, "H011", 10.50, "Box", 2);
-            TenderQuotation tq19 = new TenderQuotation("BANE", 2020, "H011", 11.00, "Box", 3);
 
-            TenderQuotation tq20 = new TenderQuotation("OMEG", 2020, "H012", 10, "Box", 1);
-            TenderQuotation tq21 = new TenderQuotation("ALPA", 2020, "H012", 11, "Box", 2);
-            TenderQuotation tq22 = new TenderQuotation("BANE", 2020, "H012", 12, "Box", 3);
 
-            dbcontext.Add(tq11);
-            dbcontext.Add(tq12);
-            dbcontext.Add(tq13);
-            dbcontext.Add(tq14);
-            dbcontext.Add(tq15);
-            dbcontext.Add(tq16);
-            dbcontext.SaveChanges();
+
             //seed transaction
             //public Transaction(string ProductId, DateTime Date, string Description, int Qty, int Balance, int UpdatedByEmpId, string? RefCode)
 
