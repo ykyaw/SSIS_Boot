@@ -166,6 +166,7 @@ namespace SSIS_BOOT.Service.Impl
                     po.Status = Status.PurchaseOrderStatus.pending;
                     po.CollectionPointId = crepo.getstorecollectionpoint().Id;
                     po.ApprovedBySupId = supid;
+                    po.SupplyByDate = approveddate + 604800; //Add 7 days to ordered date
                     double totalprice = 0;                    
                     foreach (PurchaseRequestDetail pr in pdict[r.Key])
                     {

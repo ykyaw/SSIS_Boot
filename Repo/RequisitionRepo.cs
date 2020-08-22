@@ -163,7 +163,14 @@ namespace SSIS_BOOT.Repo
                 original.ApprovedById = req.ApprovedById;
                 original.ApprovalDate = req.ApprovalDate;
                 dbcontext.SaveChanges();
-                return original;
+
+                Requisition reqnew = dbcontext.Requisitions.Include(m => m.RequisitionDetails).ThenInclude(m => m.Product)
+                        .Include(m => m.Department)
+                        .Include(m => m.ReqByEmp)
+                        .Include(m => m.CollectionPoint)
+                        .Include(m => m.ApprovedBy)
+                        .Include(m => m.ReceivedByRep).Where(m => m.Id == original.Id).FirstOrDefault();
+                return reqnew;
             }
             catch (Exception m)
             {

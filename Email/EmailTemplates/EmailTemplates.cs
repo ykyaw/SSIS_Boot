@@ -195,6 +195,8 @@ namespace SSIS_BOOT.Email.EmailTemplates
                 DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
                 DateTime createdate1 = startTime.AddMilliseconds(Convert.ToDouble(createdate));
                 string createdate2 = createdate1.ToString("dd MMM yyyy");
+
+
                 if (req.Remarks == null)
                 {
                     this.body =
@@ -209,7 +211,7 @@ namespace SSIS_BOOT.Email.EmailTemplates
                 {
                     this.body =
                    "Dear " + deptemp.Name + System.Environment.NewLine + System.Environment.NewLine +
-                   "Your requisition form created on " + req.CreatedDate + System.Environment.NewLine + System.Environment.NewLine +
+                   "Your requisition form created on " + createdate2 + System.Environment.NewLine + System.Environment.NewLine +
                    "has been " + req.Status + ". The reason stated is " + req.Remarks + "."
                    + System.Environment.NewLine + System.Environment.NewLine +
                    "Thank you." + System.Environment.NewLine + System.Environment.NewLine +
@@ -287,10 +289,13 @@ namespace SSIS_BOOT.Email.EmailTemplates
                 DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
                 DateTime supplybydate1 = startTime.AddMilliseconds(Convert.ToDouble(supplybydate));
                 string supplybydate2 = supplybydate1.ToString("dd MMM yyyy");
+                
+                DateTime orderdate1 = startTime.AddMilliseconds(Convert.ToDouble((long)po.OrderedDate));
+                string ordereddate2 = orderdate1.ToString("dd MMM yyyy");
 
                 this.body =
                "Dear " + sup.ContactPersonName + System.Environment.NewLine + System.Environment.NewLine +
-               "Kindly refer to the purchase order reference " + po.Id + " dated " + po.OrderedDate + "." + System.Environment.NewLine
+               "Kindly refer to the purchase order reference " + po.Id + " dated " + ordereddate2 + "." + System.Environment.NewLine
                + headerresult + System.Environment.NewLine + System.Environment.NewLine
                + result + System.Environment.NewLine + System.Environment.NewLine
                + "Please supply the following items by " + supplybydate2 + "."
