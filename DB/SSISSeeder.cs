@@ -318,6 +318,14 @@ namespace SSIS_BOOT.DB
             TenderQuotation tq15 = new TenderQuotation("ALPA", 2020, "E032", 1.05,"EACH", 2);
             TenderQuotation tq16 = new TenderQuotation("BANE", 2020, "E032", 1.10,"EACH", 3);
 
+            TenderQuotation tq17 = new TenderQuotation("OMEG", 2020, "H011", 10, "Box", 1);
+            TenderQuotation tq18 = new TenderQuotation("ALPA", 2020, "H011", 10.50, "Box", 2);
+            TenderQuotation tq19 = new TenderQuotation("BANE", 2020, "H011", 11.00, "Box", 3);
+
+            TenderQuotation tq20 = new TenderQuotation("OMEG", 2020, "H012", 10, "Box", 1);
+            TenderQuotation tq21 = new TenderQuotation("ALPA", 2020, "H012", 11, "Box", 2);
+            TenderQuotation tq22 = new TenderQuotation("BANE", 2020, "H012", 12, "Box", 3);
+
             dbcontext.Add(tq11);
             dbcontext.Add(tq12);
             dbcontext.Add(tq13);
