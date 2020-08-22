@@ -40,7 +40,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public bool updateretrieval(Retrieval r1);
         public List<Requisition> getallreqformbydateandstatus(long date, int clerkid, string reqStatus);
 
-        public bool updatepurchaseorderdetailitem(PurchaseOrderDetail pod);
+        public bool updatepurchaseorderdetailitem(List<PurchaseOrderDetail> pod);
 
         public bool generatequotefrompr(List<PurchaseRequestDetail> prd,int clerkid);
 

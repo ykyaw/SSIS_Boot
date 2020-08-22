@@ -1,16 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using SSIS_BOOT.Common;
+﻿using SSIS_BOOT.Common;
 using SSIS_BOOT.Email;
 using SSIS_BOOT.Email.EmailTemplates;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Repo;
 using SSIS_BOOT.Service.Interfaces;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -405,25 +401,46 @@ namespace SSIS_BOOT.Service.Impl
         }
 
 
-        public bool updatepurchaseorderdetailitem(PurchaseOrderDetail pod)
+        public bool updatepurchaseorderdetailitem(List<PurchaseOrderDetail> podlist)
         {
             try
             {
-                podrepo.Updatepurchaseorderdetail(pod);
-                PurchaseOrder po = porepo.findPObyPOid((int)pod.PurchaseOrderId);
-                foreach(PurchaseOrderDetail pod1 in po.PurchaseOrderDetails)
+                foreach(PurchaseOrderDetail i  in podlist) //updates all purchase order detail status
                 {
-                    //Checks for anymore pending status in PurchaseOrderDetail. If yes, PO status is saved as pending and break the loop
-                    if (pod1.Status == Status.PurchaseOrderDetailStatus.pending) 
+                    podrepo.Updatepurchaseorderdetail(i);
+                }
+                PurchaseOrder po = porepo.findPObyPOid((int)podlist[0].PurchaseOrderId); //retrieving back the parent PO of the purchaseorderdetail
+                int receivedcounter = 0;
+                foreach(PurchaseOrderDetail j in po.PurchaseOrderDetails) //checking status of every purchaseorderdetail in the PO. if status is received, counter++
+                {
+                    if(j.Status == Status.PurchaseOrderDetailStatus.received)
                     {
-                        po.Status = Status.PurchaseOrderStatus.pending;
-                        porepo.updatePoStatus(po);
-                        return true;
+                        receivedcounter++;
                     }
-                    po.Status = Status.PurchaseOrderStatus.completed; //If all PurchaseOrderDetal has status of received, if statement is not triggered. PO status is saved as completed
+                }
+                if(receivedcounter == po.PurchaseOrderDetails.Count()) //if counter of received matches total purchaseorderdetail, means all items received. update PO status to completed
+                {
+                    po.Status = Status.PurchaseOrderStatus.completed;
                     porepo.updatePoStatus(po);
                 }
                 return true;
+
+
+                //podrepo.Updatepurchaseorderdetail(pod); // should have updated 
+                //PurchaseOrder po = porepo.findPObyPOid((int)pod.PurchaseOrderId);
+                //foreach(PurchaseOrderDetail pod1 in po.PurchaseOrderDetails)
+                //{
+                //    //Checks for anymore pending status in PurchaseOrderDetail. If yes, PO status is saved as pending and break the loop
+                //    if (pod1.Status == Status.PurchaseOrderDetailStatus.pending) 
+                //    {
+                //        po.Status = Status.PurchaseOrderStatus.pending;
+                //        porepo.updatePoStatus(po);
+                //        return true;
+                //    }
+                //    po.Status = Status.PurchaseOrderStatus.completed; //If all PurchaseOrderDetal has status of received, if statement is not triggered. PO status is saved as completed
+                //    porepo.updatePoStatus(po);
+                //}
+
             }
             catch (Exception exception)
             {

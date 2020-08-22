@@ -67,7 +67,7 @@ namespace SSIS_BOOT.Repo
 
         public PurchaseOrder findPObyPOid(int po_id)
         {
-            return dbcontext.PurchaseOrders.Find(po_id);
+            return dbcontext.PurchaseOrders.Include(m=>m.PurchaseOrderDetails).Where(m=>m.Id == po_id).FirstOrDefault();
         }
 
         public bool updatePoStatus(PurchaseOrder po)
