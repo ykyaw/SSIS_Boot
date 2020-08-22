@@ -521,7 +521,7 @@ namespace SSIS_BOOT.Service.Impl
                 foreach (RequisitionDetail rd in rdl)
                 {
                     rdrepo.ClerkSaveRequisitionDetailRemarksOnCompletion(rd);
-                    rrepo.ClerkCompleteRequisition(clerkId, (int)rd.RequisitionId, date, Status.RequsitionStatus.received);
+                    rrepo.ClerkCompleteRequisition(clerkId, (int)rd.RequisitionId, date, Status.RequsitionStatus.completed);
                 }
 
                 var uniquereqid = rdl.Select(m => m.RequisitionId).Distinct().ToList();
