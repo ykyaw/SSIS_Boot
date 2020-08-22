@@ -359,7 +359,7 @@ namespace SSIS_BOOT.DB
             Transaction t28 = new Transaction("P012", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
             Transaction t29 = new Transaction("P013", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
             Transaction t30 = new Transaction("P043", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
-            Transaction t31 = new Transaction("D001", 1577836800000, "Inital transaction record", 0, 1000, 1, "init001");
+            Transaction t31 = new Transaction("D001", 1577836800000, "Inital transaction record", 0, 30, 1, "init001");
             dbcontext.Add(t1);
             dbcontext.Add(t2);
             dbcontext.Add(t3);
@@ -393,59 +393,52 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(t31);
             dbcontext.SaveChanges();
 
-
-
-
-
-
-
-
-
-
-
-            Transaction trans1 = new Transaction("E032", 1594724400000, "supply from ALPHA", 40, 80, 1, null);//14/7/2020 @ 11:00am (UTC)
-            dbcontext.Add(trans1);
-            dbcontext.SaveChanges();
-            Transaction trans2 = new Transaction("D001", 1594724400000, "supply from OMEG", 5, 5, 1, null);  //14/7/2020 @ 11:00am (UTC)
-            dbcontext.Add(trans2);
-            dbcontext.SaveChanges();
-            Transaction trans3 = new Transaction("C001", 1594724400000, "supply from ALPA", 15, 65, 1, null); //14/7/2020 @ 11:00am (UTC)
+            Transaction trans3 = new Transaction("C001", 1594724400000, "supply from ALPA", 15, 1015, 1, null); //14/7/2020 @ 11:00am (UTC)
             dbcontext.Add(trans3);
             dbcontext.SaveChanges();
-            Transaction trans4 = new Transaction("C001", 1595237400000, "Supply to Computing Department", -10, 55, 1, null); //20/7/2020@9:30am
+            Transaction trans4 = new Transaction("C001", 1595237400000, "Supply to Computing Department", -10, 1005, 1, null); //20/7/2020@9:30am
             dbcontext.Add(trans4);
             dbcontext.SaveChanges();
-            Transaction trans5 = new Transaction("C001", 1595237400000, "supply to English Department", -50, 3, 1, null);//"2 spoilt in stock"; 20/7/2020 @ 9:30am (UTC)
+            Transaction trans5 = new Transaction("C001", 1595237400000, "supply to English Department", -50, 955, 1, null);//"2 spoilt in stock"; 20/7/2020 @ 9:30am (UTC)
             dbcontext.Add(trans5);
             dbcontext.SaveChanges();
-            Transaction trans6 = new Transaction("C001", 1595926800000, "Supply from ALPA", 30, 18, 16, null);//29/7/2020 @ 9:30am (UTC)
+            Transaction trans6 = new Transaction("C001", 1595926800000, "Supply from ALPA", 30, 985, 16, null);//29/7/2020 @ 9:30am (UTC)
             dbcontext.Add(trans6);
+            dbcontext.SaveChanges();
+            Transaction trans8 = new Transaction("C001", 1596443400000, "stock adjustment 031/007/2020", -2, 983, 1, null); //3/8/2020 @ 8:300am (UTC)
+            dbcontext.Add(trans8);
+            dbcontext.SaveChanges();
+            Transaction trans12 = new Transaction("C001", 1597060800000, "Supply to Computing Department", -10, 973, 1, null); //10/8/2020 @ 12:00pm (UTC)
+            dbcontext.Add(trans12);
+            dbcontext.SaveChanges();
+            Transaction trans13 = new Transaction("C001", 1597060800000, "supply to English Department", -8, 965, 16, null);//10/8/2020 @ 12:00pm (UTC)
+            dbcontext.Add(trans13);
+            dbcontext.SaveChanges();
+
+            Transaction trans2 = new Transaction("D001", 1594724400000, "supply to English Department", -6, 20, 1, null);  //14/7/2020 @ 11:00am (UTC)
+            dbcontext.Add(trans2);
+            dbcontext.SaveChanges();
+
+            Transaction trans1 = new Transaction("E032", 1594724400000, "supply from ALPHA", 40, 1040, 1, null);//14/7/2020 @ 11:00am (UTC)
+            dbcontext.Add(trans1);
             dbcontext.SaveChanges();
 
             //corr/to retr2
-            Transaction trans7 = new Transaction("P043", 1596441600000, "supply from supplier Bane", +500, 550, 1, null);//3/8 / 2020 @ 8:00am(UTC)
+            Transaction trans7 = new Transaction("P043", 1596441600000, "supply from supplier Bane", 50, 1050, 1, null);//3/8 / 2020 @ 8:00am(UTC)
             dbcontext.Add(trans7);
             dbcontext.SaveChanges();
-            Transaction trans8 = new Transaction("C001", 1596443400000, "stock adjustment 031/007/2020", -2, 182, 1, null); //3/8/2020 @ 8:300am (UTC)
-            dbcontext.Add(trans8);
-            dbcontext.SaveChanges();
-            Transaction trans9 = new Transaction("P043", 1596447000000, "supply to English Departmen", -20, 530, 1, null); //3/8/2020 @ 9:300am (UTC)
+            Transaction trans9 = new Transaction("P043", 1596447000000, "supply to English Department", -20, 1030, 1, null); //3/8/2020 @ 9:300am (UTC)
             dbcontext.Add(trans9);
             dbcontext.SaveChanges();
-
             //corr/to retr3
-            Transaction trans10 = new Transaction("P043", 1597060800000, "Supply to Computing Department", -30, 504, 16, null); //10/8/2020 @ 12:00pm (UTC)
+            Transaction trans10 = new Transaction("P043", 1597060800000, "Supply to Computing Department", -30, 1000, 16, null); //10/8/2020 @ 12:00pm (UTC)
             dbcontext.Add(trans10);
             dbcontext.SaveChanges();
-            Transaction trans11 = new Transaction("P043", 1597060800000, "Supply to English Department", -50, 454, 16, null);//10/8/2020 @ 12:00pm (UTC)
+            Transaction trans11 = new Transaction("P043", 1597060800000, "Supply to English Department", -50, 950, 16, null);//10/8/2020 @ 12:00pm (UTC)
             dbcontext.Add(trans11);
             dbcontext.SaveChanges();
-            Transaction trans12 = new Transaction("C001", 1597060800000, "Supply to Computing Department", -10, 8, 1, null); //10/8/2020 @ 12:00pm (UTC)
-            dbcontext.Add(trans12);
-            dbcontext.SaveChanges();
-            Transaction trans13 = new Transaction("C001", 1597060800000, "supply to English Department", -8, 0, 16, null);//10/8/2020 @ 12:00pm (UTC)
-            dbcontext.Add(trans13);
-            dbcontext.SaveChanges();
+            
+            
 
 
             //seed retrieval(Fri)
@@ -478,7 +471,7 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(r1);
             Requisition r2 = new Requisition("ENGL", 6, 5, 1);
             r2.CreatedDate = 1597060800000;//10/8/2020 @ 12:00pm (UTC)
-            r2.Status = Status.RequsitionStatus.approved;
+            r2.Status = Status.RequsitionStatus.pendapprov;
             r2.CollectionPointId = 5;
             dbcontext.Add(r2);
             dbcontext.SaveChanges();
@@ -487,11 +480,11 @@ namespace SSIS_BOOT.DB
 
             //requisition on 14/7/2020 @ 2:00pm (UTC),dilivered &received on 20/7 @9:30am, 
             Requisition r3 = new Requisition("CPSC", 15, 7, null, 1, 1597060800000, Status.RequsitionStatus.completed,
-                                               1, 1598227200000,
+                                               1, 1597881600000,
                                                4, 1595237400000, 1, 1595237400);
 
             Requisition r4 = new Requisition("ENGL", 4, 5, null, 1, 1597060800000, Status.RequsitionStatus.completed,
-                                               1, 1598227200000,
+                                               1, 1597881600000,
                                                4, 1595237400000, 1, 1595237400000);
 
             //create date- Wednesday, 29-Jul-20 00:00:00 UTC ;receive-20/8/2020 @ 0:00am (UTC);acknowldge-03/8/2020 @ 9:30am
@@ -519,27 +512,27 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(r7);
             dbcontext.SaveChanges();
 
-            //created-05/8/2020 00:00:00 (UTC); collection-date-25/8/2020 @00:00am(GMT)
+            //created-30/8/2020 00:00:00 (GMT); collection-date-25/8/2020 @00:00am(GMT)
             Requisition r8 = new Requisition("ENGL", 4, 5, 1);
-            r8.CreatedDate = 1596585600000;
+            r8.CreatedDate = 1598745600000;
             r8.Status = Status.RequsitionStatus.confirmed;
             r8.CollectionPointId = 1;
-            r8.CollectionDate = 1598313600000;
+            r8.CollectionDate = 1599004800000;
             dbcontext.Add(r8);
             dbcontext.SaveChanges();
 
             //created-05/8/2020 00:00:00 (UTC); collection-date-20/8/2020 @00:00am(GMT)
             Requisition r9 = new Requisition("ENGL", 14, 5, 1);
             r9.CreatedDate = 1596585600000;
-            r9.Status = Status.RequsitionStatus.confirmed;
+            r9.Status = Status.RequsitionStatus.completed;
             r9.CollectionPointId = 1;
             r9.CollectionDate = 1597881600000;
             dbcontext.Add(r9);
             dbcontext.SaveChanges();
 
-            //created-10/8/2020 00:00:00 (localtimezone)
+            //created-30/8/2020 00:00:00 (GMT)
             Requisition r10 = new Requisition("ENGL", 14, 5, 1);
-            r10.CreatedDate = 1597017600000;
+            r10.CreatedDate = 1598745600000;
             r10.Status = Status.RequsitionStatus.approved;
             r10.CollectionPointId = 5;
             dbcontext.Add(r10);
@@ -564,6 +557,9 @@ namespace SSIS_BOOT.DB
             dbcontext.SaveChanges();
             RequisitionDetail rd2 = new RequisitionDetail(2, "C001", 15);
             dbcontext.Add(rd2);
+            dbcontext.SaveChanges();
+            RequisitionDetail rd21 = new RequisitionDetail(4, "C001", 15);
+            dbcontext.Add(rd21);
             dbcontext.SaveChanges();
             RequisitionDetail rd3 = new RequisitionDetail(5, "C001", 10, 10, 10, null, null, null, 1);//refer to retr1
             dbcontext.Add(rd3);

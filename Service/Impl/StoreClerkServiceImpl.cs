@@ -1,16 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using SSIS_BOOT.Common;
+﻿using SSIS_BOOT.Common;
 using SSIS_BOOT.Email;
 using SSIS_BOOT.Email.EmailTemplates;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Repo;
 using SSIS_BOOT.Service.Interfaces;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -314,6 +310,7 @@ namespace SSIS_BOOT.Service.Impl
         public bool UpdateStockCardUponFinaliseRetrieval(RequisitionDetail rd, Retrieval r)
         {
             Retrieval retrieval = retrivrepo.GetRetrievalById(r.Id);
+            RequisitionDetail rd1 = rdrepo.GetRequisitionDetailById(rd.Id);
             Transaction t_new = new Transaction();
             t_new.ProductId = rd.ProductId;
             t_new.Date = (long)retrieval.RetrievedDate;
@@ -321,13 +318,14 @@ namespace SSIS_BOOT.Service.Impl
             StringBuilder builder = new StringBuilder();
             t_new.Description = builder.Append("Disbursement to ").Append(retrieval.RequisitionDetails[0].Requisition.Department.Name).ToString();
 
-            t_new.Qty = (int)rd.QtyDisbursed;
+            t_new.Qty = (int)rd.QtyDisbursed * -1;
 
-            Transaction t_old = trepo.GetLatestTransactionByProductId(rd.ProductId);
-            t_new.Balance = t_old.Balance - t_new.Qty;
+            Transaction t_old = trepo.GetLatestTransactionByProductId(rd1.ProductId);
+            t_new.ProductId = rd1.ProductId;
+            t_new.Balance = t_old.Balance + t_new.Qty;
 
             t_new.UpdatedByEmpId = retrieval.ClerkId;
-            t_new.RefCode = retrieval.Id.ToString();
+            t_new.RefCode = "Retrieval ID: " + retrieval.Id.ToString();
 
             trepo.savenewtransaction(t_new);
             return true;
@@ -403,25 +401,46 @@ namespace SSIS_BOOT.Service.Impl
         }
 
 
-        public bool updatepurchaseorderdetailitem(PurchaseOrderDetail pod)
+        public bool updatepurchaseorderdetailitem(List<PurchaseOrderDetail> podlist)
         {
             try
             {
-                podrepo.Updatepurchaseorderdetail(pod);
-                PurchaseOrder po = porepo.findPObyPOid((int)pod.PurchaseOrderId);
-                foreach(PurchaseOrderDetail pod1 in po.PurchaseOrderDetails)
+                foreach(PurchaseOrderDetail i  in podlist) //updates all purchase order detail status
                 {
-                    //Checks for anymore pending status in PurchaseOrderDetail. If yes, PO status is saved as pending and break the loop
-                    if (pod1.Status == Status.PurchaseOrderDetailStatus.pending) 
+                    podrepo.Updatepurchaseorderdetail(i);
+                }
+                PurchaseOrder po = porepo.findPObyPOid((int)podlist[0].PurchaseOrderId); //retrieving back the parent PO of the purchaseorderdetail
+                int receivedcounter = 0;
+                foreach(PurchaseOrderDetail j in po.PurchaseOrderDetails) //checking status of every purchaseorderdetail in the PO. if status is received, counter++
+                {
+                    if(j.Status == Status.PurchaseOrderDetailStatus.received)
                     {
-                        po.Status = Status.PurchaseOrderStatus.pending;
-                        porepo.updatePoStatus(po);
-                        return true;
+                        receivedcounter++;
                     }
-                    po.Status = Status.PurchaseOrderStatus.completed; //If all PurchaseOrderDetal has status of received, if statement is not triggered. PO status is saved as completed
+                }
+                if(receivedcounter == po.PurchaseOrderDetails.Count()) //if counter of received matches total purchaseorderdetail, means all items received. update PO status to completed
+                {
+                    po.Status = Status.PurchaseOrderStatus.completed;
                     porepo.updatePoStatus(po);
                 }
                 return true;
+
+
+                //podrepo.Updatepurchaseorderdetail(pod); // should have updated 
+                //PurchaseOrder po = porepo.findPObyPOid((int)pod.PurchaseOrderId);
+                //foreach(PurchaseOrderDetail pod1 in po.PurchaseOrderDetails)
+                //{
+                //    //Checks for anymore pending status in PurchaseOrderDetail. If yes, PO status is saved as pending and break the loop
+                //    if (pod1.Status == Status.PurchaseOrderDetailStatus.pending) 
+                //    {
+                //        po.Status = Status.PurchaseOrderStatus.pending;
+                //        porepo.updatePoStatus(po);
+                //        return true;
+                //    }
+                //    po.Status = Status.PurchaseOrderStatus.completed; //If all PurchaseOrderDetal has status of received, if statement is not triggered. PO status is saved as completed
+                //    porepo.updatePoStatus(po);
+                //}
+
             }
             catch (Exception exception)
             {
@@ -532,10 +551,17 @@ namespace SSIS_BOOT.Service.Impl
                 throw m;
             }
         }
-        public void deleteOriginalDetails(string AdjustmentVoucherId)
+        public bool SaveEmptyAdjustmentDetails(string AdjustmentVoucherId)
         {
-
-            avdetrepo.deleteAdvDetailsbyAdvId(AdjustmentVoucherId);
+            if (avdetrepo.hasDetails(AdjustmentVoucherId))
+            {
+                avdetrepo.deleteAdvDetailsbyAdvId(AdjustmentVoucherId);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
         }
 
@@ -590,6 +616,16 @@ namespace SSIS_BOOT.Service.Impl
             return tqrepo.getFirstTenderbyProdutId(ProductId);
         }
 
+        public List<Retrieval> GetRetrievalFormCommentsForAdjustmentVoucher()
+        {
+            List<Retrieval> rlistwithcomments = retrivrepo.GetRetrievalThatNeedAdjustmentVoucher();
+            return rlistwithcomments;
+        }
 
+        public List<Requisition> GetAllDisbursement()
+        {
+            List<Requisition> disbursementlist = rrepo.findalldisbursement();
+            return disbursementlist;
+        }
     }
 }

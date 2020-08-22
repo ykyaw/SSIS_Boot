@@ -19,7 +19,7 @@ namespace SSIS_BOOT.Models
         public int? ReceivedByClerkId { get; set; }
         public long? ReceivedDate { get; set; }
         public double TotalPrice { get; set; }
-        public int? SupplierDeliveryNo { get; set; }
+        public string? SupplierDeliveryNo { get; set; }
         public string? Remark { get; set; }
         public string Status { get; set; }
         public Employee ReceivedByClerk { get; set; }
@@ -42,7 +42,7 @@ namespace SSIS_BOOT.Models
         }
 
         public PurchaseOrderDetail(int? PurchaseOrderId, int? PurchaseRequestDetailId, string ProductId, int QtyPurchased, int? QtyReceived, 
-            double TotalPrice, int? SupplierDeliveryNo, string? Remark, string Status) {
+            double TotalPrice, string? SupplierDeliveryNo, string? Remark, string Status) {
             this.PurchaseOrderId = PurchaseOrderId;
             this.PurchaseRequestDetailId = PurchaseRequestDetailId;
             this.ProductId = ProductId;

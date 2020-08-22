@@ -120,9 +120,6 @@ namespace SSIS_BOOT.Controllers
 
         }
 
-
-
-
         [HttpGet]
         [Route("/storeclerk/sc/{productId}")]
         public List<Transaction> retrievestockcard(string productId)
@@ -205,6 +202,17 @@ namespace SSIS_BOOT.Controllers
             }
             return dlist;
         }
+
+
+
+        [HttpGet]
+        [Route("/storeclerk/alldis")]
+        public List<Requisition> GetAllDisbursement()
+        {
+            List<Requisition> alldisbursement = scservice.GetAllDisbursement();
+            return alldisbursement;
+        }
+
 
         [HttpPost]
         //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPOST] and pass in from body
@@ -299,12 +307,16 @@ namespace SSIS_BOOT.Controllers
             //pod1.Remark = "Pending 10 more";
             //pod1.PurchaseOrder.ReceivedDate = 1594724400000;
             //List<PurchaseOrderDetail> podlist = new List<PurchaseOrderDetail> { pod1 };
+            if(podlist ==null || podlist.Count == 0)
+            {
+                throw new Exception("Error in updating item received. Please ensure all fields are completed");
+            }
             int clerkid = (int)HttpContext.Session.GetInt32("Id");
             foreach (PurchaseOrderDetail podid in podlist)
             {
                 podid.ReceivedByClerkId = clerkid;
-                scservice.updatepurchaseorderdetailitem(podid);
             }
+            scservice.updatepurchaseorderdetailitem(podlist);
             return true;
         }
 
@@ -398,6 +410,22 @@ namespace SSIS_BOOT.Controllers
         {
            return scservice.getFirstTenderbyProdutId(ProductId);
         }
+
+        [HttpGet]
+        [Route("/storeclerk/retformav")]
+        public List<Retrieval> GetRetrievalFormCommentsForAdjustmentVoucher()
+        {
+            List<Retrieval> retrievalwithcomments = scservice.GetRetrievalFormCommentsForAdjustmentVoucher();
+            if(retrievalwithcomments != null || retrievalwithcomments.Count !=0)
+            {
+                return retrievalwithcomments;
+            }
+            else
+            {
+                return new List<Retrieval>(); //if no retrieval with comments, return empty list so front end don't need to handle error
+            }
+        }
+
 
     }
 }

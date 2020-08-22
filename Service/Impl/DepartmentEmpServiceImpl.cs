@@ -40,10 +40,22 @@ namespace SSIS_BOOT.Service.Impl
             return rrepo.findreqformByDeptID(deptId);
         }
 
-        public List<Requisition> getdeptdisbursementlist(string deptId)
+        public List<Requisition> GetAllDeptDisbursementList(string deptId)
         {
             List<Requisition> lr = rrepo.finddisbursementByDeptID(deptId);
             return lr;
+        }
+
+        public List<RequisitionDetail> GetDisbursementByDate(string deptid, long longdate)
+        {
+            //RequisitionDetail has no deptid and date. Need to retrieve by requisition
+            List<Requisition> reqlist = rrepo.finddisbursementByDeptIDandDate(deptid, longdate);
+            List<RequisitionDetail> rdlist = new List<RequisitionDetail>();
+            foreach(Requisition r in reqlist)
+            {
+                rdlist.AddRange(r.RequisitionDetails);
+            }
+            return rdlist;
         }
 
         public Requisition getrfdetail(int reqId)
@@ -192,11 +204,6 @@ namespace SSIS_BOOT.Service.Impl
             return true;
         }
 
-        public List<RequisitionDetail> GetDisbursementByDate(string deptid, long longdate)
-        {
-            List<RequisitionDetail> rdl = rdrepo.GetDisbursementByDate(deptid, longdate);
-            return rdl;
-        }
 
         public bool AckItemReceived(int empid, List<RequisitionDetail> rdlist)
         {

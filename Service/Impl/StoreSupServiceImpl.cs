@@ -123,7 +123,8 @@ namespace SSIS_BOOT.Service.Impl
             if (prdlist[0].Status == Status.PurchaseRequestStatus.approved)
             {
 
-                List<PurchaseRequestDetail> sortedprlist = prdlist.GroupBy(m => m.SupplierId).SelectMany(m => m).ToList();
+                List<PurchaseRequestDetail> prdlist2 = purreqrepo.findpurchasereq(prdlist[0].PurchaseRequestId); //getting back all the PurchaseRequestDetail with extra information for Emailing
+                List<PurchaseRequestDetail> sortedprlist = prdlist2.GroupBy(m => m.SupplierId).SelectMany(m => m).ToList();
                 Dictionary<string, List<PurchaseRequestDetail>> pdict = new Dictionary<string, List<PurchaseRequestDetail>>();
 
                 foreach (PurchaseRequestDetail prd in sortedprlist)

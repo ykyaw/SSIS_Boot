@@ -35,14 +35,24 @@ namespace SSIS_BOOT.Controllers
 
         [HttpGet]
         [Route("/deptemp/dis")]
-        public List<Requisition> getdeptdisbursement()
+        public List<Requisition> GetAllDeptDisbursement()
         {
             //to be replaced by session of the user's departmentId
             //string deptid = "CPSC";
             string deptid = HttpContext.Session.GetString("DeptId");
-            List<Requisition> dislist = deservice.getdeptdisbursementlist(deptid);
-            List<Requisition> sorteddislist = dislist.OrderByDescending(m => m.CreatedDate).ToList();
+            List<Requisition> dislist = deservice.GetAllDeptDisbursementList(deptid);
+            List<Requisition> sorteddislist = dislist.OrderByDescending(m => m.CollectionDate).ThenByDescending(m=>m.CreatedDate).ToList();
             return sorteddislist;
+        }
+
+
+        [HttpGet]
+        [Route("/deptemp/dis/{longdate}")]
+        public List<RequisitionDetail> GetDeptDisbursementByDate(long longdate)
+        {
+            string deptid = HttpContext.Session.GetString("DeptId");
+            List<RequisitionDetail> rdl = deservice.GetDisbursementByDate(deptid, longdate);
+            return rdl;
         }
 
         [HttpGet]
@@ -162,14 +172,6 @@ namespace SSIS_BOOT.Controllers
             return true;
         }
 
-        [HttpGet]
-        [Route("/deptemp/dis/{longdate}")]
-        public List<RequisitionDetail> GetDisbursementByDate(long longdate)
-        {
-            string deptid = HttpContext.Session.GetString("DeptId");
-            List<RequisitionDetail> rdl = deservice.GetDisbursementByDate(deptid, longdate);
-            return rdl;
-        }
 
 
         [HttpPut]
