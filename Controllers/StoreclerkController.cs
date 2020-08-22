@@ -296,6 +296,10 @@ namespace SSIS_BOOT.Controllers
             //pod1.Remark = "Pending 10 more";
             //pod1.PurchaseOrder.ReceivedDate = 1594724400000;
             //List<PurchaseOrderDetail> podlist = new List<PurchaseOrderDetail> { pod1 };
+            if(podlist ==null || podlist.Count == 0)
+            {
+                throw new Exception("Error in updating item received. Please ensure all fields are completed");
+            }
             int clerkid = (int)HttpContext.Session.GetInt32("Id");
             foreach (PurchaseOrderDetail podid in podlist)
             {
