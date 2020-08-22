@@ -85,6 +85,7 @@ namespace SSIS_BOOT.Repo
                 .Include(m => m.ReqByEmp)
                 .Include(m => m.ReceivedByRep)
                 .Include(m => m.CollectionPoint)
+                .Include(m=>m.AckByClerk)
                 .Include(m => m.RequisitionDetails).ThenInclude(m=>m.Product)
                 .Where(m => m.DepartmentId == deptId)
                 .Where(m=>m.CollectionDate == date)

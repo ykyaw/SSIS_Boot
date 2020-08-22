@@ -1094,12 +1094,14 @@ namespace SSIS_BOOT.DB
             // int? ReceivedByClerkId, long? ReceivedDate,string Status)
             //1/7/2020@3:30pm Purchase request of paper"E032" x100 and spoilt diskettes "D001"x20, and "C001"x15 supply by 15/7,received on 14 / 7 / 2020 @ 11:00am(UTC)
             PurchaseOrder po1 = new PurchaseOrder("ALPA", 130.00, 1, 1593617400000, 1594771200000, 2);
+            po1.Status = Status.PurchaseOrderStatus.pending;
             PurchaseOrder po2 = new PurchaseOrder("OMEG", 300.00, 1, 1593617400000, 1594771200000, 2);
-
+            po2.Status = Status.PurchaseOrderStatus.pending;
             // 15/7 / 2020 @ 8:00am Purchase request of Clip "C001"x15, supply by 31/7/2020 @00:00, recieved on 29/7/2020 @ 9:30am(trans13)
             PurchaseOrder po3 = new PurchaseOrder("ALPA", 30.00, 1, 1594800000000, 1596153600000, 2);
-
+            po3.Status = Status.PurchaseOrderStatus.pending;
             PurchaseOrder po4 = new PurchaseOrder("BANE", 100.00, 16, 1595926800000, 1597190400000, 2);
+            po4.Status = Status.PurchaseOrderStatus.pending;
             dbcontext.Add(po1);
             dbcontext.SaveChanges();
             dbcontext.Add(po2);
