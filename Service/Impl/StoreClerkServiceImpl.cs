@@ -656,7 +656,8 @@ namespace SSIS_BOOT.Service.Impl
 
         public List<Retrieval> GetRetrievalFormCommentsForAdjustmentVoucher()
         {
-            List<Retrieval> rlistwithcomments = retrivrepo.GetRetrievalThatNeedAdjustmentVoucher();
+            long currentdate = (long)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            List<Retrieval> rlistwithcomments = retrivrepo.GetRetrievalThatNeedAdjustmentVoucher(currentdate);
             return rlistwithcomments;
         }
 

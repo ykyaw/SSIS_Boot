@@ -423,7 +423,7 @@ namespace SSIS_BOOT.Controllers
             }
             else
             {
-                return new List<Retrieval>(); //if no retrieval with comments, return empty list so front end don't need to handle error
+                return new List<Retrieval>(); //if no retrieval with adjustment voucher comments, return empty list so front end don't need to handle error
             }
         }
 

@@ -75,9 +75,10 @@ namespace SSIS_BOOT.Repo
                 .FirstOrDefault(m=>m.Id == retrivId);
         }
 
-        public List<Retrieval> GetRetrievalThatNeedAdjustmentVoucher()
+        public List<Retrieval> GetRetrievalThatNeedAdjustmentVoucher(long currentdate)
         {
-            return dbcontext.Retrievals.Where(m => m.NeedAdjustment == true).ToList();
+            long retrievallimit = currentdate - 2592000000; //take current date, minus 30 days (30 * 86400000ms in a day)
+            return dbcontext.Retrievals.Where(m => m.NeedAdjustment == true && m.RetrievedDate > retrievallimit).ToList();
         }
     }
 }
