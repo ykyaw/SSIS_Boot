@@ -77,13 +77,12 @@ namespace SSIS_BOOT.Controllers
             employee = employeeService.Login(employee);
             if (employee != null)
             {
-                /*added by tk to check for delegate */
+                //Delegate check
                 long currenttime = (long)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 if (employee.Role == "de" && currenttime > employee.DelegateFromDate && currenttime < employee.DelegateToDate)
                 {
                     employee.Role = "dh";
                 }
-                /*End of Tk addition */
 
                 string token = authService.GenerateToken(employee);
                 Dictionary<string, Object> result = new Dictionary<string, object>();

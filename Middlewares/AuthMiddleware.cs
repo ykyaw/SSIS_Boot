@@ -52,7 +52,15 @@ namespace SSIS_BOOT.Middlewares
                         user.Name = claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Name)).Value;
                         user.Email = claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Email)).Value;
                         user= userRepo.FindUserByEmail(user.Email);
-                        token= authService.GenerateToken(user);
+
+                        //Delegate check
+                        long currenttime = (long)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                        if (user.Role == "de" && currenttime > user.DelegateFromDate && currenttime < user.DelegateToDate)
+                        {
+                            user.Role = "dh";
+                        }
+
+                        token = authService.GenerateToken(user);
                         context.Response.Cookies.Append("token", token);
                         try
                         {
