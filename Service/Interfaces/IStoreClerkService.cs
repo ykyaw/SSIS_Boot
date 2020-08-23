@@ -64,7 +64,7 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public TenderQuotation getFirstTenderbyProdutId(string ProductId);
 
-        public bool SaveEmptyAdjustmentDetails(string AdjustmentVoucherId);
+        //public bool SaveEmptyAdjustmentDetails(string AdjustmentVoucherId);
 
         public List<Retrieval> GetRetrievalFormCommentsForAdjustmentVoucher();
 

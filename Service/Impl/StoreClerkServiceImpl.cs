@@ -551,33 +551,49 @@ namespace SSIS_BOOT.Service.Impl
                 throw m;
             }
         }
-        public bool SaveEmptyAdjustmentDetails(string AdjustmentVoucherId)
-        {
-            if (avdetrepo.hasDetails(AdjustmentVoucherId))
-            {
-                avdetrepo.deleteAdvDetailsbyAdvId(AdjustmentVoucherId);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-        }
+                        /* Unused method. To be removed if not needed */
+        //public bool SaveEmptyAdjustmentDetails(string AdjustmentVoucherId)
+        //{
+        //    if (avdetrepo.hasDetails(AdjustmentVoucherId))
+        //    {
+        //        avdetrepo.deleteAdvDetailsbyAdvId(AdjustmentVoucherId);
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
 
         public bool updateAdjustmentVoucherDeatails(List<AdjustmentVoucherDetail> voucherDetails)
         {
             string AdjustmentVoucherId = voucherDetails[0].AdjustmentVoucherId;
+          
+                            /*original implementation */
             //if there are details in this adjustment voucher
-            if (avdetrepo.hasDetails(AdjustmentVoucherId))
+            //if (avdetrepo.hasDetails(AdjustmentVoucherId))
+            //{
+            //    avdetrepo.deleteAdvDetailsbyAdvId(AdjustmentVoucherId);
+            //}
+            //foreach (AdjustmentVoucherDetail avdetail in voucherDetails)
+            //{
+            //    avdetrepo.updateAdjustmentVoucherDeatail(avdetail);
+            //}
+            //avrepo.ClerkUpdateAdjustmentVoucherById(AdjustmentVoucherId);
+
+                            /* New implementation by TK for bug fix */
+            List<AdjustmentVoucherDetail> avd = avdetrepo.findAdvDetailsbyAdvId(AdjustmentVoucherId);
+            foreach(AdjustmentVoucherDetail av in avd)
             {
-                avdetrepo.deleteAdvDetailsbyAdvId(AdjustmentVoucherId);
+                avdetrepo.deleteAdvDetails(av);
             }
-            foreach (AdjustmentVoucherDetail avdetail in voucherDetails)
+            foreach(AdjustmentVoucherDetail j in voucherDetails)
             {
-                avdetrepo.updateAdjustmentVoucherDeatail(avdetail);
+                j.AdjustmentVoucherId = AdjustmentVoucherId;
+                avdetrepo.AddAdvDetail(j);
             }
-            avrepo.ClerkUpdateAdjustmentVoucherById(AdjustmentVoucherId);
+                            /* End of implementation by TK for bug fix */
+
             return true;
 
         }
@@ -601,6 +617,27 @@ namespace SSIS_BOOT.Service.Impl
             });
             return true;
         }
+
+        //public bool updatereqform(List<RequisitionDetail> rdlist)
+        //{
+
+        //    foreach (RequisitionDetail r in rdlist) //Delete all old entries based on requisitionId
+        //    {
+        //        rdrepo.deleteRequisitionDetailByRequisitionId(r);
+        //    }
+
+        //    foreach (RequisitionDetail rd in rdlist) //Create new latest entries based on requisitionId 
+        //    {
+        //        if (rd.QtyNeeded != 0)
+        //        {
+        //            rdrepo.addreqformitem(rd);
+        //        }
+        //    }
+        //    return true;
+        //}
+
+
+
 
         public AdjustmentVoucher findAdjustmentVoucherById(string advId)
         {

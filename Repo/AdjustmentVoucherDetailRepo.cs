@@ -62,6 +62,25 @@ namespace SSIS_BOOT.Repo
 
         }
 
+        public void deleteAdvDetails(AdjustmentVoucherDetail avd)
+        {
+
+            AdjustmentVoucherDetail original = dbcontext.AdjustmentVoucherDetails.FirstOrDefault(m => m.Id == avd.Id);
+
+            if (original != null)
+            {
+                dbcontext.AdjustmentVoucherDetails.Remove(original);
+            }
+            dbcontext.SaveChanges();
+
+        }
+
+        public void AddAdvDetail(AdjustmentVoucherDetail avd)
+        {
+            dbcontext.AdjustmentVoucherDetails.Add(avd);
+            dbcontext.SaveChanges();
+        }
+
         public void updateAdjustmentVoucherDeatail(AdjustmentVoucherDetail avdetail)
         {
             dbcontext.AdjustmentVoucherDetails.Add(avdetail);

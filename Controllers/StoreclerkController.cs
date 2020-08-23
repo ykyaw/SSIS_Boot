@@ -381,7 +381,8 @@ namespace SSIS_BOOT.Controllers
         [Route("/storeclerk/SubmitAdjustmentDetails/")]
         public bool SubmitAdjustmentDetails([FromBody]List<AdjustmentVoucherDetail> voucherDetails)
         {
-            UpdataeAdjustmentDetails(voucherDetails);
+            //UpdataeAdjustmentDetails(voucherDetails); //Edited by TK. Controller can call service method directly, no need to call another controller to access the same service method
+            scservice.updateAdjustmentVoucherDeatails(voucherDetails);
             string adjustmentVoucherId = voucherDetails[0].AdjustmentVoucherId;
             scservice.ClerkSubmitAdjustmentVoucher(adjustmentVoucherId);
             return true;
