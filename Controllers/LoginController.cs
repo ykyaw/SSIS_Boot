@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SSIS_BOOT.Common;
 using SSIS_BOOT.Components;
 using SSIS_BOOT.Components.JWT.Interfaces;
 using SSIS_BOOT.Models;
@@ -76,6 +77,14 @@ namespace SSIS_BOOT.Controllers
             employee = employeeService.Login(employee);
             if (employee != null)
             {
+                /*added by tk to check for delegate */
+                long currenttime = (long)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                if (employee.Role == "de" && currenttime > employee.DelegateFromDate && currenttime < employee.DelegateToDate)
+                {
+                    employee.Role = "dh";
+                }
+                /*End of Tk addition */
+
                 string token = authService.GenerateToken(employee);
                 Dictionary<string, Object> result = new Dictionary<string, object>();
                 result.Add("token", token);
