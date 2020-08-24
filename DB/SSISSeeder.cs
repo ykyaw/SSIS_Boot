@@ -807,7 +807,7 @@ namespace SSIS_BOOT.DB
             //seed requsition
             //public Requisition(string DepartmentId, int ReqByEmpId, int ApprovedById, int ProcessedByClerkId)
             Requisition r1 = new Requisition("ENGL", 4, 5, 1);
-            r1.CreatedDate = 1594735200000;//14/7/2020 @ 2:00pm (UTC)
+            r1.CreatedDate = 1597104000000;//11/8/2020 @ 0:00am (UTC)
             r1.Status = Status.RequsitionStatus.rejected;
             r1.Remarks = "Rejected as per request by staff.";
             dbcontext.Add(r1);
@@ -831,94 +831,109 @@ namespace SSIS_BOOT.DB
                                                1, 1597881600000,
                                                4, 1595237400000, 1, 1595237400000);
 
-            //create date- Wednesday, 29-Jul-20 00:00:00 UTC ;receive-20/8/2020 @ 0:00am (UTC);acknowldge-03/8/2020 @ 9:30am
-            Requisition r5 = new Requisition("ENGL", 14, 5, null, 1, 1595980800000, Status.RequsitionStatus.completed,
-                                               1, 1597881600000,
-                                               4, 1596447000000, 1, 1596447000000);
+            ////create date- Wednesday, 29-Jul-20 00:00:00 UTC ;receive-20/8/2020 @ 0:00am (UTC);acknowldge-03/8/2020 @ 9:30am
+            //Requisition r5 = new Requisition("ENGL", 14, 5, null, 1, 1595980800000, Status.RequsitionStatus.completed,
+            //                                   1, 1597881600000,
+            //                                   4, 1596447000000, 1, 1596447000000);
 
-            //created-05 /8/ 2020 00:00:00 (UTC); collection-date-10/8/2020 @0:00 UTC; received and confirmed-10/8/2020  @0:00 UTC
-            Requisition r6 = new Requisition("ENGL", 4, 5, null, 16, 1596585600000, Status.RequsitionStatus.completed,
-                                               1, 1597017600000,
-                                               4, 1597017600000, 1, 1597017600000);
-            //created-05 /8/ 2020 00:00:00 (UTC); collection-date-10/8/2020 @0:00 UTC; received and confirmed-10/8/2020 @0:00 UTC
-            Requisition r7 = new Requisition("CPSC", 15, 7, null, 16, 1596585600000, Status.RequsitionStatus.completed,
-                                               1, 1597017600000,
-                                               4, 1597017600000, 1, 1597017600000);
+            ////created-05 /8/ 2020 00:00:00 (UTC); collection-date-10/8/2020 @0:00 UTC; received and confirmed-10/8/2020  @0:00 UTC
+            //Requisition r6 = new Requisition("ENGL", 4, 5, null, 16, 1596585600000, Status.RequsitionStatus.completed,
+            //                                   1, 1597017600000,
+            //                                   4, 1597017600000, 1, 1597017600000);
+            ////created-05 /8/ 2020 00:00:00 (UTC); collection-date-10/8/2020 @0:00 UTC; received and confirmed-10/8/2020 @0:00 UTC
+            //Requisition r7 = new Requisition("CPSC", 15, 7, null, 16, 1596585600000, Status.RequsitionStatus.completed,
+            //                                   1, 1597017600000,
+            //                                   4, 1597017600000, 1, 1597017600000);
 
 
             dbcontext.Add(r3);
             dbcontext.SaveChanges();
             dbcontext.Add(r4);
             dbcontext.SaveChanges();
-            dbcontext.Add(r5);
-            dbcontext.SaveChanges();
-            dbcontext.Add(r6);
-            dbcontext.SaveChanges();
-            dbcontext.Add(r7);
-            dbcontext.SaveChanges();
+            //dbcontext.Add(r5);
+            //dbcontext.SaveChanges();
+            //dbcontext.Add(r6);
+            //dbcontext.SaveChanges();
+            //dbcontext.Add(r7);
+            //dbcontext.SaveChanges();
 
-            //created-30/8/2020 00:00:00 (GMT); collection-date-25/8/2020 @00:00am(GMT)
-            Requisition r8 = new Requisition("ENGL", 4, 5, 1);
-            r8.CreatedDate = 1598745600000;
-            r8.Status = Status.RequsitionStatus.confirmed;
-            r8.CollectionPointId = 1;
-            r8.CollectionDate = 1599004800000;
-            dbcontext.Add(r8);
+            //created-22/8/2020 00:00:00 (GMT); collection-date-25/8/2020 @00:00am(GMT)
+            Requisition r5 = new Requisition("ENGL", 4, 5, 1);
+            r5.CreatedDate = 1598054400000;
+            r5.Status = Status.RequsitionStatus.confirmed;
+            r5.CollectionPointId = 1;
+            r5.CollectionDate = 1599004800000;
+            dbcontext.Add(r5);
             dbcontext.SaveChanges();
 
             //created-05/8/2020 00:00:00 (UTC); collection-date-20/8/2020 @00:00am(GMT)
-            Requisition r9 = new Requisition("ENGL", 14, 5, 1);
-            r9.CreatedDate = 1598486400000;
-            r9.Status = Status.RequsitionStatus.confirmed;
-            r9.CollectionPointId = 1;
-            r9.CollectionDate = 1599004800000;
-            dbcontext.Add(r9);
+            Requisition r6 = new Requisition("ENGL", 14, 5, 1);
+            r6.CreatedDate = 1598486400000;
+            r6.Status = Status.RequsitionStatus.confirmed;
+            r6.CollectionPointId = 1;
+            r6.CollectionDate = 1599004800000;
+            dbcontext.Add(r6);
             dbcontext.SaveChanges();
 
             //created-30/8/2020 00:00:00 (GMT)
-            Requisition r10 = new Requisition("ENGL", 14, 5, 1);
-            r10.CreatedDate = 1598745600000;
-            r10.Status = Status.RequsitionStatus.approved;
+            Requisition r7 = new Requisition("ENGL", 14, 5, 1);
+            r7.CreatedDate = 1598486400000;
+            r7.Status = Status.RequsitionStatus.approved;
+            r7.CollectionPointId = 5;
+            dbcontext.Add(r7);
+            dbcontext.SaveChanges();
+
+            //created-25/8/2020 00:00:00 (UTC); collection-date-30/8/2020 @00:00am(localtime)
+            Requisition r8 = new Requisition("ENGL", 14, 7, 1);
+            r8.CreatedDate = 1598486400000;
+            r8.Status = Status.RequsitionStatus.confirmed;
+            r8.CollectionPointId = 1;
+            r8.CollectionDate = 1598745600000;
+            dbcontext.Add(r8);
+            dbcontext.SaveChanges();
+
+            Requisition r9 = new Requisition("ENGL", 14, 5, 1);
+            r9.CreatedDate = 1598659200000;// 22/8/2020 @ 00:00am (UTC)
+            r9.Status = Status.RequsitionStatus.created;
+            r9.CollectionPointId = 5;
+            dbcontext.Add(r9);
+            dbcontext.SaveChanges();
+
+            Requisition r10 = new Requisition("ENGL", 4, 5, 1);
+            r10.CreatedDate = 1598745600000;// 30/8/2020 @ 00:00am (UTC)
+            r10.Status = Status.RequsitionStatus.pendapprov;
             r10.CollectionPointId = 5;
             dbcontext.Add(r10);
             dbcontext.SaveChanges();
 
-            //created-25/8/2020 00:00:00 (UTC); collection-date-30/8/2020 @00:00am(localtime)
-            Requisition r11 = new Requisition("ENGL", 14, 7, 1);
-            r11.CreatedDate = 1598313600000;
-            r11.Status = Status.RequsitionStatus.confirmed;
-            r11.CollectionPointId = 1;
-            r11.CollectionDate = 1598745600000;
+            Requisition r11 = new Requisition("ENGL", 14, 5, 1);
+            r11.CreatedDate = 1598745600000;// 30/8/2020 @ 00:00am (UTC)
+            r11.Status = Status.RequsitionStatus.pendapprov;
+            r11.CollectionPointId = 5;
             dbcontext.Add(r11);
             dbcontext.SaveChanges();
 
-            Requisition r12 = new Requisition("ENGL", 14, 5, 1);
-            r12.CreatedDate = 1598054400000;// 22/8/2020 @ 00:00am (UTC)
-            r12.Status = Status.RequsitionStatus.created;
-            r12.CollectionPointId = 5;
+            //create date- Wednesday, 29-Jul-20 00:00:00 UTC ;receive-05/8/2020 @ 0:00am (UTC);acknowldge-05/8/2020 @ 0:00am
+            Requisition r12 = new Requisition("CPSC", 15, 7, null, 16, 1595980800000, Status.RequsitionStatus.completed,
+                                               1, 1596585600000,
+                                               4, 1596412800000, 1, 1596585600000);
             dbcontext.Add(r12);
-            dbcontext.SaveChanges();
-
-            Requisition r13 = new Requisition("ENGL", 4, 5, 1);
-            r13.CreatedDate = 1598054400000;// 22/8/2020 @ 00:00am (UTC)
-            r13.Status = Status.RequsitionStatus.pendapprov;
-            r13.CollectionPointId = 5;
+            //create date- Wednesday, 30-Jul-20 00:00:00 UTC ;receive-05/8/2020 @ 0:00am (UTC);acknowldge-05/8/2020 @ 0:00am
+            Requisition r13 = new Requisition("COMM", 8, 9, null, 16, 1596067200000, Status.RequsitionStatus.completed,
+                                               1, 1596585600000,
+                                               4, 1596412800000, 1, 1596585600000);
             dbcontext.Add(r13);
-            dbcontext.SaveChanges();
-
-            Requisition r14 = new Requisition("ENGL", 14, 5, 1);
-            r14.CreatedDate = 1598054400000;// 22/8/2020 @ 00:00am (UTC)
-            r14.Status = Status.RequsitionStatus.pendapprov;
-            r14.CollectionPointId = 5;
+            //create date- Wednesday, 25-Aug-20 00:00:00 UTC ;receive-29/8/2020 @ 0:00am (UTC);acknowldge-29/8/2020 @ 0:00am
+            Requisition r14 = new Requisition("COMM", 8, 9, null, 16, 1598313600000, Status.RequsitionStatus.completed,
+                                               1, 1598659200000,
+                                               4, 1598486400000, 1, 1598659200000);
             dbcontext.Add(r14);
             dbcontext.SaveChanges();
-
-
 
             //seed requsition detail
             //public RequisitionDetail(int RequisitionId, string ProductId, int QtyNeeded, int? QtyDisbursed, int? QtyReceived,
             //string? DisburseRemark, string? RepRemark, string? ClerkRemark, int? RetrievalId)
-            RequisitionDetail rd1 = new RequisitionDetail(1, "C001", 500);
+            RequisitionDetail rd1 = new RequisitionDetail(1, "C001", 50);
             dbcontext.Add(rd1);
             dbcontext.SaveChanges();
             RequisitionDetail rd2 = new RequisitionDetail(2, "C001", 15);
@@ -927,83 +942,83 @@ namespace SSIS_BOOT.DB
             RequisitionDetail rd25 = new RequisitionDetail(4, "C001", 15);
             dbcontext.Add(rd25);
             dbcontext.SaveChanges();
-            RequisitionDetail rd3 = new RequisitionDetail(5, "C001", 10, 10, 10, null, null, null, 1);//refer to retr1
-            dbcontext.Add(rd3);
-            dbcontext.SaveChanges();
-            RequisitionDetail rd4 = new RequisitionDetail(5, "C001", 50, 50, 50, null, null, null, 1);//retr1
-            dbcontext.Add(rd4);
-            dbcontext.SaveChanges();
-            RequisitionDetail rd5 = new RequisitionDetail(5, "P043", 20, 20, 20, null, null, null, 2);//retr2
-            dbcontext.Add(rd5);
-            dbcontext.SaveChanges();
-            RequisitionDetail rd6 = new RequisitionDetail(6, "P043", 50, 50, 50, null, null, null, 3);//retr3
-            dbcontext.Add(rd6);
-            dbcontext.SaveChanges();
-            RequisitionDetail rd7 = new RequisitionDetail(6, "C001", 10, 8, 8, "only 8 left", "noted", null, 3);//retr3
-            dbcontext.Add(rd7);
-            dbcontext.SaveChanges();
-            RequisitionDetail rd8 = new RequisitionDetail(7, "P043", 30, 30, 28, null, "2 spoilt during delivery", "confirmed", 3); //sub need to raise 2 in voucher
-            dbcontext.Add(rd8);
-            dbcontext.SaveChanges();
-            RequisitionDetail rd9 = new RequisitionDetail(7, "C001", 10, 10, 10, null, null, null, 3);
-            dbcontext.Add(rd9);
-            dbcontext.SaveChanges();
+            //RequisitionDetail rd3 = new RequisitionDetail(5, "C001", 10, 10, 10, null, null, null, 1);//refer to retr1
+            //dbcontext.Add(rd3);
+            //dbcontext.SaveChanges();
+            //RequisitionDetail rd4 = new RequisitionDetail(5, "C001", 50, 50, 50, null, null, null, 1);//retr1
+            //dbcontext.Add(rd4);
+            //dbcontext.SaveChanges();
+            //RequisitionDetail rd5 = new RequisitionDetail(5, "P043", 20, 20, 20, null, null, null, 2);//retr2
+            //dbcontext.Add(rd5);
+            //dbcontext.SaveChanges();
+            //RequisitionDetail rd6 = new RequisitionDetail(6, "P043", 50, 50, 50, null, null, null, 3);//retr3
+            //dbcontext.Add(rd6);
+            //dbcontext.SaveChanges();
+            //RequisitionDetail rd7 = new RequisitionDetail(6, "C001", 10, 8, 8, "only 8 left", "noted", null, 3);//retr3
+            //dbcontext.Add(rd7);
+            //dbcontext.SaveChanges();
+            //RequisitionDetail rd8 = new RequisitionDetail(7, "P043", 30, 30, 28, null, "2 spoilt during delivery", "confirmed", 3); //sub need to raise 2 in voucher
+            //dbcontext.Add(rd8);
+            //dbcontext.SaveChanges();
+            //RequisitionDetail rd9 = new RequisitionDetail(7, "C001", 10, 10, 10, null, null, null, 3);
+            //dbcontext.Add(rd9);
+            //dbcontext.SaveChanges();
 
-            RequisitionDetail rd10 = new RequisitionDetail(8, "C001", 10);
+            RequisitionDetail rd10 = new RequisitionDetail(5, "C001", 10);
             dbcontext.Add(rd10);
             dbcontext.SaveChanges();
-            RequisitionDetail rd11 = new RequisitionDetail(8, "F021", 10);
+            RequisitionDetail rd11 = new RequisitionDetail(5, "F021", 10);
             dbcontext.Add(rd11);
             dbcontext.SaveChanges();
-            RequisitionDetail rd12 = new RequisitionDetail(8, "P010", 10);
+            RequisitionDetail rd12 = new RequisitionDetail(5, "P010", 10);
             dbcontext.Add(rd12);
             dbcontext.SaveChanges();
 
-            RequisitionDetail rd13 = new RequisitionDetail(9, "C001", 5);
+            RequisitionDetail rd13 = new RequisitionDetail(6, "C001", 5);
             dbcontext.Add(rd13);
             dbcontext.SaveChanges();
-            RequisitionDetail rd14 = new RequisitionDetail(9, "F021", 5);
+            RequisitionDetail rd14 = new RequisitionDetail(6, "F021", 5);
             dbcontext.Add(rd14);
             dbcontext.SaveChanges();
-            RequisitionDetail rd15 = new RequisitionDetail(9, "P010", 5);
+            RequisitionDetail rd15 = new RequisitionDetail(6, "P010", 5);
             dbcontext.Add(rd15);
             dbcontext.SaveChanges();
 
-            RequisitionDetail rd16 = new RequisitionDetail(10, "C004", 5);
+            RequisitionDetail rd16 = new RequisitionDetail(7, "C004", 5);
             dbcontext.Add(rd16);
             dbcontext.SaveChanges();
-            RequisitionDetail rd17 = new RequisitionDetail(10, "F020", 5);
+            RequisitionDetail rd17 = new RequisitionDetail(7, "F020", 5);
             dbcontext.Add(rd17);
             dbcontext.SaveChanges();
-            RequisitionDetail rd18 = new RequisitionDetail(10, "P011", 10);
+            RequisitionDetail rd18 = new RequisitionDetail(7, "P011", 10);
             dbcontext.Add(rd18);
             dbcontext.SaveChanges();
 
-            RequisitionDetail rd19 = new RequisitionDetail(11, "F021", 5, 5, null, null, null, null, 4);
+            RequisitionDetail rd19 = new RequisitionDetail(8, "F021", 5, 5, null, null, null, null, 4);
             dbcontext.Add(rd19);
             dbcontext.SaveChanges();
-            RequisitionDetail rd20 = new RequisitionDetail(11, "P011", 10, 9, null, "Only 9 items left", null, null, 4);
+            RequisitionDetail rd20 = new RequisitionDetail(8, "P011", 10, 9, null, "Only 9 items left", null, null, 4);
             dbcontext.Add(rd20);
             dbcontext.SaveChanges();
 
-            RequisitionDetail rd21 = new RequisitionDetail(12, "C001", 10);
+            RequisitionDetail rd21 = new RequisitionDetail(9, "C001", 10);
             dbcontext.Add(rd21);
             dbcontext.SaveChanges();
-            RequisitionDetail rd22 = new RequisitionDetail(12, "E032", 10);
+            RequisitionDetail rd22 = new RequisitionDetail(9, "E032", 10);
             dbcontext.Add(rd22);
             dbcontext.SaveChanges();
 
-            RequisitionDetail rd23 = new RequisitionDetail(13, "C001", 5);
+            RequisitionDetail rd23 = new RequisitionDetail(10, "C001", 5);
             dbcontext.Add(rd23);
             dbcontext.SaveChanges();
-            RequisitionDetail rd24 = new RequisitionDetail(13, "E032", 6);
+            RequisitionDetail rd24 = new RequisitionDetail(10, "E032", 6);
             dbcontext.Add(rd24);
             dbcontext.SaveChanges();
 
-            RequisitionDetail rd26 = new RequisitionDetail(14, "C001", 20);
+            RequisitionDetail rd26 = new RequisitionDetail(11, "C001", 20);
             dbcontext.Add(rd26);
             dbcontext.SaveChanges();
-            RequisitionDetail rd27 = new RequisitionDetail(14, "E032", 20);
+            RequisitionDetail rd27 = new RequisitionDetail(11, "E032", 20);
             dbcontext.Add(rd27);
             dbcontext.SaveChanges();
 
@@ -1014,6 +1029,27 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(rd29);
             dbcontext.SaveChanges();
 
+            RequisitionDetail rd30 = new RequisitionDetail(12, "C001", 5);
+            dbcontext.Add(rd30);
+            dbcontext.SaveChanges();
+            RequisitionDetail rd31 = new RequisitionDetail(12, "D001", 5);
+            dbcontext.Add(rd31);
+            dbcontext.SaveChanges();
+
+            RequisitionDetail rd32 = new RequisitionDetail(13, "C004", 5);
+            dbcontext.Add(rd32);
+            dbcontext.SaveChanges();
+            RequisitionDetail rd33 = new RequisitionDetail(13, "H013", 5);
+            dbcontext.Add(rd33);
+            dbcontext.SaveChanges();
+
+            RequisitionDetail rd34 = new RequisitionDetail(14, "P012", 5);
+            dbcontext.Add(rd34);
+            dbcontext.SaveChanges();
+            RequisitionDetail rd35 = new RequisitionDetail(14, "E031", 5);
+            dbcontext.Add(rd35);
+            dbcontext.SaveChanges();
+
 
             //seed adjustment voucher
             //public AdjustmentVoucher(string Id, int InitiatedClerkId, long InitiatedDate, 
@@ -1021,12 +1057,12 @@ namespace SSIS_BOOT.DB
 
             //adjustment voucher in June that >250,due to wet exercise book"E032"x100 and spoilt diskettes "D001"x20 ,
             //created on 29/6@9:00am; approved by sup on 29/6@ 3:00pm, and approved by manager on 30/6/@3:00pm
-            AdjustmentVoucher adj1 = new AdjustmentVoucher("029_06_2020", 16, 1593421200000, 2, 1593442800000, 3, 1593529200000, Status.AdjVoucherStatus.approved);
+            AdjustmentVoucher adj1 = new AdjustmentVoucher("001_06_2020", 16, 1593421200000, 2, 1593442800000, 3, 1593529200000, Status.AdjVoucherStatus.approved);
             dbcontext.Add(adj1);
             dbcontext.SaveChanges();
 
             //Adjustment voucher raised on 31/7; due to 2 rusty clips found on 17/7/2020 retrival, approved by sup on 3/8/2020
-            AdjustmentVoucher adj2 = new AdjustmentVoucher("031_07_2020", 1, 1596207600000, 2, 1596447000000, Status.AdjVoucherStatus.pendapprov);
+            AdjustmentVoucher adj2 = new AdjustmentVoucher("001_07_2020", 1, 1596207600000, 2, 1596447000000, Status.AdjVoucherStatus.pendapprov);
             dbcontext.Add(adj2);
             dbcontext.SaveChanges();
 
@@ -1038,17 +1074,17 @@ namespace SSIS_BOOT.DB
             //seed adjustment voucher detail
             //adjustment voucher in June that >250,due to wet paper"E032" x100 and spoilt diskettes "D001"x20, created on 29/6@9:00am; and approved by manager on 30/6/3pm
             //wet paper"E032" x100
-            AdjustmentVoucherDetail adjdet1 = new AdjustmentVoucherDetail("029_06_2020", "E032", 100,1.00, 100.0, "100 wet paper due to heavy rain");
+            AdjustmentVoucherDetail adjdet1 = new AdjustmentVoucherDetail("001_06_2020", "E032", 100,1.00, 100.0, "100 wet paper due to heavy rain");
             dbcontext.Add(adjdet1);
             dbcontext.SaveChanges();
 
-            AdjustmentVoucherDetail adjdet2 = new AdjustmentVoucherDetail("031_07_2020", "D001", 20,10.00, 200.00, "20 diskettes found spoilt due to heavy rain");
+            AdjustmentVoucherDetail adjdet2 = new AdjustmentVoucherDetail("001_07_2020", "D001", 20,10.00, 200.00, "20 diskettes found spoilt due to heavy rain");
             dbcontext.Add(adjdet2);
             dbcontext.SaveChanges();
 
             //public AdjustmentVoucherDetail(string AdjustmentVoucherId, string ProductId, int QtyAdjusted, double TotalPrice, string Reason)
             //seed purchase request detail
-            AdjustmentVoucherDetail adjdet3 = new AdjustmentVoucherDetail("031_07_2020", "C001", 2, 2.00,4.00, "2 clips in inventory found rusty, spoilt");
+            AdjustmentVoucherDetail adjdet3 = new AdjustmentVoucherDetail("001_07_2020", "C001", 2, 2.00,4.00, "2 clips in inventory found rusty, spoilt");
             dbcontext.Add(adjdet3);
             dbcontext.SaveChanges();
 
