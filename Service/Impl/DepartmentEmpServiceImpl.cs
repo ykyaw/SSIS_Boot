@@ -112,6 +112,38 @@ namespace SSIS_BOOT.Service.Impl
 
             return rrepo.saveNewRequisition(newform);
         }
+
+        public Requisition createrequisitionfromhistory(int empid, string deptid, List<RequisitionDetail> rdlist)
+        {
+            Employee emp = erepo.findempById(empid);
+            if (emp.Role == "dh")
+            {
+                throw new Exception("Sorry, department head cannot create own requisition");
+            }
+            //create empty requisition with date,employee ID and departmentid
+            Requisition newform = new Requisition();
+
+            DateTime dateTime = DateTime.UtcNow.Date;
+            DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
+            long date = dt.ToUnixTimeMilliseconds();
+
+            newform.ReqByEmpId = empid;
+            //newform.CreatedDate= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); //From tk: changed date format to UTC 00:00 for date
+            newform.CreatedDate = date;
+            newform.DepartmentId = deptid;
+            newform.Status = Status.RequsitionStatus.created;
+            Department dept = drepo.findDepartmentById(deptid);
+            newform.CollectionPointId = dept.CollectionPointId;
+
+            Requisition r = rrepo.saveNewRequisition(newform);
+            foreach(RequisitionDetail rd in rdlist)
+            {
+                rd.RequisitionId = r.Id;
+                rdrepo.addreqformitem(rd);
+            }
+            return rrepo.findreqByReqId(r.Id);
+        }
+
         public bool submitrf(List<RequisitionDetail> rdlist)
         {
             foreach (RequisitionDetail r in rdlist) //Delete all old entries based on requisitionId
