@@ -156,6 +156,9 @@ namespace SSIS_BOOT.Service.Impl
             return dlist;
         }
 
-
+        public Department FindDepartmentById(string deptid)
+        {
+            return drepo.findDepartmentById(deptid);
+        }
     }
 }

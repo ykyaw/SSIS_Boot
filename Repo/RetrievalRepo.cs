@@ -29,12 +29,13 @@ namespace SSIS_BOOT.Repo
             return r;
         }
 
-        public Retrieval GetRetrieval(long date, int clerkid, string status)
+        public Retrieval GetRetrieval(long date, int clerkid, string created, string retrieved)
         {
             return dbcontext.Retrievals.Include(m => m.Clerk)
                 .Include(m=>m.RequisitionDetails).ThenInclude(m=>m.Product).ThenInclude(m=>m.Category)
                 .Include(m=> m.RequisitionDetails).ThenInclude(m => m.Requisition)
-                .FirstOrDefault(x => x.DisbursedDate == date && x.ClerkId == clerkid && x.Status == status);
+                //.FirstOrDefault(x => x.DisbursedDate == date && x.ClerkId == clerkid && x.Status == created);
+                .FirstOrDefault(x => x.DisbursedDate == date && x.ClerkId == clerkid && (x.Status == created || x.Status == retrieved));
         }
         public bool UpdateRetrieval(Retrieval r1)
         {

@@ -63,9 +63,10 @@ namespace SSIS_BOOT.Controllers
             string deptid = HttpContext.Session.GetString("DeptId");
             int empid = (int)HttpContext.Session.GetInt32("Id");
             List<Employee> empList = dhservice.GetAllDeptEmployee(deptid);
+            int deptheadid = (int)dhservice.FindDepartmentById(deptid).HeadId;
             foreach(Employee e in empList)
             {
-                if(e.Id == empid)
+                if(e.Id == empid || e.Id == deptheadid)
                 {
                     empList.Remove(e);
                     break;

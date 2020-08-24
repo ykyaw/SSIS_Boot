@@ -83,6 +83,14 @@ namespace SSIS_BOOT.Service.Impl
                     AdjustmentVoucher av1= avrepo.findAdjustmentVoucherById(av.Id);
                     Employee clerk = erepo.findempById(av1.InitiatedClerkId);
                     Employee sup = erepo.findempById((int) av1.ApprovedSupId);
+                    if (sup == null) //If manager approve without supervisor, supervisor will be null. this method will retrieve back the supervisor for emailing
+                    {
+                        sup = erepo.findempById((int)clerk.ManagerId);
+                    }
+                    Employee manager = erepo.findempById((int)sup.ManagerId); 
+                    List<Employee> elist = new List<Employee>(); //Regardless of approval hierarchy or who approved, as long as its in final state of approved or rejected, clerk + supervisor + manager will get email
+                    elist.Add(sup);
+                    elist.Add(manager);
                     EmailModel email = new EmailModel();
 
                     Task.Run(async () =>
@@ -91,7 +99,8 @@ namespace SSIS_BOOT.Service.Impl
                         email.emailTo = clerk.Email;
                         email.emailSubject = apt.subject;
                         email.emailBody = apt.body;
-                        await mailservice.SendEmailwithccAsync(email,sup);
+                        //await mailservice.SendEmailwithccAsync(email,sup);
+                        await mailservice.SendEmailwithccallAsync(email, /*sup*/ elist);
                     });
 
                 }
@@ -196,7 +205,8 @@ namespace SSIS_BOOT.Service.Impl
             {
                 // to pull out purchase request id and date
                 int prid = prdlist[0].Id;
-                long submitdate = (long) prdlist[0].SubmitDate;
+                List<PurchaseRequestDetail> prdlist2 = purreqrepo.findpurchasereq(prdlist[0].PurchaseRequestId); //getting back all the PurchaseRequestDetail with extra information for Emailing
+                long submitdate = (long) prdlist2[0].SubmitDate;
 
                 string remarks = prdlist[0].Remarks;
                 Employee clerk = erepo.findempById(prdlist[0].CreatedByClerkId);

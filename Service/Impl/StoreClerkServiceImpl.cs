@@ -1,4 +1,5 @@
-﻿using SSIS_BOOT.Common;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SSIS_BOOT.Common;
 using SSIS_BOOT.Email;
 using SSIS_BOOT.Email.EmailTemplates;
 using SSIS_BOOT.Models;
@@ -59,10 +60,10 @@ namespace SSIS_BOOT.Service.Impl
         public List<Transaction> getlatesttransaction(List<Product> pdt)
         {
             List<Transaction> tlist = new List<Transaction>();
-            foreach(Product p in pdt)
+            foreach (Product p in pdt)
             {
                 Transaction t = trepo.GetLatestTransactionByProductId(p.Id);
-                if(t== null)
+                if (t == null)
                 {
                     t = new Transaction();
                     t.ProductId = p.Id;
@@ -103,7 +104,7 @@ namespace SSIS_BOOT.Service.Impl
         }
 
         //to run this mtd as async
-        public bool generatequotefrompr(List<PurchaseRequestDetail> prdlist,int clerkid)
+        public bool generatequotefrompr(List<PurchaseRequestDetail> prdlist, int clerkid)
         {
             List<PurchaseRequestDetail> prdlistwithnull = new List<PurchaseRequestDetail>();
 
@@ -145,7 +146,7 @@ namespace SSIS_BOOT.Service.Impl
                     Supplier supplier = srepo.findsupplierbyId(r.Value[0].SupplierId);
                     Employee clerk = erepo.findempById(clerkid);
                     EmailModel email = new EmailModel();
-                    List<PurchaseRequestDetail> List_of_PR_tosend = pdict[r.Key]; 
+                    List<PurchaseRequestDetail> List_of_PR_tosend = pdict[r.Key];
                     Task.Run(async () =>
                     {
                         EmailTemplates.RequestQuoteTemplate rfq = new EmailTemplates.RequestQuoteTemplate(clerk, supplier, List_of_PR_tosend);
@@ -164,9 +165,9 @@ namespace SSIS_BOOT.Service.Impl
             List<Requisition> lr = rrepo.findallreqform();
             List<Requisition> lr2 = new List<Requisition>();
 
-            foreach(Requisition r in lr) //clerk should only be able to see all those requisitio after approved status
+            foreach (Requisition r in lr) //clerk should only be able to see all those requisitio after approved status
             {
-                if (r.Status == Status.RequsitionStatus.approved || r.Status == Status.RequsitionStatus.confirmed || r.Status == Status.RequsitionStatus.received|| r.Status == Status.RequsitionStatus.completed)
+                if (r.Status == Status.RequsitionStatus.approved || r.Status == Status.RequsitionStatus.confirmed || r.Status == Status.RequsitionStatus.received || r.Status == Status.RequsitionStatus.completed)
                 {
                     lr2.Add(r);
                 }
@@ -232,32 +233,59 @@ namespace SSIS_BOOT.Service.Impl
 
         public Retrieval genretrievalform(long date, int clerkid, List<Requisition> listreq) //UPDATED LOGIC
         {
-            Retrieval r_exist = retrivrepo.GetRetrieval(date, clerkid, Status.RetrievalStatus.created); // check if there already exist a retrieval with "created" status and processed by clerkid
-
+            List<RequisitionDetail> rdlnew = new List<RequisitionDetail>();
+            Retrieval r_exist = retrivrepo.GetRetrieval(date, clerkid, Status.RetrievalStatus.created, Status.RetrievalStatus.retrieved); // check if there already exist a retrieval with "created" or retrieved status and processed by clerkid
             if (r_exist != null) //If an existing retrieval form for the collection date has been created, update existing requisition with same date with the existing retrievalformId 
             {
-                foreach (Requisition re in listreq)//listreq is passed in from controller, which is a list of requisition with "confirmed" status, on the selected date and processed by the clerk in session
+                if (r_exist.Status == Status.RetrievalStatus.created)
                 {
-                    foreach (RequisitionDetail detail in re.RequisitionDetails)
+                    foreach (Requisition re in listreq)//listreq is passed in from controller, which is a list of requisition with "confirmed" status, on the selected date and processed by the clerk in session
                     {
-                        detail.RetrievalId = r_exist.Id; //assign the newly created retrieval Id to each requsitiondetail belonging to a confirmed retrieval 
+                        foreach (RequisitionDetail detail in re.RequisitionDetails)
+                        {
+                            detail.RetrievalId = r_exist.Id; //assign the newly created retrieval Id to each requsitiondetail belonging to a confirmed retrieval 
+                            RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
+                        }
+                    }
+                    Retrieval updatedRetrieval = retrivrepo.GetRetrievalById(r_exist.Id); //Get back the latest created retrieval with all the related objects
+                    updatedRetrieval.RequisitionDetails = updatedRetrieval.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
+                    return updatedRetrieval;
+                }
+                if (r_exist.Status == Status.RetrievalStatus.retrieved) //if status is finalized, check for new entries differing from existing retrieval form return the finalized retrieval so don't double create
+                {
+
+                    foreach (Requisition r in listreq)
+                    {
+                        foreach (RequisitionDetail rd in r.RequisitionDetails)
+                        {
+                            if (!r_exist.RequisitionDetails.Contains(rd)) //if status is fnalised and new entries matches retrieved form, return retrieved form
+                            {
+                                rdlnew.Add(rd); //else if there are new items in addition to previously retrieved, add to a list for follow up
+                            }
+                        }
+                    }
+                    if (rdlnew.Count == 0 || rdlnew == null) //if no new item to follow up, return the original retrieved form. else, pass on the new items to next block for follow up
+                    {
+                        return r_exist;
+                    }
+                }
+            }
+            Retrieval r1 = new Retrieval();
+            r1.ClerkId = clerkid;
+            r1.DisbursedDate = date;
+            r1.Status = Status.RetrievalStatus.created;
+            Retrieval newRetrieval = retrivrepo.genretrievalandreturn(r1); //creates empty retrieval form and returns it
+            foreach (Requisition re in listreq)//listreq is passed in from controller, which is a list of requisition with "confirmed" status, on the selected date and processed by the clerk in session
+            {
+                if(rdlnew.Count != 0) //if there are new items in additional to earlier retrieved form to be followed up, trigger this block
+                {
+                    foreach (RequisitionDetail detail in rdlnew)
+                    {
+                        detail.RetrievalId = newRetrieval.Id; //assign the newly created retrieval Id to each requsitiondetail belonging to a confirmed retrieval 
                         RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
                     }
                 }
-                Retrieval updatedRetrieval = retrivrepo.GetRetrievalById(r_exist.Id); //Get back the latest created retrieval with all the related objects
-                updatedRetrieval.RequisitionDetails = updatedRetrieval.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
-                return updatedRetrieval;
-            }
-
-            else //If there is no retrieval form for the collection date, create a new retrieval form and update existing requisition with same date with the newly created retrievalformId 
-            {
-                Retrieval r1 = new Retrieval();
-                r1.ClerkId = clerkid;
-                r1.DisbursedDate = date;
-                r1.Status = Status.RetrievalStatus.created;
-                Retrieval newRetrieval = retrivrepo.genretrievalandreturn(r1); //creates empty retrieval form and returns it
-
-                foreach (Requisition re in listreq)//listreq is passed in from controller, which is a list of requisition with "confirmed" status, on the selected date and processed by the clerk in session
+                else //at this stage if there are no new items when compared to earlier retrieved form, it means entire listreq is new. proceed to persist all
                 {
                     foreach (RequisitionDetail detail in re.RequisitionDetails)
                     {
@@ -265,10 +293,49 @@ namespace SSIS_BOOT.Service.Impl
                         RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
                     }
                 }
-                Retrieval updatedRetrieval = retrivrepo.GetRetrievalById(newRetrieval.Id); //Get back the latest created retrieval with all the related objects
-                updatedRetrieval.RequisitionDetails = updatedRetrieval.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
-                return updatedRetrieval;
             }
+            Retrieval updatedRetrieval2 = retrivrepo.GetRetrievalById(newRetrieval.Id); //Get back the latest created retrieval with all the related objects
+            updatedRetrieval2.RequisitionDetails = updatedRetrieval2.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
+            return updatedRetrieval2;
+
+                                                /* OLD LOGIC*/
+            //Retrieval r_exist = retrivrepo.GetRetrieval(date, clerkid, Status.RetrievalStatus.created); // check if there already exist a retrieval with "created" status and processed by clerkid
+
+            //if (r_exist != null) //If an existing retrieval form for the collection date has been created, update existing requisition with same date with the existing retrievalformId 
+            //{
+            //    foreach (Requisition re in listreq)//listreq is passed in from controller, which is a list of requisition with "confirmed" status, on the selected date and processed by the clerk in session
+            //    {
+            //        foreach (RequisitionDetail detail in re.RequisitionDetails)
+            //        {
+            //            detail.RetrievalId = r_exist.Id; //assign the newly created retrieval Id to each requsitiondetail belonging to a confirmed retrieval 
+            //            RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
+            //        }
+            //    }
+            //    Retrieval updatedRetrieval = retrivrepo.GetRetrievalById(r_exist.Id); //Get back the latest created retrieval with all the related objects
+            //    updatedRetrieval.RequisitionDetails = updatedRetrieval.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
+            //    return updatedRetrieval;
+            //}
+
+            //else //If there is no retrieval form for the collection date, create a new retrieval form and update existing requisition with same date with the newly created retrievalformId 
+            //{
+            //    Retrieval r1 = new Retrieval();
+            //    r1.ClerkId = clerkid;
+            //    r1.DisbursedDate = date;
+            //    r1.Status = Status.RetrievalStatus.created;
+            //    Retrieval newRetrieval = retrivrepo.genretrievalandreturn(r1); //creates empty retrieval form and returns it
+
+            //    foreach (Requisition re in listreq)//listreq is passed in from controller, which is a list of requisition with "confirmed" status, on the selected date and processed by the clerk in session
+            //    {
+            //        foreach (RequisitionDetail detail in re.RequisitionDetails)
+            //        {
+            //            detail.RetrievalId = newRetrieval.Id; //assign the newly created retrieval Id to each requsitiondetail belonging to a confirmed retrieval 
+            //            RequisitionDetail x = rdrepo.updateretrievalid(detail); //and update the requisition details, then return it back                    
+            //        }
+            //    }
+            //    Retrieval updatedRetrieval = retrivrepo.GetRetrievalById(newRetrieval.Id); //Get back the latest created retrieval with all the related objects
+            //    updatedRetrieval.RequisitionDetails = updatedRetrieval.RequisitionDetails.GroupBy(m => m.Product.Description).SelectMany(r => r).ToList();
+            //    return updatedRetrieval;
+            //}
         }
 
         public bool updateretrieval(Retrieval r1)
@@ -279,12 +346,12 @@ namespace SSIS_BOOT.Service.Impl
                 {
                     RequisitionDetail i = rdrepo.GetRequisitionDetailById(rd.Id);
                     Transaction t = trepo.GetLatestTransactionByProductId(i.ProductId);
-                    if(rd.QtyDisbursed > t.Balance)
+                    if (rd.QtyDisbursed > t.Balance)
                     {
                         throw new Exception("Unable to update retrieval due to insufficient stocks");
                     }
                 }
-                
+
                 /* if there is insufficient stocks based on transactions, error will be thrown, bottom code will not execute, retrieval form will not be updated */
 
                 DateTime dateTime = DateTime.UtcNow.Date;
@@ -294,7 +361,7 @@ namespace SSIS_BOOT.Service.Impl
                 foreach (RequisitionDetail rd in r1.RequisitionDetails)
                 {
                     rdrepo.updaterequsitiondetail(rd);
-                    if(r1.Status == Status.RetrievalStatus.retrieved)
+                    if (r1.Status == Status.RetrievalStatus.retrieved)
                     {
                         UpdateStockCardUponFinaliseRetrieval(rd, r1);
                     }
@@ -405,20 +472,20 @@ namespace SSIS_BOOT.Service.Impl
         {
             try
             {
-                foreach(PurchaseOrderDetail i  in podlist) //updates all purchase order detail status
+                foreach (PurchaseOrderDetail i in podlist) //updates all purchase order detail status
                 {
                     podrepo.Updatepurchaseorderdetail(i);
                 }
                 PurchaseOrder po = porepo.findPObyPOid((int)podlist[0].PurchaseOrderId); //retrieving back the parent PO of the purchaseorderdetail
                 int receivedcounter = 0;
-                foreach(PurchaseOrderDetail j in po.PurchaseOrderDetails) //checking status of every purchaseorderdetail in the PO. if status is received, counter++
+                foreach (PurchaseOrderDetail j in po.PurchaseOrderDetails) //checking status of every purchaseorderdetail in the PO. if status is received, counter++
                 {
-                    if(j.Status == Status.PurchaseOrderDetailStatus.received)
+                    if (j.Status == Status.PurchaseOrderDetailStatus.received)
                     {
                         receivedcounter++;
                     }
                 }
-                if(receivedcounter == po.PurchaseOrderDetails.Count()) //if counter of received matches total purchaseorderdetail, means all items received. update PO status to completed
+                if (receivedcounter == po.PurchaseOrderDetails.Count()) //if counter of received matches total purchaseorderdetail, means all items received. update PO status to completed
                 {
                     po.Status = Status.PurchaseOrderStatus.completed;
                     porepo.updatePoStatus(po);
@@ -551,7 +618,7 @@ namespace SSIS_BOOT.Service.Impl
                 throw m;
             }
         }
-                        /* Unused method. To be removed if not needed */
+        /* Unused method. To be removed if not needed */
         //public bool SaveEmptyAdjustmentDetails(string AdjustmentVoucherId)
         //{
         //    if (avdetrepo.hasDetails(AdjustmentVoucherId))
@@ -568,8 +635,8 @@ namespace SSIS_BOOT.Service.Impl
         public bool updateAdjustmentVoucherDeatails(List<AdjustmentVoucherDetail> voucherDetails)
         {
             string AdjustmentVoucherId = voucherDetails[0].AdjustmentVoucherId;
-          
-                            /*original implementation */
+
+            /*original implementation */
             //if there are details in this adjustment voucher
             //if (avdetrepo.hasDetails(AdjustmentVoucherId))
             //{
@@ -581,18 +648,18 @@ namespace SSIS_BOOT.Service.Impl
             //}
             //avrepo.ClerkUpdateAdjustmentVoucherById(AdjustmentVoucherId);
 
-                            /* New implementation by TK for bug fix */
+            /* New implementation by TK for bug fix */
             List<AdjustmentVoucherDetail> avd = avdetrepo.findAdvDetailsbyAdvId(AdjustmentVoucherId);
-            foreach(AdjustmentVoucherDetail av in avd)
+            foreach (AdjustmentVoucherDetail av in avd)
             {
                 avdetrepo.deleteAdvDetails(av);
             }
-            foreach(AdjustmentVoucherDetail j in voucherDetails)
+            foreach (AdjustmentVoucherDetail j in voucherDetails)
             {
                 j.AdjustmentVoucherId = AdjustmentVoucherId;
                 avdetrepo.AddAdvDetail(j);
             }
-                            /* End of implementation by TK for bug fix */
+            /* End of implementation by TK for bug fix */
 
             return true;
 

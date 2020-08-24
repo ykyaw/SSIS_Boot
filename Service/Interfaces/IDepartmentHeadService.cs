@@ -24,5 +24,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public Employee GetCurrentDelegate(string deptid);
 
         public List<Department> GetAllDepartment();
+
+        public Department FindDepartmentById(string deptid);
     }
 }
