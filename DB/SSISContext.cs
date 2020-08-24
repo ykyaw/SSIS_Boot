@@ -18,7 +18,7 @@ namespace SSIS_BOOT.DB
         }
         protected override void OnModelCreating(ModelBuilder model)
         {
-            model.Entity<Employee>().HasMany(e => e.Employees).WithOne(e => e.Manager).HasForeignKey(e => e.ManagerId); // this fix the self referencing in Employee
+            //model.Entity<Employee>().HasMany(e => e.Employees).WithOne(e => e.Manager).HasForeignKey(e => e.ManagerId); // this fix the self referencing in Employee
             //model.Entity<Department>().Ignore(x => x.Rep).Ignore(x => x.Head);
             //model.Entity<Employee>().Ignore(x => x.Manager);
             //model.Entity<Requisition>().Ignore(x => x.ReqByEmp).Ignore(x => x.ApprovedBy).Ignore(x => x.ProcessedByClerk).Ignore(x => x.ReceivedByRep).Ignore(x => x.AckByClerk);

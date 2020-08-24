@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace SSIS_BOOT.Models
 {
     public class Employee
@@ -28,28 +29,29 @@ namespace SSIS_BOOT.Models
 
         /*One manager multiple employee relationship*/
         public  Employee Manager { get; set; }
+
         public  ICollection<Employee> Employees { get; set; }
 
 
 
         /* The InverseProperty attribute is used when two entities have more than one relationship, in this case is Requsition and Employee */
 
-        [InverseProperty("ReqByEmp")]
-        public  ICollection<Requisition> Requestedrequsition { get; set; }
+        //[InverseProperty("ReqByEmp")]
+        //public  ICollection<Requisition> Requestedrequsition { get; set; }
 
-        [InverseProperty("ApprovedBy")]
-        public  ICollection<Requisition> Approvedrequsition { get; set; }
+        //[InverseProperty("ApprovedBy")]
+        //public  ICollection<Requisition> Approvedrequsition { get; set; }
 
-        [InverseProperty("ProcessedByClerk")]
-        public  ICollection<Requisition> Processedrequsition { get; set; }
+        //[InverseProperty("ProcessedByClerk")]
+        //public  ICollection<Requisition> Processedrequsition { get; set; }
 
-        [InverseProperty("ReceivedByRep")]
-        public  ICollection<Requisition> Receivedrequsitions { get; set; }
+        //[InverseProperty("ReceivedByRep")]
+        //public  ICollection<Requisition> Receivedrequsitions { get; set; }
 
-        [InverseProperty("AckByClerk")]
-        public  ICollection<Requisition> Acknowledgedrequsition { get; set; }
+        //[InverseProperty("AckByClerk")]
+        //public  ICollection<Requisition> Acknowledgedrequsition { get; set; }
 
-        public  ICollection<Transaction> Transactions { get; set; }
+        //public  ICollection<Transaction> Transactions { get; set; }
 
         public Employee() { }
         public Employee(string Name, string Email, string Password,string DepartmentId,string Role )

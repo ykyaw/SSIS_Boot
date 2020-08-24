@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -62,11 +63,19 @@ namespace SSIS_BOOT
 
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
+            //services.AddMvc(options =>
+            //{
+            //    options.Filters.Add(typeof(WebApiResultMiddleware));
+            //    options.RespectBrowserAcceptHeader = true;
+            //});
+
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(WebApiResultMiddleware));
                 options.RespectBrowserAcceptHeader = true;
-            });
+            }).AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+
             //inject dbcontext
             services.AddDbContext<SSISContext>(opt =>
                 opt.UseLazyLoadingProxies(false)
