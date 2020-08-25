@@ -87,9 +87,20 @@ namespace SSIS_BOOT.Service.Impl
             List<Employee> emplist = erepo.findEmpByDept(deptid);
             foreach(Employee e in emplist)
             {
-                if(emp.DelegateFromDate >= e.DelegateFromDate && emp.DelegateToDate <= e.DelegateToDate)
+
+                if (emp.DelegateFromDate >= e.DelegateFromDate && emp.DelegateFromDate <= e.DelegateToDate)
                 {
-                    throw new Exception("Conflict of delegate dates with " + e.Name + ". Please try again");
+                    if(emp.Id != e.Id)
+                    {
+                        throw new Exception("Conflict of delegate dates with " + e.Name + ". Please try again");
+                    }
+                }
+                if (emp.DelegateToDate >= e.DelegateFromDate && emp.DelegateToDate <= e.DelegateToDate)
+                {
+                    if (emp.Id != e.Id)
+                    {
+                        throw new Exception("Conflict of delegate dates with " + e.Name + ". Please try again");
+                    }
                 }
             }
             try

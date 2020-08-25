@@ -64,15 +64,16 @@ namespace SSIS_BOOT.Controllers
             int empid = (int)HttpContext.Session.GetInt32("Id");
             List<Employee> empList = dhservice.GetAllDeptEmployee(deptid);
             int deptheadid = (int)dhservice.FindDepartmentById(deptid).HeadId;
-            foreach(Employee e in empList)
+            List<Employee> empList2 = new List<Employee>();
+            foreach (Employee e in empList)
             {
                 if(e.Id == empid || e.Id == deptheadid)
                 {
-                    empList.Remove(e);
-                    break;
+                    empList2.Add(e);
                 }
             }
-            return empList;
+
+            return empList.Except(empList2).ToList();
         }
 
         [HttpPut]
@@ -136,14 +137,15 @@ namespace SSIS_BOOT.Controllers
         {
             string deptid = (string)HttpContext.Session.GetString("DeptId");
             Employee emp = dhservice.GetCurrentDelegate(deptid);
-            if (emp != null)
-            {
-                return emp;
-            }
-            else
-            {
-                throw new Exception("No department delegate assigned within this period");
-            }
+            return emp;
+            //if (emp != null)
+            //{
+            //    return emp;
+            //}
+            //else
+            //{
+            //    throw new Exception("No department delegate assigned within this period");
+            //}
         }
 
 
