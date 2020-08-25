@@ -69,5 +69,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public List<Retrieval> GetRetrievalFormCommentsForAdjustmentVoucher();
 
         public List<Requisition> GetAllDisbursement();
+
+        public List<Retrieval> GetAllRetrievals();
     }
 }

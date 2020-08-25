@@ -427,6 +427,15 @@ namespace SSIS_BOOT.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("/storeclerk/allrf")]
+        public List<Retrieval> GetAllRetrievalForms()
+        {
+            List<Retrieval> retrieval = scservice.GetAllRetrievals();
+            return retrieval;
+
+        }
+
 
     }
 }

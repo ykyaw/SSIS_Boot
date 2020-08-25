@@ -81,5 +81,10 @@ namespace SSIS_BOOT.Repo
             long retrievallimit = currentdate - 2592000000; //take current date, minus 30 days (30 * 86400000ms in a day)
             return dbcontext.Retrievals.Where(m => m.NeedAdjustment == true && m.RetrievedDate > retrievallimit).ToList();
         }
+        public List<Retrieval> GetAllRetrievals()
+        {
+            List<Retrieval> retrivlist = dbcontext.Retrievals.Include(m=>m.Clerk).Include(m=>m.RequisitionDetails).ToList();
+            return retrivlist;
+        }
     }
 }

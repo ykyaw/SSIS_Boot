@@ -733,5 +733,11 @@ namespace SSIS_BOOT.Service.Impl
             List<Requisition> disbursementlist = rrepo.findalldisbursement();
             return disbursementlist;
         }
+
+        public List<Retrieval> GetAllRetrievals()
+        {
+            List<Retrieval> retrievals = retrivrepo.GetAllRetrievals();
+            return retrievals;
+        }
     }
 }
