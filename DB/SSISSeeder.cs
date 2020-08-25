@@ -889,7 +889,7 @@ namespace SSIS_BOOT.DB
             r8.CreatedDate = 1598486400000;
             r8.Status = Status.RequsitionStatus.confirmed;
             r8.CollectionPointId = 1;
-            r8.CollectionDate = 1598745600000;
+            r8.CollectionDate = 1599091200000;
             dbcontext.Add(r8);
             dbcontext.SaveChanges();
 
