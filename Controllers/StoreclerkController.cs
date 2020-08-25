@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SSIS_BOOT.Common;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Service.Interfaces;
@@ -40,8 +35,8 @@ namespace SSIS_BOOT.Controllers
         {
             List<Product> pdt = scservice.getallcat();
             List<Transaction> latesttrans = scservice.getlatesttransaction(pdt);
-            return latesttrans;
-
+            List<Transaction> sortedlatesttrans = latesttrans.OrderBy(m => m.ProductId).ToList();
+            return sortedlatesttrans;
         }
 
 
@@ -432,9 +427,19 @@ namespace SSIS_BOOT.Controllers
         public List<Retrieval> GetAllRetrievalForms()
         {
             List<Retrieval> retrieval = scservice.GetAllRetrievals();
-            return retrieval;
-
+            //sort by date
+            List<Retrieval> sortedretlist = retrieval.OrderByDescending(m => m.RetrievedDate).ToList();
+            return sortedretlist;
         }
+
+        //[HttpGet]
+        //[Route("/storeclerk/stockbal")]
+        //public Dictionary<string, int> GetLatestBalanceStock()
+        //{
+        //    Dictionary<string, int> lateststock = new Dictionary<string, int>();
+        //    lateststock = scservice.GetLatestBalanceStock();
+        //    return lateststock;
+        //}
 
 
     }

@@ -30,7 +30,7 @@ namespace SSIS_BOOT.Repo
 
         public Transaction GetLatestTransactionByProductId(string productId)
         {
-            Transaction t = dbcontext.Transactions.Where(m => m.ProductId == productId).OrderByDescending(m => m.Id).FirstOrDefault();
+            Transaction t = dbcontext.Transactions.Include(m=>m.Product).ThenInclude(m=>m.Category).Where(m => m.ProductId == productId).OrderByDescending(m => m.Date).ThenByDescending(m=>m.Id).FirstOrDefault();
             return t;
         }
     }

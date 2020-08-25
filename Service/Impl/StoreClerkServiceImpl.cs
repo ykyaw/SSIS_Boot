@@ -739,5 +739,15 @@ namespace SSIS_BOOT.Service.Impl
             List<Retrieval> retrievals = retrivrepo.GetAllRetrievals();
             return retrievals;
         }
+
+        //public Dictionary<string, int> GetLatestBalanceStock()
+        //{
+        //    Dictionary<string, int> latest = new Dictionary<string, int>();
+        //    List <Product> plist = prepo.findallcat();
+        //    foreach(Product p in plist)
+        //    {
+        //        Transaction t = trepo.GetLatestTransactionByProductId(p.Id);
+        //    }
+        //}
     }
 }
