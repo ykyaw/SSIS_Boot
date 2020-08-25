@@ -740,6 +740,11 @@ namespace SSIS_BOOT.Service.Impl
             return retrievals;
         }
 
+        public Retrieval GetRetrievalById(int rId)
+        {
+            return retrivrepo.GetRetrievalById(rId);
+        }
+
         //public Dictionary<string, int> GetLatestBalanceStock()
         //{
         //    Dictionary<string, int> latest = new Dictionary<string, int>();

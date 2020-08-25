@@ -136,6 +136,14 @@ namespace SSIS_BOOT.Controllers
             return r1;
         }
 
+        [HttpGet]
+        [Route("/storeclerk/retid/{rId}")]
+        public Retrieval retrievalformdetail(int rId)
+        {
+            Retrieval r1 = scservice.GetRetrievalById(rId);
+            return r1;
+        }
+
         ////FOR TESTING ONLY
         //[HttpGet]
         //[Route("/storeclerk/ret")]

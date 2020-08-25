@@ -71,7 +71,8 @@ namespace SSIS_BOOT.Service.Interfaces
         public List<Requisition> GetAllDisbursement();
 
         public List<Retrieval> GetAllRetrievals();
+        public Retrieval GetRetrievalById(int rId);
 
-        //public Dictionary<string, int> GetLatestBalanceStock();
+
     }
 }
