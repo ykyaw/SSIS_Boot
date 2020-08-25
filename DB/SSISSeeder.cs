@@ -84,10 +84,10 @@ namespace SSIS_BOOT.DB
             Product p2 = new Product("C002", "Clips Double 2", 1, 30, 50, "Dozen");
             Product p3 = new Product("C003", "Clips Double 3/4", 1, 15, 15, "Dozen");
             Product p4 = new Product("C004", "Clips Paper Large", 1, 15, 15, "Box");
-            Product p5 = new Product("E001", "Envelop Brown (3'x6')", 2, 100, 100, "Each");
-            Product p6 = new Product("E002", "Envelop Brown (3'x6') w/Window", 2, 100, 100, "Each");
-            Product p7 = new Product("E003", "Envelop Brown (6'x7')", 2, 100, 100, "Each");
-            Product p8 = new Product("E004", "Envelop Brown (6'x7') w/Window", 2, 100, 100, "Each");
+            Product p5 = new Product("E001", "Envelope Brown (3'x6')", 2, 100, 100, "Each");
+            Product p6 = new Product("E002", "Envelope Brown (3'x6') w/Window", 2, 100, 100, "Each");
+            Product p7 = new Product("E003", "Envelope Brown (6'x7')", 2, 100, 100, "Each");
+            Product p8 = new Product("E004", "Envelope Brown (6'x7') w/Window", 2, 100, 100, "Each");
             Product p9 = new Product("E020", "Eraser (hard)", 3, 20, 50, "Each");
             Product p10 = new Product("E021", "Eraser (soft)", 3, 20, 50, "Each");
             Product p11 = new Product("E030", "Exercise Book (100pg)", 4, 100, 100, "Each");
@@ -145,7 +145,7 @@ namespace SSIS_BOOT.DB
             dbcontext.SaveChanges();
 
             //seed collection point
-            CollectionPoint c1 = new CollectionPoint("Stationary Store", "9:30AM");
+            CollectionPoint c1 = new CollectionPoint("Stationery Store", "9:30AM");
             CollectionPoint c2 = new CollectionPoint("Management School", "11:30AM");
             CollectionPoint c3 = new CollectionPoint("Medical School", "9:30AM");
             CollectionPoint c4 = new CollectionPoint("English School", "11:30AM");
@@ -160,7 +160,7 @@ namespace SSIS_BOOT.DB
             dbcontext.SaveChanges();
 
             //seed department
-            Department d1 = new Department("STOR", "LU Stationary Store", 9999999);
+            Department d1 = new Department("STOR", "LU Stationery Store", 9999999);
             d1.CollectionPointId = 6;
             Department d2 = new Department("ENGL", "English Dept", 8742234);
             d2.CollectionPointId = 5;
@@ -200,7 +200,7 @@ namespace SSIS_BOOT.DB
             Employee e6 = new Employee("Wee Kian Fatt(de)", "KianFattlu@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "ENGL", "de");
             dbcontext.Add(e6);
             dbcontext.SaveChanges();
-            Employee e7 = new Employee("Soh Kian Wee(dh)", "kianweelu@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "CPSC", "dh");
+            Employee e7 = new Employee("Soh Kian Wee(dh)", "Kianweelu@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "CPSC", "dh");
             dbcontext.Add(e7);
             dbcontext.SaveChanges();
             Employee e8 = new Employee("Mary Tan(de)", "Marylu@mailinator.com", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "COMM", "de");
@@ -383,7 +383,7 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(q4c);
             dbcontext.Add(q4d);
 
-            //Product p5 = new Product("E001", "Envelop Brown (3'x6')", 2, 100, 100, "Each");
+            //Product p5 = new Product("E001", "Envelope Brown (3'x6')", 2, 100, 100, "Each");
             TenderQuotation q5a = new TenderQuotation("OMEG", 2020, "E001", 10, "Each", 1);
             TenderQuotation q5b = new TenderQuotation("ALPA", 2020, "E001", 10.50, "Each", 2);
             TenderQuotation q5c = new TenderQuotation("BANE", 2020, "E001", 11.00, "Each", 3);
@@ -393,7 +393,7 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(q5c);
             dbcontext.Add(q5d);
 
-            //Product p6 = new Product("E002", "Envelop Brown (3'x6') w/Window", 2, 100, 100, "Each");
+            //Product p6 = new Product("E002", "Envelope Brown (3'x6') w/Window", 2, 100, 100, "Each");
             TenderQuotation q6a = new TenderQuotation("OMEG", 2020, "E002", 10, "Each", 1);
             TenderQuotation q6b = new TenderQuotation("ALPA", 2020, "E002", 10.50, "Each", 2);
             TenderQuotation q6c = new TenderQuotation("BANE", 2020, "E002", 11.00, "Each", 3);
@@ -403,7 +403,7 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(q6c);
             dbcontext.Add(q6d);
 
-            //Product p7 = new Product("E003", "Envelop Brown (6'x7')", 2, 100, 100, "Each");
+            //Product p7 = new Product("E003", "Envelope Brown (6'x7')", 2, 100, 100, "Each");
             TenderQuotation q7a = new TenderQuotation("OMEG", 2020, "E003", 10, "Each", 1);
             TenderQuotation q7b = new TenderQuotation("ALPA", 2020, "E003", 10.50, "Each", 2);
             TenderQuotation q7c = new TenderQuotation("BANE", 2020, "E003", 11.00, "Each", 3);
@@ -413,7 +413,7 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(q7c);
             dbcontext.Add(q7d);
 
-            //Product p8 = new Product("E004", "Envelop Brown (6'x7') w/Window", 2, 100, 100, "Each");
+            //Product p8 = new Product("E004", "Envelope Brown (6'x7') w/Window", 2, 100, 100, "Each");
             TenderQuotation q8a = new TenderQuotation("OMEG", 2020, "E004", 10, "Each", 1);
             TenderQuotation q8b = new TenderQuotation("ALPA", 2020, "E004", 10.50, "Each", 2);
             TenderQuotation q8c = new TenderQuotation("BANE", 2020, "E004", 11.00, "Each", 3);
@@ -809,7 +809,8 @@ namespace SSIS_BOOT.DB
             Requisition r1 = new Requisition("ENGL", 4, 5, 1);
             r1.CreatedDate = 1597104000000;//11/8/2020 @ 0:00am (UTC)
             r1.Status = Status.RequsitionStatus.rejected;
-            r1.Remarks = "Rejected as per request by staff.";
+            r1.CollectionPointId = 5;
+            r1.Remarks = "Rejected as per request by staff";
             dbcontext.Add(r1);
             Requisition r2 = new Requisition("ENGL", 6, 5, 1);
             r2.CreatedDate = 1597060800000;//10/8/2020 @ 12:00pm (UTC)
