@@ -53,11 +53,24 @@ namespace SSIS_BOOT.Middlewares
                         user.Email = claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Email)).Value;
                         user= userRepo.FindUserByEmail(user.Email);
 
+                        if (user == null)
+                        {
+                            context.Response.StatusCode = CommonConstant.ErrorCode.INVALID_TOKEN;
+                            return;
+                        }
                         //Delegate check
                         long currenttime = (long)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                         if (user.Role == "de" && currenttime > user.DelegateFromDate && currenttime < user.DelegateToDate)
                         {
                             user.Role = "dh";
+                        }
+
+                        string t=CommonConstant.Authorization[user.Role];
+                        //check permission
+                        if (controller != CommonConstant.Authorization[user.Role])
+                        {
+                            context.Response.StatusCode = CommonConstant.ErrorCode.NO_PERMISSIN;
+                            return;
                         }
 
                         token = authService.GenerateToken(user);
@@ -71,11 +84,6 @@ namespace SSIS_BOOT.Middlewares
                         }catch(Exception e)
                         {
                             Debug.WriteLine(e.Message);
-                        }
-                        if (user == null)
-                        {
-                            context.Response.StatusCode = CommonConstant.ErrorCode.INVALID_TOKEN;
-                            return;
                         }
                     }
                 }

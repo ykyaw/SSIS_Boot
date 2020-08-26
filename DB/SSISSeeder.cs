@@ -37,43 +37,60 @@ namespace SSIS_BOOT.DB
 
             //Seed category
             Category ca1 = new Category("Clip", "C1");
+            dbcontext.Add(ca1); 
+            dbcontext.SaveChanges();
             Category ca2 = new Category("Envelope", "E1");
-            Category ca3 = new Category("Eraser", "E2");
-            Category ca4 = new Category("Exercises", "E3");
-            Category ca5 = new Category("File", "F1");
-            Category ca6 = new Category("Pen", "H1");
-            Category ca7 = new Category("Puncher", "H2");
-            Category ca8 = new Category("Pad", "P1");
-            Category ca9 = new Category("Paper", "P2");
-            Category ca10 = new Category("Ruler", "R1");
-            Category ca11 = new Category("Scissors", "S1");
-            Category ca12 = new Category("Tape", "S2");
-            Category ca13 = new Category("Sharpener", "S3");
-            Category ca14 = new Category("Shorthand", "S4");
-            Category ca15 = new Category("Stapler", "S5");
-            Category ca16 = new Category("Tacks", "T1");
-            Category ca17 = new Category("Tparency", "T2");
-            Category ca18 = new Category("Tray", "T3");
-            Category ca19 = new Category("Hardware", "D1");
-
-            dbcontext.Add(ca1);
             dbcontext.Add(ca2);
+            dbcontext.SaveChanges();
+            Category ca3 = new Category("Eraser", "E2");
             dbcontext.Add(ca3);
+            dbcontext.SaveChanges();
+            Category ca4 = new Category("Exercises", "E3");
             dbcontext.Add(ca4);
+            dbcontext.SaveChanges();
+            Category ca5 = new Category("File", "F1");
             dbcontext.Add(ca5);
+            dbcontext.SaveChanges();
+            Category ca6 = new Category("Pen", "H1");
             dbcontext.Add(ca6);
+            dbcontext.SaveChanges();
+            Category ca7 = new Category("Puncher", "H2");
             dbcontext.Add(ca7);
+            dbcontext.SaveChanges();
+            Category ca8 = new Category("Pad", "P1");
             dbcontext.Add(ca8);
+            dbcontext.SaveChanges();
+            Category ca9 = new Category("Paper", "P2");
             dbcontext.Add(ca9);
+            dbcontext.SaveChanges();
+            Category ca10 = new Category("Ruler", "R1");
             dbcontext.Add(ca10);
+            dbcontext.SaveChanges();
+            Category ca11 = new Category("Scissors", "S1");
             dbcontext.Add(ca11);
+            dbcontext.SaveChanges();
+            Category ca12 = new Category("Tape", "S2");
             dbcontext.Add(ca12);
+            dbcontext.SaveChanges();
+            Category ca13 = new Category("Sharpener", "S3");
             dbcontext.Add(ca13);
+            dbcontext.SaveChanges();
+            Category ca14 = new Category("Shorthand", "S4");
             dbcontext.Add(ca14);
+            dbcontext.SaveChanges();
+            Category ca15 = new Category("Stapler", "S5");
             dbcontext.Add(ca15);
+            dbcontext.SaveChanges();
+            Category ca16 = new Category("Tacks", "T1");
             dbcontext.Add(ca16);
+            dbcontext.SaveChanges();
+            Category ca17 = new Category("Tparency", "T2");
             dbcontext.Add(ca17);
+            dbcontext.SaveChanges();
+            Category ca18 = new Category("Tray", "T3");
             dbcontext.Add(ca18);
+            dbcontext.SaveChanges();
+            Category ca19 = new Category("Hardware", "D1");
             dbcontext.Add(ca19);
             dbcontext.SaveChanges();
 
@@ -786,20 +803,21 @@ namespace SSIS_BOOT.DB
             //Fri 17/7/2020 @2:00pm to retrieve, disbursement on 20/7, item C001 to both ENGL and CPSC
             //(cover 2 rows in ReqDet)
             
-            Retrieval retr1 = new Retrieval(1, 1595237400000, 1594994400000, Status.RetrievalStatus.retrieved);
+            //Retrieval retr1 = new Retrieval(1, 1595237400000, 1594994400000, Status.RetrievalStatus.retrieved);
+            //dbcontext.Add(retr1);
+            //dbcontext.SaveChanges();
+            //Fri 31/7/2020 @3:00 to retrive, disbursement on 3/8,item "P043" to ENGL (cover 1 rows in ReqDet)
+
+            Retrieval retr1 = new Retrieval(1, 1596585600000, 1596412800000, Status.RetrievalStatus.retrieved);
             dbcontext.Add(retr1);
             dbcontext.SaveChanges();
-            //Fri 31/7/2020 @3:00 to retrive, disbursement on 3/8,item "P043" to ENGL (cover 1 rows in ReqDet)
-            Retrieval retr2 = new Retrieval(1, 1596447000000, 1596207600000, Status.RetrievalStatus.retrieved);
+            //Fri 7//8/2020 @3:00 to retrive, disbursement on 10/8,item "P043" and "C001" to ENGL and CPSC(cover 4 rows in ReqDet)
+            Retrieval retr2 = new Retrieval(1, 1597881600000, 1597708800000, Status.RetrievalStatus.retrieved, "2 clips in inventory found rusty, spoilt", true);
             dbcontext.Add(retr2);
             dbcontext.SaveChanges();
-            //Fri 7//8/2020 @3:00 to retrive, disbursement on 10/8,item "P043" and "C001" to ENGL and CPSC(cover 4 rows in ReqDet)
-            Retrieval retr3 = new Retrieval(1, 1597060800000, 1596812400000, Status.RetrievalStatus.retrieved, "2 clips in inventory found rusty, spoilt", true);
-            dbcontext.Add(retr3);
-            dbcontext.SaveChanges();
 
-            Retrieval retr4 = new Retrieval(1, 1598745600000, 1598659200000, Status.RetrievalStatus.retrieved, "P011 only 9 items left, spoilt", true);
-            dbcontext.Add(retr4);
+            Retrieval retr3 = new Retrieval(1, 1599091200000, 1598918400000, Status.RetrievalStatus.retrieved, "P011 only 9 items left, spoilt", true);
+            dbcontext.Add(retr3);
             dbcontext.SaveChanges();
 
 
@@ -924,10 +942,14 @@ namespace SSIS_BOOT.DB
                                                1, 1596585600000,
                                                4, 1596412800000, 1, 1596585600000);
             dbcontext.Add(r13);
+           
             //create date- Wednesday, 25-Aug-20 00:00:00 UTC ;receive-29/8/2020 @ 0:00am (UTC);acknowldge-29/8/2020 @ 0:00am
-            Requisition r14 = new Requisition("COMM", 8, 9, null, 16, 1598313600000, Status.RequsitionStatus.completed,
-                                               1, 1598659200000,
-                                               4, 1598486400000, 1, 1598659200000);
+            Requisition r14 = new Requisition("COMM", 8, 9, 1);
+            r14.CreatedDate = 1598313600000;
+            r14.Status = Status.RequsitionStatus.confirmed;
+            r14.CollectionDate = 1599091200000;
+            r4.CollectionPointId = 1;
+
             dbcontext.Add(r14);
             dbcontext.SaveChanges();
 
@@ -940,7 +962,7 @@ namespace SSIS_BOOT.DB
             RequisitionDetail rd2 = new RequisitionDetail(2, "C001", 15);
             dbcontext.Add(rd2);
             dbcontext.SaveChanges();
-            RequisitionDetail rd25 = new RequisitionDetail(4, "C001", 15);
+            RequisitionDetail rd25 = new RequisitionDetail(4, "C001", 15, 15, null, null, null, null, 2);
             dbcontext.Add(rd25);
             dbcontext.SaveChanges();
             //RequisitionDetail rd3 = new RequisitionDetail(5, "C001", 10, 10, 10, null, null, null, 1);//refer to retr1
@@ -995,10 +1017,10 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(rd18);
             dbcontext.SaveChanges();
 
-            RequisitionDetail rd19 = new RequisitionDetail(8, "F021", 5, 5, null, null, null, null, 4);
+            RequisitionDetail rd19 = new RequisitionDetail(8, "C001", 5, 5, null, null, null, null, 3);
             dbcontext.Add(rd19);
             dbcontext.SaveChanges();
-            RequisitionDetail rd20 = new RequisitionDetail(8, "P011", 10, 9, null, "Only 9 items left", null, null, 4);
+            RequisitionDetail rd20 = new RequisitionDetail(8, "P011", 10, 9, null, "Only 9 items left", null, null, 3);
             dbcontext.Add(rd20);
             dbcontext.SaveChanges();
 
@@ -1023,31 +1045,31 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(rd27);
             dbcontext.SaveChanges();
 
-            RequisitionDetail rd28 = new RequisitionDetail(3, "F021",10);
+            RequisitionDetail rd28 = new RequisitionDetail(3, "F021",10, 10, null, null, null, null, 2);
             dbcontext.Add(rd28);
             dbcontext.SaveChanges();
-            RequisitionDetail rd29 = new RequisitionDetail(3, "D001", 5);
+            RequisitionDetail rd29 = new RequisitionDetail(3, "D001", 5, 5, null, null, null, null, 2);
             dbcontext.Add(rd29);
             dbcontext.SaveChanges();
 
-            RequisitionDetail rd30 = new RequisitionDetail(12, "C001", 5);
+            RequisitionDetail rd30 = new RequisitionDetail(12, "C001", 5, 5, null, null, null, null, 3);
             dbcontext.Add(rd30);
             dbcontext.SaveChanges();
-            RequisitionDetail rd31 = new RequisitionDetail(12, "D001", 5);
+            RequisitionDetail rd31 = new RequisitionDetail(12, "D001", 5, 5, null, null, null, null, 3);
             dbcontext.Add(rd31);
             dbcontext.SaveChanges();
 
-            RequisitionDetail rd32 = new RequisitionDetail(13, "C004", 5);
+            RequisitionDetail rd32 = new RequisitionDetail(13, "C004", 5,5, null, null, null, null, 1);
             dbcontext.Add(rd32);
             dbcontext.SaveChanges();
-            RequisitionDetail rd33 = new RequisitionDetail(13, "H013", 5);
+            RequisitionDetail rd33 = new RequisitionDetail(13, "H013", 5,5, null, null, null, null, 1);
             dbcontext.Add(rd33);
             dbcontext.SaveChanges();
 
-            RequisitionDetail rd34 = new RequisitionDetail(14, "P012", 5);
+            RequisitionDetail rd34 = new RequisitionDetail(14, "P012", 5,5, null, null, null, null, 1);
             dbcontext.Add(rd34);
             dbcontext.SaveChanges();
-            RequisitionDetail rd35 = new RequisitionDetail(14, "E031", 5);
+            RequisitionDetail rd35 = new RequisitionDetail(14, "E031", 5,5, null, null, null, null, 1);
             dbcontext.Add(rd35);
             dbcontext.SaveChanges();
 
@@ -1072,29 +1094,30 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(adj3);
             dbcontext.SaveChanges();
 
+            //public AdjustmentVoucherDetail(string AdjustmentVoucherId, string ProductId, int QtyAdjusted, double Unitprice, double TotalPrice, string Reason)
             //seed adjustment voucher detail
             //adjustment voucher in June that >250,due to wet paper"E032" x100 and spoilt diskettes "D001"x20, created on 29/6@9:00am; and approved by manager on 30/6/3pm
             //wet paper"E032" x100
-            AdjustmentVoucherDetail adjdet1 = new AdjustmentVoucherDetail("001_06_2020", "E032", 100,1.00, 100.0, "100 wet paper due to heavy rain");
+            AdjustmentVoucherDetail adjdet1 = new AdjustmentVoucherDetail("001_06_2020", "E032", -100,1.00, 100.00, "100 wet paper due to heavy rain");
             dbcontext.Add(adjdet1);
             dbcontext.SaveChanges();
 
-            AdjustmentVoucherDetail adjdet2 = new AdjustmentVoucherDetail("001_07_2020", "D001", 20,10.00, 200.00, "20 diskettes found spoilt due to heavy rain");
+            AdjustmentVoucherDetail adjdet2 = new AdjustmentVoucherDetail("001_07_2020", "D001", -20,10.00, 200.00, "20 diskettes found spoilt due to heavy rain");
             dbcontext.Add(adjdet2);
             dbcontext.SaveChanges();
 
             //public AdjustmentVoucherDetail(string AdjustmentVoucherId, string ProductId, int QtyAdjusted, double TotalPrice, string Reason)
             //seed purchase request detail
-            AdjustmentVoucherDetail adjdet3 = new AdjustmentVoucherDetail("001_07_2020", "C001", 2, 2.00,4.00, "2 clips in inventory found rusty, spoilt");
+            AdjustmentVoucherDetail adjdet3 = new AdjustmentVoucherDetail("001_07_2020", "C001", -2, 2.00,4.00, "2 clips in inventory found rusty, spoilt");
             dbcontext.Add(adjdet3);
             dbcontext.SaveChanges();
 
 
-            AdjustmentVoucherDetail adjdet4 = new AdjustmentVoucherDetail("001_08_2020", "D001", 26, 10, 260.00, "26 diskettes went missing");
+            AdjustmentVoucherDetail adjdet4 = new AdjustmentVoucherDetail("001_08_2020", "D001", -26, 10, 260.00, "26 diskettes went missing");
             dbcontext.Add(adjdet4);
             dbcontext.SaveChanges();
 
-            AdjustmentVoucherDetail adjdet5 = new AdjustmentVoucherDetail("001_08_2020", "E032", 2, 1.00, 2.00, "Exercise book - water damage");
+            AdjustmentVoucherDetail adjdet5 = new AdjustmentVoucherDetail("001_08_2020", "E032", -2, 1.00, 2.00, "Exercise book - water damage");
             dbcontext.Add(adjdet5);
             dbcontext.SaveChanges();
 
@@ -1131,12 +1154,12 @@ namespace SSIS_BOOT.DB
             // int? ReceivedByClerkId, long? ReceivedDate,string Status)
             //1/7/2020@3:30pm Purchase request of paper"E032" x100 and spoilt diskettes "D001"x20, and "C001"x15 supply by 15/7,received on 14 / 7 / 2020 @ 11:00am(UTC)
             PurchaseOrder po1 = new PurchaseOrder("ALPA", 130.00, 1, 1593617400000, 1594771200000, 2);
-            po1.Status = Status.PurchaseOrderStatus.pending;
+            po1.Status = Status.PurchaseOrderStatus.completed;
             PurchaseOrder po2 = new PurchaseOrder("OMEG", 300.00, 1, 1593617400000, 1594771200000, 2);
-            po2.Status = Status.PurchaseOrderStatus.pending;
+            po2.Status = Status.PurchaseOrderStatus.completed;
             // 15/7 / 2020 @ 8:00am Purchase request of Clip "C001"x15, supply by 31/7/2020 @00:00, recieved on 29/7/2020 @ 9:30am(trans13)
             PurchaseOrder po3 = new PurchaseOrder("ALPA", 30.00, 1, 1594800000000, 1596153600000, 2);
-            po3.Status = Status.PurchaseOrderStatus.pending;
+            po3.Status = Status.PurchaseOrderStatus.completed;
             PurchaseOrder po4 = new PurchaseOrder("BANE", 100.00, 16, 1595926800000, 1597190400000, 2);
             po4.Status = Status.PurchaseOrderStatus.pending;
             dbcontext.Add(po1);
@@ -1160,11 +1183,19 @@ namespace SSIS_BOOT.DB
             //PurchaseOrderDetail poDet3 = new PurchaseOrderDetail(2, 2, "D001", 30, null, 300.00, null, null, Status.PurchaseOrderStatus.approved);
             //PurchaseOrderDetail poDet4 = new PurchaseOrderDetail(3, 4, "C001", 15, null, 30.00, null, null, Status.PurchaseOrderStatus.approved);
             //PurchaseOrderDetail poDet5 = new PurchaseOrderDetail(4, 5, "P043", 500, null, 500.00, null, null, Status.PurchaseOrderStatus.approved);
-            PurchaseOrderDetail poDet1 = new PurchaseOrderDetail(1, 1, "E032", 100, null, 100.00, null, "Only 80 left in 1st supplier", Status.PurchaseOrderDetailStatus.pending);
-            PurchaseOrderDetail poDet2 = new PurchaseOrderDetail(1, 3, "C001", 15, null, 30.00, null, null, Status.PurchaseOrderDetailStatus.pending);
-            PurchaseOrderDetail poDet3 = new PurchaseOrderDetail(2, 2, "D001", 30, null, 300.00, null, null, Status.PurchaseOrderDetailStatus.pending);
-            PurchaseOrderDetail poDet4 = new PurchaseOrderDetail(3, 4, "C001", 15, null, 30.00, null, null, Status.PurchaseOrderDetailStatus.pending);
-            PurchaseOrderDetail poDet5 = new PurchaseOrderDetail(4, 5, "P043", 500, null, 500.00, null, null, Status.PurchaseOrderDetailStatus.pending);
+            PurchaseOrderDetail poDet1 = new PurchaseOrderDetail(1, 1, "E032", 100, 80, 100.00, "DO001", "Only 80 received", Status.PurchaseOrderDetailStatus.received);
+            poDet1.ReceivedByClerkId = 1;
+            poDet1.ReceivedDate = 1594771200000;
+            PurchaseOrderDetail poDet2 = new PurchaseOrderDetail(2, 2, "D001", 30, 30, 300.00, "DO002", null, Status.PurchaseOrderDetailStatus.received);
+            poDet2.ReceivedByClerkId = 16;
+            poDet2.ReceivedDate = 1594771200000;
+            PurchaseOrderDetail poDet3 = new PurchaseOrderDetail(3, 4, "C001", 15, 15, 30.00, "DO003", null, Status.PurchaseOrderDetailStatus.received);
+            poDet3.ReceivedByClerkId = 16;
+            poDet3.ReceivedDate = 1596153600000;
+            PurchaseOrderDetail poDet4 = new PurchaseOrderDetail(4, 5, "P043", 500, 500, 500.00, "DO004", null, Status.PurchaseOrderDetailStatus.received);
+            poDet4.ReceivedByClerkId = 1;
+            poDet4.ReceivedDate = 1597190400000;
+            PurchaseOrderDetail poDet5 = new PurchaseOrderDetail(4, 3, "C001", 15, null, 30.00, null, null, Status.PurchaseOrderDetailStatus.pending);
             dbcontext.Add(poDet1);
             dbcontext.Add(poDet2);
             dbcontext.Add(poDet3);
