@@ -744,14 +744,25 @@ namespace SSIS_BOOT.Service.Impl
             return retrivrepo.GetRetrievalById(rId);
         }
 
-        //public Dictionary<string, int> GetLatestBalanceStock()
-        //{
-        //    Dictionary<string, int> latest = new Dictionary<string, int>();
-        //    List <Product> plist = prepo.findallcat();
-        //    foreach(Product p in plist)
-        //    {
-        //        Transaction t = trepo.GetLatestTransactionByProductId(p.Id);
-        //    }
-        //}
+        public bool DeleteCreatedPurchaseRequest(long preqId)
+        {
+            List<PurchaseRequestDetail> prdlist = purreqrepo.findpurchasereq(preqId);
+            foreach(PurchaseRequestDetail i in prdlist)
+            {
+                purreqrepo.DeleteCreatedPurchaseRequest(i);
+            }
+            return true;
+        }
+
+        public bool DeleteCreatedAdjustmentVoucher(string avId)
+        {
+            AdjustmentVoucher av = avrepo.findAdjustmentVoucherById(avId);
+            foreach (AdjustmentVoucherDetail v in av.AdjustmentVoucherDetails)
+            {
+                avdetrepo.deleteAdvDetails(v);
+            }
+            avrepo.DeleteAdjustmentVoucher(av);
+            return true;
+        }
     }
 }

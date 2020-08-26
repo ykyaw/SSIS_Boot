@@ -1,18 +1,19 @@
 ﻿using SSIS_BOOT.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SSIS_BOOT.Service.Interfaces
 {
     public interface IStoreClerkService
     {
         public List<Product> getallcat();
+
         List<Transaction> getlatesttransaction(List<Product> pdt);
 
         public List<PurchaseRequestDetail> getpurchasereq();
+
         public List<PurchaseRequestDetail> getprdetails(long prid);
+
         public List<PurchaseOrder> getpurchaseorders();
 
         public List<PurchaseOrderDetail> getpoddetails(int poId);
@@ -28,6 +29,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public List<Transaction> retrievestockcard(string productId);
 
         public Retrieval genretrievalform(long date, int clerkid, List<Requisition> listreq);
+
         public List<TenderQuotation> gettop3suppliers(string productId);
 
         public List<RequisitionDetail> retrievedisbursementlist(string deptId, long collectiondate);
@@ -35,15 +37,16 @@ namespace SSIS_BOOT.Service.Interfaces
         public bool savetransaction(Transaction t1);
 
         public List<PurchaseRequestDetail> addpurchaserequest(List<String> productId, int clerkid);
+
         public bool updatepurchaserequestitem(List<PurchaseRequestDetail> prdlist);
 
         public bool updateretrieval(Retrieval r1);
+
         public List<Requisition> getallreqformbydateandstatus(long date, int clerkid, string reqStatus);
 
         public bool updatepurchaseorderdetailitem(List<PurchaseOrderDetail> pod);
 
         public bool generatequotefrompr(List<PurchaseRequestDetail> prd, int clerkid);
-
 
         public AdjustmentVoucher createadjustmentvoucher(int clerkid);
 
@@ -64,15 +67,16 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public TenderQuotation getFirstTenderbyProdutId(string ProductId);
 
-        //public bool SaveEmptyAdjustmentDetails(string AdjustmentVoucherId);
-
         public List<Retrieval> GetRetrievalFormCommentsForAdjustmentVoucher();
 
         public List<Requisition> GetAllDisbursement();
 
         public List<Retrieval> GetAllRetrievals();
+
         public Retrieval GetRetrievalById(int rId);
 
+        public bool DeleteCreatedPurchaseRequest(long preqId);
+        public bool DeleteCreatedAdjustmentVoucher(string avId);
 
     }
 }

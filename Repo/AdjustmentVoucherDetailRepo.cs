@@ -25,15 +25,6 @@ namespace SSIS_BOOT.Repo
 
             List<AdjustmentVoucherDetail> advdetails = dbcontext.AdjustmentVoucherDetails
                 .Include(m => m.AdjustmentVoucher)
-                //.ThenInclude(m => m.InitiatedClerk)
-                //.Include(m => m.AdjustmentVoucher)
-                //.ThenInclude(m => m.ApprovedSup)
-                //.Include(m => m.AdjustmentVoucher)
-                //.ThenInclude(m => m.Status)
-                //.Include(m => m.AdjustmentVoucher)
-                //.ThenInclude(m => m.ApprovedMgr)
-                //.Include(m => m.AdjustmentVoucher)
-                //.ThenInclude(m => m.Reason)
                 .Include(m => m.Product)
                 .Where(m => m.AdjustmentVoucherId.Equals(advId)).ToList();
             return advdetails;
@@ -51,20 +42,19 @@ namespace SSIS_BOOT.Repo
         }
         
 
-        public void deleteAdvDetailsbyAdvId(string AdjustmentVoucherId) {
+        //public void deleteAdvDetailsbyAdvId(string AdjustmentVoucherId) {
 
-            List<AdjustmentVoucherDetail> advdetails = findAdvDetailsbyAdvId(AdjustmentVoucherId);
-            foreach (AdjustmentVoucherDetail detail in advdetails)
-            {
-                dbcontext.AdjustmentVoucherDetails.Remove(detail);
-                dbcontext.SaveChanges();
-            }
+        //    List<AdjustmentVoucherDetail> advdetails = findAdvDetailsbyAdvId(AdjustmentVoucherId);
+        //    foreach (AdjustmentVoucherDetail detail in advdetails)
+        //    {
+        //        dbcontext.AdjustmentVoucherDetails.Remove(detail);
+        //        dbcontext.SaveChanges();
+        //    }
 
-        }
+        //}
 
         public void deleteAdvDetails(AdjustmentVoucherDetail avd)
         {
-
             AdjustmentVoucherDetail original = dbcontext.AdjustmentVoucherDetails.FirstOrDefault(m => m.Id == avd.Id);
 
             if (original != null)
@@ -72,7 +62,6 @@ namespace SSIS_BOOT.Repo
                 dbcontext.AdjustmentVoucherDetails.Remove(original);
             }
             dbcontext.SaveChanges();
-
         }
 
         public void AddAdvDetail(AdjustmentVoucherDetail avd)
@@ -81,15 +70,22 @@ namespace SSIS_BOOT.Repo
             dbcontext.SaveChanges();
         }
 
-        public void updateAdjustmentVoucherDeatail(AdjustmentVoucherDetail avdetail)
-        {
-            dbcontext.AdjustmentVoucherDetails.Add(avdetail);
-            dbcontext.SaveChanges();
+        //public void updateAdjustmentVoucherDeatail(AdjustmentVoucherDetail avdetail)
+        //{
+        //    dbcontext.AdjustmentVoucherDetails.Add(avdetail);
+        //    dbcontext.SaveChanges();
+        //}
 
-        }
-
-
-
+        //public bool DeleteCreatedAdjustmentVoucherDetail(AdjustmentVoucherDetail avd)
+        //{
+        //    AdjustmentVoucherDetail original = dbcontext.AdjustmentVoucherDetails.Where(m => m.Id == avd.Id).FirstOrDefault();
+        //    if (original != null)
+        //    {
+        //        dbcontext.AdjustmentVoucherDetails.Remove(original);
+        //    }
+        //    dbcontext.SaveChanges();
+        //    return true;
+        //}
 
     }
 }
