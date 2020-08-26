@@ -43,7 +43,7 @@ namespace SSIS_BOOT.Email.EmailTemplates
                     "Dear " + u.Name + System.Environment.NewLine + System.Environment.NewLine +
                     "There are outstanding requisition forms that require your further action." + System.Environment.NewLine + System.Environment.NewLine +
                     "Simply respond by clicking the link below to view the outstanding requisition list." + System.Environment.NewLine + System.Environment.NewLine +
-                    "https://www.youtube.com/" + System.Environment.NewLine + System.Environment.NewLine +
+                    "http://localhost:51118/" + System.Environment.NewLine + System.Environment.NewLine +
                     "Thank you";
             }
         }
@@ -139,7 +139,9 @@ namespace SSIS_BOOT.Email.EmailTemplates
                 this.body =
                     "Dear " + sup.Name + System.Environment.NewLine + System.Environment.NewLine +
                     "A new purchase request was received, pending your further action." + System.Environment.NewLine + System.Environment.NewLine +
-                    "Simply respond by clicking here to view the outstanding purchase request."
+                    "Please log in to the LU Stationary Portal in the link below to access them."
+                    + System.Environment.NewLine + System.Environment.NewLine +
+                    "http://localhost:51118/"
                     + System.Environment.NewLine + System.Environment.NewLine +
                     "Thank you." + System.Environment.NewLine + System.Environment.NewLine +
                    "Store Clerk " + System.Environment.NewLine + updatedprlist[0].CreatedByClerk.Name;
@@ -178,7 +180,9 @@ namespace SSIS_BOOT.Email.EmailTemplates
                 this.body =
                     "Dear " + approvedBy.Name + System.Environment.NewLine + System.Environment.NewLine +
                     "A new requisition form was received, pending your further action." + System.Environment.NewLine + System.Environment.NewLine +
-                    "Simply respond by clicking here to view the outstanding requisition form."
+                    "Please log in to the LU Stationary Portal in the link below to access them."
+                    + System.Environment.NewLine + System.Environment.NewLine +
+                    "http://localhost:51118/"
                     + System.Environment.NewLine + System.Environment.NewLine +
                     "Thank you." + System.Environment.NewLine + System.Environment.NewLine +
                    "Department Employee" + System.Environment.NewLine + deptemp.Name;
@@ -386,7 +390,7 @@ namespace SSIS_BOOT.Email.EmailTemplates
                 {
                     this.body =
                      "Dear " + clerk.Name + System.Environment.NewLine + System.Environment.NewLine +
-                    "Your adjustment voucher with id: " + av.Id + " dated " + InitiatedDate2 + " has been " + av.Status + "." +
+                    "Your adjustment voucher with id: " + av.Id + " dated " + InitiatedDate2 + " is " + av.Status + "." +
                     System.Environment.NewLine + System.Environment.NewLine +
                     "Thank you.";
                 }
@@ -394,7 +398,7 @@ namespace SSIS_BOOT.Email.EmailTemplates
                 {
                     this.body =
                      "Dear " + clerk.Name + System.Environment.NewLine + System.Environment.NewLine +
-                    "Your adjustment voucher with id: " + av.Id + " dated " + InitiatedDate2 + " has been " + av.Status +
+                    "Your adjustment voucher with id: " + av.Id + " dated " + InitiatedDate2 + " is " + av.Status +
                     ". The reason provided is " + av.Reason + "."
                      + System.Environment.NewLine + System.Environment.NewLine +
                     "Thank you.";

@@ -53,6 +53,11 @@ namespace SSIS_BOOT.Service.Impl
                 {
                     av.ApprovedMgrId = emp.Id;
                     av.ApprovedMgrDate = date;
+                    //For all approvals by manager, it will jump to final state of "approved"
+                    if (av.Status != Status.AdjVoucherStatus.rejected) 
+                    {
+                        av.Status = Status.AdjVoucherStatus.approved;
+                    }
                     avrepo.ManagerUpdateAdjustmentVoucherApprovals(av);
                 }
                 if (emp.Role == "ss")
@@ -81,13 +86,23 @@ namespace SSIS_BOOT.Service.Impl
                 else //approved or rejected
                 {
                     AdjustmentVoucher av1= avrepo.findAdjustmentVoucherById(av.Id);
+
+
+                    /* Old */
+                    //Employee clerk = erepo.findempById(av1.InitiatedClerkId);
+                    //Employee sup = erepo.findempById((int) av1.ApprovedSupId);
+                    //if (sup == null) //If manager approve without supervisor, supervisor will be null. this method will retrieve back the supervisor for emailing
+                    //{
+                    //    sup = erepo.findempById((int)clerk.ManagerId);
+                    //}
+                    //Employee manager = erepo.findempById((int)sup.ManagerId); 
+
+
+                                        /* New */
                     Employee clerk = erepo.findempById(av1.InitiatedClerkId);
-                    Employee sup = erepo.findempById((int) av1.ApprovedSupId);
-                    if (sup == null) //If manager approve without supervisor, supervisor will be null. this method will retrieve back the supervisor for emailing
-                    {
-                        sup = erepo.findempById((int)clerk.ManagerId);
-                    }
-                    Employee manager = erepo.findempById((int)sup.ManagerId); 
+                    Employee sup = erepo.findempById((int) clerk.ManagerId);
+                    Employee manager = erepo.findempById((int)sup.ManagerId);
+
                     List<Employee> elist = new List<Employee>(); //Regardless of approval hierarchy or who approved, as long as its in final state of approved or rejected, clerk + supervisor + manager will get email
                     elist.Add(sup);
                     elist.Add(manager);
@@ -134,7 +149,7 @@ namespace SSIS_BOOT.Service.Impl
 
                 List<PurchaseRequestDetail> prdlist2 = purreqrepo.findpurchasereq(prdlist[0].PurchaseRequestId); //getting back all the PurchaseRequestDetail with extra information for Emailing
                 List<PurchaseRequestDetail> sortedprlist = prdlist2.GroupBy(m => m.SupplierId).SelectMany(m => m).ToList();
-                Dictionary<string, List<PurchaseRequestDetail>> pdict = new Dictionary<string, List<PurchaseRequestDetail>>();
+                Dictionary<string, List<PurchaseRequestDetail>> pdict = new Dictionary<string, List<PurchaseRequestDetail>>(); //create dictionary of supplier Id as key, and List<PRD> as value for further creation of PO
 
                 foreach (PurchaseRequestDetail prd in sortedprlist)
                 {
@@ -152,7 +167,7 @@ namespace SSIS_BOOT.Service.Impl
                     }
                 }
 
-                foreach (var r in pdict) //for each string in the dictionary
+                foreach (var r in pdict) //for each supplierId in the dictionary, create PO
                 {
                     //PurchaseOrder po = new PurchaseOrder();
                     //int clerkid = r.Value[0].CreatedByClerkId;
@@ -184,15 +199,27 @@ namespace SSIS_BOOT.Service.Impl
                     po.TotalPrice = totalprice;
                     PurchaseOrder newpo = porepo.create(po);
                     List<PurchaseRequestDetail> List_of_PRD_toaddinPO = pdict[r.Key];
-                    newpo = porepo.addpodinPO(List_of_PRD_toaddinPO, newpo.Id);
-                    List<PurchaseOrderDetail> pod = podrepo.findpodetails(newpo.Id);
-                   
+                    foreach(PurchaseRequestDetail z in List_of_PRD_toaddinPO)
+                    {
+                        PurchaseOrderDetail pod = new PurchaseOrderDetail();
+                        pod.PurchaseOrderId = newpo.Id;
+                        pod.PurchaseRequestDetailId = z.Id;
+                        pod.ProductId = z.ProductId;
+                        pod.QtyPurchased = z.ReorderQty;
+                        pod.TotalPrice = z.TotalPrice;
+                        pod.Status = Status.PurchaseOrderDetailStatus.pending;
+                        podrepo.CreatePurchaseOrderDetail(pod);
+                    }
+
+                    PurchaseOrder savedpo = porepo.findPObyPOid(newpo.Id); //Latest PO after persisting
+                    List<PurchaseOrderDetail> savedpod = podrepo.findpodetails(savedpo.Id); //Latest POD after persisting 
+
                     Employee clerk = erepo.findempById(r.Value[0].CreatedByClerkId);
                     Supplier supplier = srepo.findsupplierbyId(r.Value[0].SupplierId);
                     EmailModel email = new EmailModel();
                     Task.Run(async () =>
                     {
-                        EmailTemplates.ApprovedPRtemplate apt = new EmailTemplates.ApprovedPRtemplate(clerk, supplier, pod, newpo);
+                        EmailTemplates.ApprovedPRtemplate apt = new EmailTemplates.ApprovedPRtemplate(clerk, supplier, savedpod, savedpo);
                         email.emailTo = supplier.Email;
                         email.emailSubject = apt.subject;
                         email.emailBody = apt.body;
@@ -204,18 +231,18 @@ namespace SSIS_BOOT.Service.Impl
             else //when rejected
             {
                 // to pull out purchase request id and date
-                int prid = prdlist[0].Id;
+
                 List<PurchaseRequestDetail> prdlist2 = purreqrepo.findpurchasereq(prdlist[0].PurchaseRequestId); //getting back all the PurchaseRequestDetail with extra information for Emailing
                 long submitdate = (long) prdlist2[0].SubmitDate;
-
-                string remarks = prdlist[0].Remarks;
-                Employee clerk = erepo.findempById(prdlist[0].CreatedByClerkId);
+                int prid = prdlist2[0].Id;
+                string remarks = prdlist2[0].Remarks;
+                Employee clerk = erepo.findempById(prdlist2[0].CreatedByClerkId);
                 Employee sup = erepo.findempById(supid);
                 EmailModel email = new EmailModel();
 
                 Task.Run(async () =>
                 {
-                    EmailTemplates.RejectedPRtemplate apt = new EmailTemplates.RejectedPRtemplate(clerk, sup, prid,submitdate,remarks);
+                    EmailTemplates.RejectedPRtemplate apt = new EmailTemplates.RejectedPRtemplate(clerk, sup, prid, submitdate,remarks);
                     email.emailTo = clerk.Email;
                     email.emailSubject = apt.subject;
                     email.emailBody = apt.body;
