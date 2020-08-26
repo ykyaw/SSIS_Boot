@@ -280,35 +280,47 @@ namespace SSIS_BOOT.Email.EmailTemplates
             public string subject = "New Purchase order for processing from Lu Stationery Store";
             public ApprovedPRtemplate(Employee clerk, Supplier sup, List<PurchaseOrderDetail> podlist, PurchaseOrder po)
             {
-                StringBuilder header = new StringBuilder();
-                header.Append("ProductID").Append("  ").Append("Product Description").Append("  ").Append("Quantity").Append("  ").Append("Total price").Append(System.Environment.NewLine);
-                string headerresult = header.ToString();
-
-                StringBuilder builder = new StringBuilder();
+                string x = "";
+                for (int i = 0; i < 84; i++)
+                {
+                    x += "-";
+                }
+                x += "\n";
                 foreach (PurchaseOrderDetail pod in podlist)
                 {
-                    builder.Append(pod.ProductId).Append("  ").Append(pod.Product.Description).Append("  ").Append(pod.QtyPurchased).Append("  ").Append(pod.TotalPrice).Append(System.Environment.NewLine);
+                    x += "Your Quotation Number: ";
+                    x += pod.PurchaseRequestDetail.VenderQuote + "\n";
+                    x += "ProductID: ";
+                    x += pod.ProductId + "\n";
+                    x += "Product Description: ";
+                    x += pod.Product.Description + "\n";
+                    x += "Quantity: ";
+                    x += pod.QtyPurchased + "\n";
+                    x += "Total Price: ";
+                    x += string.Format("{0,0:C}", pod.TotalPrice) + "\n";
+                    for (int i = 0; i < 84; i++)
+                    {
+                        x += "-";
+                    }
+                    x += "\n";
                 }
-                string result = builder.ToString();
-
                 long supplybydate = (long)po.SupplyByDate;
                 DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
                 DateTime supplybydate1 = startTime.AddMilliseconds(Convert.ToDouble(supplybydate));
-                string supplybydate2 = supplybydate1.ToString("dd MMM yyyy");
-                
+                string supplybydate2 = supplybydate1.ToString("dd MMM yyyy");               
                 DateTime orderdate1 = startTime.AddMilliseconds(Convert.ToDouble((long)po.OrderedDate));
                 string ordereddate2 = orderdate1.ToString("dd MMM yyyy");
 
                 this.body =
                "Dear " + sup.ContactPersonName + System.Environment.NewLine + System.Environment.NewLine +
-               "Kindly refer to the purchase order reference " + po.Id + " dated " + ordereddate2 + "." + System.Environment.NewLine
-               + headerresult + System.Environment.NewLine + System.Environment.NewLine
-               + result + System.Environment.NewLine + System.Environment.NewLine
-               + "Please supply the following items by " + supplybydate2 + "."
-               + "If there are any concerns, please contact " + clerk.Name + "(" + clerk.Email+")."
+               "Kindly refer to the LU Stationery Store purchase order # " + '"'+po.Id+'"' + " dated " + ordereddate2 + "."
+               + System.Environment.NewLine + System.Environment.NewLine
+               + x + System.Environment.NewLine + System.Environment.NewLine
+               + "Please supply the above items by " + supplybydate2 + "."
+               + " If there are any concerns, please contact " + clerk.Name + "(" + clerk.Email+")."
                + System.Environment.NewLine + System.Environment.NewLine +
                "Thank you." + System.Environment.NewLine + System.Environment.NewLine +
-               "Lu Stationery Store";
+               "LU Stationery Store";
 
             }
         }
