@@ -24,13 +24,13 @@ namespace SSIS_BOOT.Common
             public static readonly string DEPARTMENT_DELEGATE = "dd";
         }
 
-        public static Dictionary<string, string> Authorization = new Dictionary<string, string>()
+        public static Dictionary<string, List<string>> Authorization = new Dictionary<string, List<string>>()
         {
-            { ROLE.STORE_CLERK,"Storeclerk" },
-            {ROLE.STORE_MANAGER,"Storemgmt" },
-            {ROLE.STORE_SUPERVISOR,"Storesup" },
-            {ROLE.DEPARTMENT_EMPLOYEE,"Deptemp" },
-            {ROLE.DEPARTMENT_HEAD,"Depthead" }
+            { ROLE.STORE_CLERK,new List<string>(){ "Storeclerk"} },
+            {ROLE.STORE_MANAGER,new List<string>(){ "Storemgmt", "Storeclerk" } },
+            {ROLE.STORE_SUPERVISOR,new List<string>(){"Storesup","Storesup" } },
+            {ROLE.DEPARTMENT_EMPLOYEE,new List<string>(){"Deptemp" } },
+            {ROLE.DEPARTMENT_HEAD,new List<string>(){"Depthead", "Deptemp" } }
         };
     }
 }

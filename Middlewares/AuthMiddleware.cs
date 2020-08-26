@@ -64,14 +64,13 @@ namespace SSIS_BOOT.Middlewares
                         {
                             user.Role = "dh";
                         }
-
-                        string t=CommonConstant.Authorization[user.Role];
+                        bool t=CommonConstant.Authorization[user.Role].Contains(controller);
                         //check permission
-                        if (controller != CommonConstant.Authorization[user.Role])
-                        {
-                            context.Response.StatusCode = CommonConstant.ErrorCode.NO_PERMISSIN;
-                            return;
-                        }
+                        //if (!CommonConstant.Authorization[user.Role].Contains(controller))
+                        //{
+                        //    context.Response.StatusCode = CommonConstant.ErrorCode.NO_PERMISSIN;
+                        //    return;
+                        //}
 
                         token = authService.GenerateToken(user);
                         context.Response.Cookies.Append("token", token);
