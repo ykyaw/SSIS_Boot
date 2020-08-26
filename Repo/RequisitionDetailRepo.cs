@@ -124,5 +124,11 @@ namespace SSIS_BOOT.Repo
             return true;
         }
 
+        public List<RequisitionDetail> GetRequisitionDetailByRequisitionId(int reqid)
+        {
+            List<RequisitionDetail> rdlist = dbcontext.RequisitionDetails.Where(m => m.RequisitionId == reqid).ToList();
+            return rdlist;
+        }
+
     }
 }

@@ -65,7 +65,7 @@ namespace SSIS_BOOT.Repo
             }
             else
             {
-                string newid = string.Format("00{0}_0{1}_{2}", num, DateTime.Now.ToString("MM"), initiatedateyear);
+                string newid = string.Format("{0}_{1}_{2}", num, DateTime.Now.ToString("MM"), initiatedateyear);
                 //
                 return newid;
             }

@@ -118,8 +118,7 @@ namespace SSIS_BOOT.Controllers
         public List<Transaction> retrievestockcard(string productId)
         {
             List<Transaction> plist = scservice.retrievestockcard(productId);
-            List<Transaction> plist2 = plist.OrderByDescending(m => m.Date).ThenByDescending(m=>m.Id).ToList();
-            return plist2;
+            return plist;
         }
 
         [Route("/storeclerk/ret/{date}")]

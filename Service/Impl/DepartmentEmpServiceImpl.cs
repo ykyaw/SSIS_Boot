@@ -263,7 +263,8 @@ namespace SSIS_BOOT.Service.Impl
         public bool DeleteCreatedRequisition(int reqId)
         {
             Requisition req = rrepo.findreqByReqId(reqId);
-            foreach(RequisitionDetail r in req.RequisitionDetails)
+            List<RequisitionDetail> reqd = rdrepo.GetRequisitionDetailByRequisitionId(reqId);
+            foreach (RequisitionDetail r in reqd)
             {
                 rdrepo.deleteRequisitionDetailByRequisitionId(r);
             }

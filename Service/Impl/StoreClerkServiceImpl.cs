@@ -757,7 +757,8 @@ namespace SSIS_BOOT.Service.Impl
         public bool DeleteCreatedAdjustmentVoucher(string avId)
         {
             AdjustmentVoucher av = avrepo.findAdjustmentVoucherById(avId);
-            foreach (AdjustmentVoucherDetail v in av.AdjustmentVoucherDetails)
+            List<AdjustmentVoucherDetail> avl = avdetrepo.findAdvDetailsbyAdvId(av.Id);
+            foreach (AdjustmentVoucherDetail v in avl)
             {
                 avdetrepo.deleteAdvDetails(v);
             }
