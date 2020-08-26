@@ -53,6 +53,11 @@ namespace SSIS_BOOT.Service.Impl
                 {
                     av.ApprovedMgrId = emp.Id;
                     av.ApprovedMgrDate = date;
+                    //For all approvals by manager, it will jump to final state of "approved"
+                    if (av.Status != Status.AdjVoucherStatus.rejected) 
+                    {
+                        av.Status = Status.AdjVoucherStatus.approved;
+                    }
                     avrepo.ManagerUpdateAdjustmentVoucherApprovals(av);
                 }
                 if (emp.Role == "ss")
@@ -81,13 +86,23 @@ namespace SSIS_BOOT.Service.Impl
                 else //approved or rejected
                 {
                     AdjustmentVoucher av1= avrepo.findAdjustmentVoucherById(av.Id);
+
+
+                    /* Old */
+                    //Employee clerk = erepo.findempById(av1.InitiatedClerkId);
+                    //Employee sup = erepo.findempById((int) av1.ApprovedSupId);
+                    //if (sup == null) //If manager approve without supervisor, supervisor will be null. this method will retrieve back the supervisor for emailing
+                    //{
+                    //    sup = erepo.findempById((int)clerk.ManagerId);
+                    //}
+                    //Employee manager = erepo.findempById((int)sup.ManagerId); 
+
+
+                                        /* New */
                     Employee clerk = erepo.findempById(av1.InitiatedClerkId);
-                    Employee sup = erepo.findempById((int) av1.ApprovedSupId);
-                    if (sup == null) //If manager approve without supervisor, supervisor will be null. this method will retrieve back the supervisor for emailing
-                    {
-                        sup = erepo.findempById((int)clerk.ManagerId);
-                    }
-                    Employee manager = erepo.findempById((int)sup.ManagerId); 
+                    Employee sup = erepo.findempById((int) clerk.ManagerId);
+                    Employee manager = erepo.findempById((int)sup.ManagerId);
+
                     List<Employee> elist = new List<Employee>(); //Regardless of approval hierarchy or who approved, as long as its in final state of approved or rejected, clerk + supervisor + manager will get email
                     elist.Add(sup);
                     elist.Add(manager);

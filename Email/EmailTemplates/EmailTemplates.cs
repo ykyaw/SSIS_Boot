@@ -390,7 +390,7 @@ namespace SSIS_BOOT.Email.EmailTemplates
                 {
                     this.body =
                      "Dear " + clerk.Name + System.Environment.NewLine + System.Environment.NewLine +
-                    "Your adjustment voucher with id: " + av.Id + " dated " + InitiatedDate2 + " has been " + av.Status + "." +
+                    "Your adjustment voucher with id: " + av.Id + " dated " + InitiatedDate2 + " is " + av.Status + "." +
                     System.Environment.NewLine + System.Environment.NewLine +
                     "Thank you.";
                 }
@@ -398,7 +398,7 @@ namespace SSIS_BOOT.Email.EmailTemplates
                 {
                     this.body =
                      "Dear " + clerk.Name + System.Environment.NewLine + System.Environment.NewLine +
-                    "Your adjustment voucher with id: " + av.Id + " dated " + InitiatedDate2 + " has been " + av.Status +
+                    "Your adjustment voucher with id: " + av.Id + " dated " + InitiatedDate2 + " is " + av.Status +
                     ". The reason provided is " + av.Reason + "."
                      + System.Environment.NewLine + System.Environment.NewLine +
                     "Thank you.";
