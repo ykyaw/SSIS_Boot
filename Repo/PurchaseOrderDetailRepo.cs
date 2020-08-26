@@ -42,5 +42,12 @@ namespace SSIS_BOOT.Repo
             dbcontext.SaveChanges();
             return true;
         }
+
+        public bool CreatePurchaseOrderDetail(PurchaseOrderDetail pod)
+        {
+            dbcontext.PurchaseOrderDetails.Add(pod);
+            dbcontext.SaveChanges();
+            return true;
+        }
     }
 }

@@ -47,23 +47,23 @@ namespace SSIS_BOOT.Repo
             PurchaseOrder newpo = dbcontext.PurchaseOrders.FirstOrDefault(m => m.Id == id);
             return newpo;
         }
-        public PurchaseOrder addpodinPO(List<PurchaseRequestDetail> List_of_PRD_toaddinPO, int poid)
-        {
-            foreach (PurchaseRequestDetail prd in List_of_PRD_toaddinPO)
-            {
-                PurchaseOrderDetail pod = new PurchaseOrderDetail();
-                pod.PurchaseOrderId = poid;
-                pod.PurchaseRequestDetailId = prd.Id;
-                pod.ProductId = prd.ProductId;
-                pod.QtyPurchased = prd.ReorderQty;
-                pod.TotalPrice = prd.TotalPrice;
-                dbcontext.PurchaseOrderDetails.Add(pod);
-                dbcontext.SaveChanges();
-            }
-            PurchaseOrder po = dbcontext.PurchaseOrders.Include(m => m.CollectionPoint).Include(m => m.Supplier).Include(m => m.OrderedByClerk)
-                .Include(m => m.ApprovedBySup).Include(m => m.PurchaseOrderDetails).Where(m => m.Id == poid).FirstOrDefault();
-            return po;
-        }
+        //public PurchaseOrder addpodinPO(List<PurchaseRequestDetail> List_of_PRD_toaddinPO, int poid)
+        //{
+        //    foreach (PurchaseRequestDetail prd in List_of_PRD_toaddinPO)
+        //    {
+        //        PurchaseOrderDetail pod = new PurchaseOrderDetail();
+        //        pod.PurchaseOrderId = poid;
+        //        pod.PurchaseRequestDetailId = prd.Id;
+        //        pod.ProductId = prd.ProductId;
+        //        pod.QtyPurchased = prd.ReorderQty;
+        //        pod.TotalPrice = prd.TotalPrice;
+        //        dbcontext.PurchaseOrderDetails.Add(pod);
+        //        dbcontext.SaveChanges();
+        //    }
+        //    PurchaseOrder po = dbcontext.PurchaseOrders.Include(m => m.CollectionPoint).Include(m => m.Supplier).Include(m => m.OrderedByClerk)
+        //        .Include(m => m.ApprovedBySup).Include(m => m.PurchaseOrderDetails).Where(m => m.Id == poid).FirstOrDefault();
+        //    return po;
+        //}
 
         public PurchaseOrder findPObyPOid(int po_id)
         {
