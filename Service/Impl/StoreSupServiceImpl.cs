@@ -154,6 +154,10 @@ namespace SSIS_BOOT.Service.Impl
                 t_new.Qty = i.QtyAdjusted;
                 Transaction t_old = trepo.GetLatestTransactionByProductId(i.ProductId);
                 t_new.Balance = t_old.Balance + t_new.Qty;
+                if(t_new.Balance <= 0)
+                {
+                    t_new.Balance = 0;
+                }
                 t_new.UpdatedByEmpId = av.InitiatedClerkId;
                 t_new.RefCode = "AV ID: " + av.Id.ToString();
                 trepo.savenewtransaction(t_new);
