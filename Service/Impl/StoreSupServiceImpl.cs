@@ -7,6 +7,7 @@ using SSIS_BOOT.Service.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SSIS_BOOT.Service.Impl
@@ -21,9 +22,10 @@ namespace SSIS_BOOT.Service.Impl
         private CollectionPointRepo crepo;
         protected IMailer mailservice;
         private PurchaseOrderDetailRepo podrepo;
+        private TransactionRepo trepo;
 
         public StoreSupServiceImpl(AdjustmentVoucherRepo avrepo, EmployeeRepo erepo, PurchaseRequestRepo purreqrepo, 
-            PurchaseOrderRepo porepo, SupplierRepo srepo, CollectionPointRepo crepo, IMailer mailservice, PurchaseOrderDetailRepo podrepo)
+            PurchaseOrderRepo porepo, SupplierRepo srepo, CollectionPointRepo crepo, IMailer mailservice, PurchaseOrderDetailRepo podrepo, TransactionRepo trepo)
         {
             this.avrepo = avrepo;
             this.erepo = erepo;
@@ -33,6 +35,7 @@ namespace SSIS_BOOT.Service.Impl
             this.crepo = crepo;
             this.mailservice = mailservice;
             this.podrepo = podrepo;
+            this.trepo = trepo;
         }
 
         public AdjustmentVoucher getAdjVouchById(string id)
@@ -66,6 +69,7 @@ namespace SSIS_BOOT.Service.Impl
                     av.ApprovedSupDate = date;
                     avrepo.SupervisorUpdateAdjustmentVoucherApprovals(av);
                 }
+
                 if (av.Status == Status.AdjVoucherStatus.pendmanapprov)
                 {
                     //SEND MANAGER EMAIL TO BE FOLLOWED UP
@@ -86,7 +90,12 @@ namespace SSIS_BOOT.Service.Impl
                 else //approved or rejected
                 {
                     AdjustmentVoucher av1= avrepo.findAdjustmentVoucherById(av.Id);
-
+                    
+                    if(av1.Status == Status.AdjVoucherStatus.approved) //new method for auto update of stock card upon approved adjustment vouchers
+                    {
+                        UpdateStockCardForApprovedAdjustmentVoucher(av1);
+                    }
+                    
 
                     /* Old */
                     //Employee clerk = erepo.findempById(av1.InitiatedClerkId);
@@ -117,7 +126,6 @@ namespace SSIS_BOOT.Service.Impl
                         //await mailservice.SendEmailwithccAsync(email,sup);
                         await mailservice.SendEmailwithccallAsync(email, /*sup*/ elist);
                     });
-
                 }
 
                 return true;
@@ -126,6 +134,31 @@ namespace SSIS_BOOT.Service.Impl
             {
                 throw m;
             }
+        }
+
+        public bool UpdateStockCardForApprovedAdjustmentVoucher(AdjustmentVoucher a)
+        {
+            AdjustmentVoucher av = avrepo.findAdjustmentVoucherById(a.Id);
+            List<AdjustmentVoucherDetail> avd = av.AdjustmentVoucherDetails;
+            DateTime dateTime = DateTime.UtcNow.Date;
+            DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
+            long dateofadj = dt.ToUnixTimeMilliseconds();
+
+            foreach(AdjustmentVoucherDetail i in avd)
+            {
+                Transaction t_new = new Transaction();
+                t_new.ProductId = i.ProductId;
+                t_new.Date = dateofadj;
+                StringBuilder builder = new StringBuilder();
+                t_new.Description = builder.Append("Approved Adjustment Voucher due to ").Append(i.Reason).ToString();
+                t_new.Qty = i.QtyAdjusted;
+                Transaction t_old = trepo.GetLatestTransactionByProductId(i.ProductId);
+                t_new.Balance = t_old.Balance + t_new.Qty;
+                t_new.UpdatedByEmpId = av.InitiatedClerkId;
+                t_new.RefCode = "AV ID: " + av.Id.ToString();
+                trepo.savenewtransaction(t_new);
+            }
+            return true;
         }
 
 
