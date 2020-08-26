@@ -58,6 +58,7 @@ namespace SSIS_BOOT.Repo
             original.TotalPrice = prd.TotalPrice;
             original.Status = prd.Status;
             original.SubmitDate = prd.SubmitDate;
+            original.Remarks = prd.Remarks;
             dbcontext.SaveChanges();
             return original;
         }
