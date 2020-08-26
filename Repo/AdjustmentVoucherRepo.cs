@@ -214,5 +214,18 @@ namespace SSIS_BOOT.Repo
             }
         }
 
+        public bool DeleteAdjustmentVoucher(AdjustmentVoucher av)
+        {
+            AdjustmentVoucher original = dbcontext.AdjustmentVouchers.Where(m => m.Id == av.Id).FirstOrDefault();
+            if (original != null)
+            {
+                dbcontext.AdjustmentVouchers.Remove(original);
+            }
+            dbcontext.SaveChanges();
+            return true;
+        }
+
+
+
     }
 }

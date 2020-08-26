@@ -20,7 +20,6 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public bool submitrf(List<RequisitionDetail> rdlist);
 
-
         public Department GetDepartment(string deptId);
         public List<CollectionPoint> GetAllCollectionPoint();
         public bool UpdateCollectionPoint(string deptid, CollectionPoint cp);
@@ -30,5 +29,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public bool AckItemReceived(int empid, List<RequisitionDetail>rdlist);
 
         public Employee FindEmployeeById(int RepId);
+
+        public bool DeleteCreatedRequisition(int reqId);
     }
 }

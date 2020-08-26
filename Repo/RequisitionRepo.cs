@@ -238,6 +238,18 @@ namespace SSIS_BOOT.Repo
             dbcontext.SaveChanges();
             return true;
         }
+
+
+        public bool DeleteRequisitionById(int reqId)
+        {
+            Requisition original = dbcontext.Requisitions.Where(m => m.Id == reqId).FirstOrDefault();
+            if(original != null)
+            {
+                dbcontext.Requisitions.Remove(original);
+            }
+            dbcontext.SaveChanges();
+            return true;
+        }
     }
 
 }

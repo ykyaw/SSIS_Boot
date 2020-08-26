@@ -260,6 +260,15 @@ namespace SSIS_BOOT.Service.Impl
             return drep;
         }
 
-
+        public bool DeleteCreatedRequisition(int reqId)
+        {
+            Requisition req = rrepo.findreqByReqId(reqId);
+            foreach(RequisitionDetail r in req.RequisitionDetails)
+            {
+                rdrepo.deleteRequisitionDetailByRequisitionId(r);
+            }
+            rrepo.DeleteRequisitionById(reqId);
+            return true;
+        }
     }
 }

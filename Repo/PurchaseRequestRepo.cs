@@ -77,10 +77,16 @@ namespace SSIS_BOOT.Repo
             return true;
         }
 
-        public PurchaseRequestDetail GetPurchaseRequestDetailById(int prdid)
+        public bool DeleteCreatedPurchaseRequest(PurchaseRequestDetail prd)
         {
-            return dbcontext.PurchaseRequestDetails.Find(prdid);
-
+            PurchaseRequestDetail original = dbcontext.PurchaseRequestDetails.Where(m => m.Id == prd.Id).FirstOrDefault();
+            if (original != null)
+            {
+                dbcontext.PurchaseRequestDetails.Remove(original);
+            }
+            dbcontext.SaveChanges();
+            return true;
         }
+
     }
 }

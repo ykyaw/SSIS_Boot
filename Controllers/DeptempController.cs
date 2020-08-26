@@ -26,8 +26,6 @@ namespace SSIS_BOOT.Controllers
         [Route("/deptemp/rfl")]
         public List<Requisition> getdeptreqlist()
         {
-            //to be replaced by session of the user's departmentId
-            //string deptid = "CPSC";
             int empid = (int)HttpContext.Session.GetInt32("Id");
             string deptid = HttpContext.Session.GetString("DeptId");
             List<Requisition> reqlist = deservice.getdeptreqlist(deptid);
@@ -43,8 +41,6 @@ namespace SSIS_BOOT.Controllers
         [Route("/deptemp/dis")]
         public List<Requisition> GetAllDeptDisbursement()
         {
-            //to be replaced by session of the user's departmentId
-            //string deptid = "CPSC";
             string deptid = HttpContext.Session.GetString("DeptId");
             List<Requisition> dislist = deservice.GetAllDeptDisbursementList(deptid);
             List<Requisition> sorteddislist = dislist.OrderByDescending(m => m.CollectionDate).ThenByDescending(m=>m.CreatedDate).ToList();
@@ -110,43 +106,17 @@ namespace SSIS_BOOT.Controllers
             }
         }
 
-
         [HttpPost]
-        //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPUT] and pass in from body
         [Route("/deptemp/updateRF")]
         public bool updateRF([FromBody]List<RequisitionDetail> rdlist)
         {
-            //testing [FromBody]List<RequisitionDetail> rdlist
-            //to ensure that requisitionid is alr filled in
-            //RequisitionDetail rd1 = new RequisitionDetail();
-            //rd1.RequisitionId = 8;
-            //rd1.ProductId = "C002";
-            //rd1.QtyNeeded = 0;
-            //RequisitionDetail rd2 = new RequisitionDetail();
-            //rd2.RequisitionId = 8;
-            //rd2.ProductId = "P013";
-            //rd2.QtyNeeded = 10;
-            //List<RequisitionDetail> rdlist = new List<RequisitionDetail>() { rd1, rd2 };
-
             deservice.updatereqform(rdlist);
             return true;
         }
         [HttpPost]
-        //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPUT] and pass in from body
         [Route("/deptemp/submitrf")]
         public bool submitrf([FromBody] List<RequisitionDetail> rdlist)
         {
-            //testing 
-            //RequisitionDetail rd1 = new RequisitionDetail();
-            //rd1.RequisitionId = 8;
-            //rd1.ProductId = "C002";
-            //rd1.QtyNeeded = 10;
-            //RequisitionDetail rd2 = new RequisitionDetail();
-            //rd2.RequisitionId = 8;
-            //rd2.ProductId = "P013";
-            //rd2.QtyNeeded = 10;
-            //List<RequisitionDetail> rdlist = new List<RequisitionDetail>() { rd1, rd2 };
-
             deservice.submitrf(rdlist);
             return true;
         }
@@ -155,7 +125,6 @@ namespace SSIS_BOOT.Controllers
         [Route("/deptemp/dept")]
         public Department GetDepartment()
         {
-            //string deptid = "CPSC"; //For Testing
             string deptid = HttpContext.Session.GetString("DeptId");
             Department d1 = deservice.GetDepartment(deptid);
             return d1;
@@ -169,19 +138,10 @@ namespace SSIS_BOOT.Controllers
             return clist;
         }
 
-        //[HttpGet]
         [HttpPut]
         [Route("/deptemp/ucp")]
         public bool UpdateCollectionPoint([FromBody] CollectionPoint cp)
         {
-            //// FOR TESTING //
-            //CollectionPoint c6 = new CollectionPoint("University Hospital", "11:30AM");
-            //c6.Id = 6;
-            //string deptid = "CPSC"; //For Testing
-            //deservice.UpdateCollectionPoint(deptid, c6);
-            //Department d1 = deservice.GetDepartment(deptid);
-            //return d1;
-            ////END OF TEST
             string deptid = HttpContext.Session.GetString("DeptId");
             try
             {
@@ -194,8 +154,6 @@ namespace SSIS_BOOT.Controllers
             return true;
         }
 
-
-
         [HttpPut]
         [Route("/deptemp/ack")]
         public bool AckItemReceived([FromBody]List<RequisitionDetail> rdlist)
@@ -203,7 +161,6 @@ namespace SSIS_BOOT.Controllers
             try
             {
                 int empid = (int)HttpContext.Session.GetInt32("Id");
-                //string deptid = HttpContext.Session.GetString("DeptId");
                 deservice.AckItemReceived(empid, rdlist);
                 return true;
             }
@@ -213,7 +170,6 @@ namespace SSIS_BOOT.Controllers
             }
         }
 
-
         [HttpGet]
         [Route("/deptemp/drep")]
         public Employee GetCurrentDeptRep()
@@ -221,8 +177,15 @@ namespace SSIS_BOOT.Controllers
             string deptid = (string)HttpContext.Session.GetString("DeptId");
             Department d1 = deservice.GetDepartment(deptid);
             Employee drep = deservice.FindEmployeeById((int)d1.RepId);
-
             return drep;
+        }
+
+        [HttpDelete]
+        [Route("/deptemp/dreq/{reqId}")]
+        public bool DeleteCreatedRequisition(int reqId)
+        {
+            deservice.DeleteCreatedRequisition(reqId);
+            return true;
         }
     }
 }
