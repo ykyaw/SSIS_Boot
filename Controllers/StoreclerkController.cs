@@ -189,7 +189,8 @@ namespace SSIS_BOOT.Controllers
         public List<Requisition> GetAllDisbursement()
         {
             List<Requisition> alldisbursement = scservice.GetAllDisbursement();
-            return alldisbursement;
+            List<Requisition> alldisbursementordered = alldisbursement.OrderByDescending(m => m.CollectionDate).ToList();
+            return alldisbursementordered;
         }
 
 
