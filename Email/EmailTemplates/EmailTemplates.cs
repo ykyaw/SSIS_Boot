@@ -83,7 +83,7 @@ namespace SSIS_BOOT.Email.EmailTemplates
                 long createddate = r1.CreatedDate;
                 long collectiondate = (long)r1.CollectionDate;
 
-                DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+                DateTime startTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                 DateTime createddate1 = startTime.AddMilliseconds(Convert.ToDouble(createddate));
                 DateTime collectiondate1 = startTime.AddMilliseconds(Convert.ToDouble(collectiondate));
                 string createddate2 = createddate1.ToString("dd MMM yyyy");
@@ -106,7 +106,7 @@ namespace SSIS_BOOT.Email.EmailTemplates
             public AckCompletedReq(List<Requisition> reqlist, Employee drep)
             {
                 long ReceivedDate = (long)reqlist[0].ReceivedDate;
-                DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+                DateTime startTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                 DateTime ReceivedDate1 = startTime.AddMilliseconds(Convert.ToDouble(ReceivedDate));
                 string ReceivedDate2 = ReceivedDate1.ToString("dd MMM yyyy");
 
@@ -198,7 +198,7 @@ namespace SSIS_BOOT.Email.EmailTemplates
             public ProcessedreqTemplate(Requisition req, Employee deptemp, Employee Approvedby)
             {
                 long createdate = req.CreatedDate;
-                DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+                DateTime startTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                 DateTime createdate1 = startTime.AddMilliseconds(Convert.ToDouble(createdate));
                 string createdate2 = createdate1.ToString("dd MMM yyyy");
 
@@ -233,9 +233,10 @@ namespace SSIS_BOOT.Email.EmailTemplates
             public AssignDelTemplate(Employee delegateemp, Employee depthead)
             {
                 long delegatestartdate = (long)delegateemp.DelegateFromDate;
-                DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+                DateTime startTime = new DateTime (1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                 DateTime delegatestartdate1 = startTime.AddMilliseconds(Convert.ToDouble(delegatestartdate));
                 string delegatestartdate2 = delegatestartdate1.ToString("dd MMM yyyy");
+
                 long delegateenddate = (long)delegateemp.DelegateToDate;
                 DateTime delegateenddate1 = startTime.AddMilliseconds(Convert.ToDouble(delegateenddate));
                 string delegateenddate2 = delegateenddate1.ToString("dd MMM yyyy");
@@ -305,7 +306,7 @@ namespace SSIS_BOOT.Email.EmailTemplates
                     x += "\n";
                 }
                 long supplybydate = (long)po.SupplyByDate;
-                DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+                DateTime startTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                 DateTime supplybydate1 = startTime.AddMilliseconds(Convert.ToDouble(supplybydate));
                 string supplybydate2 = supplybydate1.ToString("dd MMM yyyy");               
                 DateTime orderdate1 = startTime.AddMilliseconds(Convert.ToDouble((long)po.OrderedDate));
@@ -362,7 +363,7 @@ namespace SSIS_BOOT.Email.EmailTemplates
             public PendingManagerApprovalAVTemplate(AdjustmentVoucher av, Employee manager,Employee sup)
             {
                 long InitiatedDate = (long)av.InitiatedDate;
-                DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+                DateTime startTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                 DateTime InitiatedDate1 = startTime.AddMilliseconds(Convert.ToDouble(InitiatedDate));
                 string InitiatedDate2 = InitiatedDate1.ToString("dd MMM yyyy");
 
@@ -394,7 +395,7 @@ namespace SSIS_BOOT.Email.EmailTemplates
             public ApproveRejectAVTemplate(AdjustmentVoucher av, Employee clerk, Employee sup)
             {
                 long InitiatedDate = (long)av.InitiatedDate;
-                DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+                DateTime startTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                 DateTime InitiatedDate1 = startTime.AddMilliseconds(Convert.ToDouble(InitiatedDate));
                 string InitiatedDate2 = InitiatedDate1.ToString("dd MMM yyyy");
                

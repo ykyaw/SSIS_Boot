@@ -662,9 +662,9 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(q30d);
 
             //Product p31 = new Product("D001", "Diskettes 3.5 inch (HD)", 19, 20, 30, "Box");
-            TenderQuotation q31a = new TenderQuotation("OMEG", 2020, "D001", 10, "Box", 1);
+            TenderQuotation q31c = new TenderQuotation("BANE", 2020, "D001", 12, "Box", 1);
             TenderQuotation q31b = new TenderQuotation("ALPA", 2020, "D001", 11, "Box", 2);
-            TenderQuotation q31c = new TenderQuotation("BANE", 2020, "D001", 12, "Box", 3);
+            TenderQuotation q31a = new TenderQuotation("OMEG", 2020, "D001", 10, "Box", 3);
             TenderQuotation q31d = new TenderQuotation("CHEP", 2020, "D001", 11.00, "Box", null);
             dbcontext.Add(q31a);
             dbcontext.Add(q31b);
@@ -937,10 +937,12 @@ namespace SSIS_BOOT.DB
                                                1, 1596585600000,
                                                4, 1596412800000, 1, 1596585600000);
             dbcontext.Add(r12);
-            //create date- Wednesday, 30-Jul-20 00:00:00 UTC ;receive-05/8/2020 @ 0:00am (UTC);acknowldge-05/8/2020 @ 0:00am
-            Requisition r13 = new Requisition("ENGL", 6, 5, null, 1, 1598486400000, Status.RequsitionStatus.pendapprov,
-                                               1, 1596585600000,
-                                               4, 1596412800000, 1, 1596585600000);
+
+
+            Requisition r13 = new Requisition("ENGL", 6, 5, 1);
+            r13.CreatedDate = 1598486400000;// 27/8/2020 @ 00:00am (UTC)
+            r13.Status = Status.RequsitionStatus.pendapprov;
+            r13.CollectionPointId = 5;
             dbcontext.Add(r13);
            
             //create date- Wednesday, 25-Aug-20 00:00:00 UTC ;receive-29/8/2020 @ 0:00am (UTC);acknowldge-29/8/2020 @ 0:00am
