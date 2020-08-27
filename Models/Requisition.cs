@@ -56,7 +56,7 @@ namespace SSIS_BOOT.Models
             this.ApprovedById = ApprovedById;
             this.ProcessedByClerkId = ProcessedByClerkId;
         }
-        public Requisition(string DepartmentId, int ReqByEmpId, int ApprovedById, string? Remarks,int ProcessedByClerkId, long CreatedDate, string Status,
+        public Requisition(string DepartmentId, int ReqByEmpId, int ApprovedById, string? Remarks,int? ProcessedByClerkId, long CreatedDate, string Status,
             int? CollectionPointId, long? CollectionDate, int? ReceivedByRepId, long? ReceivedDate, int? AckByClerkId, long? AckDate)
         {
             this.DepartmentId = DepartmentId;
