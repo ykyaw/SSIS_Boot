@@ -1,24 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\于一\\source\\repos\\SSIS_BOOT\\SSIS_BOOT.csproj": {}
+    "C:\\Users\\guoxi\\Downloads\\SA 4106 AD Project\\AD-Code\\SSIS_BOOT\\SSIS_BOOT.csproj": {}
   },
   "projects": {
-    "C:\\Users\\于一\\source\\repos\\SSIS_BOOT\\SSIS_BOOT.csproj": {
+    "C:\\Users\\guoxi\\Downloads\\SA 4106 AD Project\\AD-Code\\SSIS_BOOT\\SSIS_BOOT.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\于一\\source\\repos\\SSIS_BOOT\\SSIS_BOOT.csproj",
+        "projectUniqueName": "C:\\Users\\guoxi\\Downloads\\SA 4106 AD Project\\AD-Code\\SSIS_BOOT\\SSIS_BOOT.csproj",
         "projectName": "SSIS_BOOT",
-        "projectPath": "C:\\Users\\于一\\source\\repos\\SSIS_BOOT\\SSIS_BOOT.csproj",
-        "packagesPath": "C:\\Users\\于一\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\于一\\source\\repos\\SSIS_BOOT\\obj\\",
+        "projectPath": "C:\\Users\\guoxi\\Downloads\\SA 4106 AD Project\\AD-Code\\SSIS_BOOT\\SSIS_BOOT.csproj",
+        "packagesPath": "C:\\Users\\guoxi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\guoxi\\Downloads\\SA 4106 AD Project\\AD-Code\\SSIS_BOOT\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\于一\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\guoxi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -41,6 +43,14 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[3.1.7, )"
+            },
+            "Microsoft.AspNetCore.Session": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.0-preview.7.20365.15, )"
@@ -55,11 +65,11 @@
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
-              "version": "[3.1.3, )"
+              "version": "[3.1.4, )"
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[6.7.1, )"
+              "version": "[6.7.2-preview-10803222715, )"
             }
           },
           "imports": [
