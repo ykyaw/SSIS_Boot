@@ -938,7 +938,7 @@ namespace SSIS_BOOT.DB
                                                4, 1596412800000, 1, 1596585600000);
             dbcontext.Add(r12);
             //create date- Wednesday, 30-Jul-20 00:00:00 UTC ;receive-05/8/2020 @ 0:00am (UTC);acknowldge-05/8/2020 @ 0:00am
-            Requisition r13 = new Requisition("COMM", 8, 9, null, 16, 1596067200000, Status.RequsitionStatus.completed,
+            Requisition r13 = new Requisition("ENGL", 6, 5, null, 1, 1598486400000, Status.RequsitionStatus.pendapprov,
                                                1, 1596585600000,
                                                4, 1596412800000, 1, 1596585600000);
             dbcontext.Add(r13);
