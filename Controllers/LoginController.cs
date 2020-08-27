@@ -90,7 +90,10 @@ namespace SSIS_BOOT.Controllers
                 employee = new Employee()
                 {
                     Name = employee.Name,
-                    Role = employee.Role
+                    Role = employee.Role,
+                    DelegateFromDate = employee.DelegateFromDate,
+                    DelegateToDate = employee.DelegateToDate
+
                 };
                 result.Add("employee", employee);
                 Response.Cookies.Append("token", token);
