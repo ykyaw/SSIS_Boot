@@ -383,5 +383,13 @@ namespace SSIS_BOOT.Controllers
         }
 
 
+        [HttpDelete]
+        [Route("/storeclerk/eav/{avId}")]
+        public bool EmptyAdjustmentVoucher(string avId)
+        {
+            scservice.EmptyCreatedAdjustmentVoucher(avId);
+            return true;
+        }
+
     }
 }

@@ -77,6 +77,7 @@ namespace SSIS_BOOT.Service.Interfaces
 
         public bool DeleteCreatedPurchaseRequest(long preqId);
         public bool DeleteCreatedAdjustmentVoucher(string avId);
+        public bool EmptyCreatedAdjustmentVoucher(string avId);
 
     }
 }

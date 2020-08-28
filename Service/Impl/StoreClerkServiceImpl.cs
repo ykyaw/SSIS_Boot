@@ -765,5 +765,16 @@ namespace SSIS_BOOT.Service.Impl
             avrepo.DeleteAdjustmentVoucher(av);
             return true;
         }
+
+        public bool EmptyCreatedAdjustmentVoucher(string avId)
+        {
+            AdjustmentVoucher av = avrepo.findAdjustmentVoucherById(avId);
+            List<AdjustmentVoucherDetail> avl = avdetrepo.findAdvDetailsbyAdvId(av.Id);
+            foreach (AdjustmentVoucherDetail v in avl)
+            {
+                avdetrepo.deleteAdvDetails(v);
+            }
+            return true;
+        }
     }
 }
