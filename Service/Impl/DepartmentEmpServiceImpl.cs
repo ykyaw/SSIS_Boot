@@ -271,5 +271,16 @@ namespace SSIS_BOOT.Service.Impl
             rrepo.DeleteRequisitionById(reqId);
             return true;
         }
+
+        public bool EmptyCreatedRequisition(int reqId)
+        {
+            Requisition req = rrepo.findreqByReqId(reqId);
+            List<RequisitionDetail> reqd = rdrepo.GetRequisitionDetailByRequisitionId(reqId);
+            foreach (RequisitionDetail r in reqd)
+            {
+                rdrepo.deleteRequisitionDetailByRequisitionId(r);
+            }
+            return true;
+        }
     }
 }

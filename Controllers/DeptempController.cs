@@ -187,5 +187,13 @@ namespace SSIS_BOOT.Controllers
             deservice.DeleteCreatedRequisition(reqId);
             return true;
         }
+
+        [HttpDelete]
+        [Route("/deptemp/dreqdet/{reqId}")]
+        public bool EmptyAdjustmentVoucher(int reqId)
+        {
+            deservice.EmptyCreatedRequisition(reqId);
+            return true;
+        }
     }
 }

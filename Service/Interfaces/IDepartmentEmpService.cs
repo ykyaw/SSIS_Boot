@@ -31,5 +31,7 @@ namespace SSIS_BOOT.Service.Interfaces
         public Employee FindEmployeeById(int RepId);
 
         public bool DeleteCreatedRequisition(int reqId);
+
+        public bool EmptyCreatedRequisition(int reqId);
     }
 }
