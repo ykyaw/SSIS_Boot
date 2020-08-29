@@ -6,9 +6,10 @@ using SSIS_BOOT.Repo;
 using SSIS_BOOT.Service.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-
+/**
+ * @author Choo Teck Kian, Pei Jia En, Jade Lim
+ */
 namespace SSIS_BOOT.Service.Impl
 {
     public class DepartmentEmpServiceImpl : IDepartmentEmpService
@@ -21,7 +22,7 @@ namespace SSIS_BOOT.Service.Impl
         private CollectionPointRepo cprepo;
         protected IMailer mailservice;
 
-        public DepartmentEmpServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, ProductRepo prepo, EmployeeRepo erepo, 
+        public DepartmentEmpServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, ProductRepo prepo, EmployeeRepo erepo,
             DepartmentRepo drepo, CollectionPointRepo cprepo, IMailer mailservice)
         {
             this.rrepo = rrepo;
@@ -32,87 +33,77 @@ namespace SSIS_BOOT.Service.Impl
             this.cprepo = cprepo;
             this.mailservice = mailservice;
         }
-        public List<Requisition> getdeptreqlist(string deptId)
+        public List<Requisition> GetDeptReqList(string deptId)
         {
-            return rrepo.findreqformByDeptID(deptId);
+            return rrepo.FindReqFormByDeptID(deptId);
         }
-
         public List<Requisition> GetAllDeptDisbursementList(string deptId)
         {
-            List<Requisition> lr = rrepo.finddisbursementByDeptID(deptId);
+            List<Requisition> lr = rrepo.FindDisbursementByDeptID(deptId);
             return lr;
         }
-
         public List<RequisitionDetail> GetDisbursementByDate(string deptid, long longdate)
         {
-            //RequisitionDetail has no deptid and date. Need to retrieve by requisition
-            List<Requisition> reqlist = rrepo.finddisbursementByDeptIDandDate(deptid, longdate);
+            List<Requisition> reqlist = rrepo.FindDisbursementByDeptIDandDate(deptid, longdate);
             List<RequisitionDetail> rdlist = new List<RequisitionDetail>();
-            foreach(Requisition r in reqlist)
+            foreach (Requisition r in reqlist)
             {
                 rdlist.AddRange(r.RequisitionDetails);
             }
             return rdlist;
         }
-
-        public Requisition getrfdetail(int reqId)
+        public Requisition GetRfDetail(int reqId)
         {
-            Requisition req = rrepo.findreqByReqId(reqId);
+            Requisition req = rrepo.FindReqByReqId(reqId);
             return req;
         }
-        public List<Product> getallcat()
+        public List<Product> GetAllCat()
         {
-            return prepo.findallcat();
+            return prepo.FindAllCat();
         }
-        public bool updatereqform(List<RequisitionDetail> rdlist)
+        public bool UpdateReqForm(List<RequisitionDetail> rdlist)
         {
-
-            foreach(RequisitionDetail r in rdlist) //Delete all old entries based on requisitionId
+            foreach (RequisitionDetail r in rdlist) //Delete all old entries based on requisitionId
             {
-                rdrepo.deleteRequisitionDetailByRequisitionId(r);
+                rdrepo.DeleteRequisitionDetailByRequisitionId(r);
             }
 
             foreach (RequisitionDetail rd in rdlist) //Create new latest entries based on requisitionId 
             {
                 if (rd.QtyNeeded != 0)
                 {
-                    rdrepo.addreqformitem(rd);
+                    rdrepo.AddReqFormItem(rd);
                 }
             }
-            //int requisitionId = (int)rdlist[0].RequisitionId; //logic changed by tk. line not required anymore
-            //Requisition req = rrepo.findreqByReqId(requisitionId); //logic changed by tk. line not required anymore
             return true;
         }
 
-        public Requisition createrequisition(int empid,string deptid)
+        public Requisition CreateRequisition(int empid, string deptid)
         {
-            Employee emp = erepo.findempById(empid);
-            if(emp.Role == "dh")
+            Employee emp = erepo.FindEmpById(empid);
+            if (emp.Role == "dh")
             {
                 throw new Exception("Sorry, department head cannot create own requisition");
             }
-            
+
             //create empty requisition with date,employee ID and departmentid
             Requisition newform = new Requisition();
 
             DateTime dateTime = DateTime.UtcNow.Date;
             DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
             long date = dt.ToUnixTimeMilliseconds();
-
             newform.ReqByEmpId = empid;
-            //newform.CreatedDate= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); //From tk: changed date format to UTC 00:00 for date
             newform.CreatedDate = date;
             newform.DepartmentId = deptid;
             newform.Status = Status.RequsitionStatus.created;
-            Department dept = drepo.findDepartmentById(deptid);
+            Department dept = drepo.FindDepartmentById(deptid);
             newform.CollectionPointId = dept.CollectionPointId;
-
-            return rrepo.saveNewRequisition(newform);
+            return rrepo.SaveNewRequisition(newform);
         }
 
-        public Requisition createrequisitionfromhistory(int empid, string deptid, List<RequisitionDetail> rdlist)
+        public Requisition CreateRequisitionFromHistory(int empid, string deptid, List<RequisitionDetail> rdlist)
         {
-            Employee emp = erepo.findempById(empid);
+            Employee emp = erepo.FindEmpById(empid);
             if (emp.Role == "dh")
             {
                 throw new Exception("Sorry, department head cannot create own requisition");
@@ -123,44 +114,38 @@ namespace SSIS_BOOT.Service.Impl
             DateTime dateTime = DateTime.UtcNow.Date;
             DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
             long date = dt.ToUnixTimeMilliseconds();
-
             newform.ReqByEmpId = empid;
-            //newform.CreatedDate= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); //From tk: changed date format to UTC 00:00 for date
             newform.CreatedDate = date;
             newform.DepartmentId = deptid;
             newform.Status = Status.RequsitionStatus.created;
-            Department dept = drepo.findDepartmentById(deptid);
+            Department dept = drepo.FindDepartmentById(deptid);
             newform.CollectionPointId = dept.CollectionPointId;
-
-            Requisition r = rrepo.saveNewRequisition(newform);
-            foreach(RequisitionDetail rd in rdlist)
+            Requisition r = rrepo.SaveNewRequisition(newform);
+            foreach (RequisitionDetail rd in rdlist)
             {
                 rd.RequisitionId = r.Id;
-                rdrepo.addreqformitem(rd);
+                rdrepo.AddReqFormItem(rd);
             }
-            return rrepo.findreqByReqId(r.Id);
+            return rrepo.FindReqByReqId(r.Id);
         }
-
-        public bool submitrf(List<RequisitionDetail> rdlist)
+        public bool SubmiTrf(List<RequisitionDetail> rdlist)
         {
             foreach (RequisitionDetail r in rdlist) //Delete all old entries based on requisitionId
             {
-                rdrepo.deleteRequisitionDetailByRequisitionId(r);
+                rdrepo.DeleteRequisitionDetailByRequisitionId(r);
             }
-
             foreach (RequisitionDetail rd in rdlist) //Create new latest entries based on requisitionId 
             {
                 if (rd.QtyNeeded != 0)
                 {
-                    rdrepo.addreqformitem(rd);
+                    rdrepo.AddReqFormItem(rd);
                 }
             }
-            
             // Updating Requisition to "Pending Approval" status
             int requisitionId = (int)rdlist[0].RequisitionId;
-            Requisition req = rrepo.findreqByReqId(requisitionId);
+            Requisition req = rrepo.FindReqByReqId(requisitionId);
             req.Status = Status.RequsitionStatus.pendapprov;
-            
+
             //add the current date to be the submitted date.
             DateTime dateTime = DateTime.UtcNow.Date;
             DateTimeOffset dt = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUniversalTime();
@@ -168,12 +153,12 @@ namespace SSIS_BOOT.Service.Impl
             req.SubmittedDate = submitdate;
 
             //Finding deptemp 
-            Requisition updatedreq = rrepo.updateRequisition(req);
+            Requisition updatedreq = rrepo.UpdateRequisition(req);
             int deptempid = updatedreq.ReqByEmpId;
-            Employee deptemp = erepo.findempById(deptempid);
+            Employee deptemp = erepo.FindEmpById(deptempid);
 
             //send to manager
-            Employee depthead = erepo.findSupervisorByEmpId(deptempid);
+            Employee depthead = erepo.FindSupervisorByEmpId(deptempid);
 
             EmailModel email = new EmailModel();
             Task.Run(async () =>
@@ -186,7 +171,7 @@ namespace SSIS_BOOT.Service.Impl
             });
 
             //check if there is delegate
-            Employee delegateemp = erepo.getcurrentdelegate(submitdate, deptemp.DepartmentId);
+            Employee delegateemp = erepo.GetCurrentDelegate(submitdate, deptemp.DepartmentId);
             if (delegateemp != null)
             {
 
@@ -201,21 +186,18 @@ namespace SSIS_BOOT.Service.Impl
                     await mailservice.SendEmailAsync(email);
                 });
             }
-            return true;                  
+            return true;
         }
-
         public Department GetDepartment(string deptId)
         {
-            Department dept = drepo.findDepartmentById(deptId);
+            Department dept = drepo.FindDepartmentById(deptId);
             return dept;
         }
-
         public List<CollectionPoint> GetAllCollectionPoint()
         {
             List<CollectionPoint> clist = cprepo.GetAllCollectionPoint();
             return clist;
         }
-
         public bool UpdateCollectionPoint(string deptid, CollectionPoint cp)
         {
             int collectionpointId = cp.Id;
@@ -226,14 +208,12 @@ namespace SSIS_BOOT.Service.Impl
             {
                 rrepo.DeptRepUpdateRequisitionCollectionPoint(deptid, collectionpointId);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
             return true;
         }
-
-
         public bool AckItemReceived(int empid, List<RequisitionDetail> rdlist)
         {
             try
@@ -248,37 +228,34 @@ namespace SSIS_BOOT.Service.Impl
                 }
                 return true;
             }
-            catch(Exception m)
+            catch (Exception m)
             {
                 throw m;
             }
         }
-
         public Employee FindEmployeeById(int RepId)
         {
-            Employee drep = erepo.findempById(RepId);
+            Employee drep = erepo.FindEmpById(RepId);
             return drep;
         }
-
         public bool DeleteCreatedRequisition(int reqId)
         {
-            Requisition req = rrepo.findreqByReqId(reqId);
+            Requisition req = rrepo.FindReqByReqId(reqId);
             List<RequisitionDetail> reqd = rdrepo.GetRequisitionDetailByRequisitionId(reqId);
             foreach (RequisitionDetail r in reqd)
             {
-                rdrepo.deleteRequisitionDetailByRequisitionId(r);
+                rdrepo.DeleteRequisitionDetailByRequisitionId(r);
             }
             rrepo.DeleteRequisitionById(reqId);
             return true;
         }
-
         public bool EmptyCreatedRequisition(int reqId)
         {
-            Requisition req = rrepo.findreqByReqId(reqId);
+            Requisition req = rrepo.FindReqByReqId(reqId);
             List<RequisitionDetail> reqd = rdrepo.GetRequisitionDetailByRequisitionId(reqId);
             foreach (RequisitionDetail r in reqd)
             {
-                rdrepo.deleteRequisitionDetailByRequisitionId(r);
+                rdrepo.DeleteRequisitionDetailByRequisitionId(r);
             }
             return true;
         }

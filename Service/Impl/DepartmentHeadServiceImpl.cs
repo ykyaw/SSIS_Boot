@@ -1,17 +1,17 @@
-﻿using SSIS_BOOT.Common;
-using SSIS_BOOT.Email;
+﻿using SSIS_BOOT.Email;
 using SSIS_BOOT.Email.EmailTemplates;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Repo;
 using SSIS_BOOT.Service.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-
+/**
+ * @author Choo Teck Kian, Pei Jia En, Jade Lim
+ */
 namespace SSIS_BOOT.Service.Impl
 {
-    public class DepartmentHeadServiceImpl:IDepartmentHeadService
+    public class DepartmentHeadServiceImpl : IDepartmentHeadService
     {
         private RequisitionRepo rrepo;
         private RequisitionDetailRepo rdrepo;
@@ -19,7 +19,6 @@ namespace SSIS_BOOT.Service.Impl
         private DepartmentRepo drepo;
         protected IMailer mailservice;
         private CollectionPointRepo crepo;
-
         public DepartmentHeadServiceImpl(RequisitionRepo rrepo, RequisitionDetailRepo rdrepo, EmployeeRepo erepo, DepartmentRepo drepo, IMailer mailservice, CollectionPointRepo crepo)
         {
             this.rrepo = rrepo;
@@ -29,7 +28,6 @@ namespace SSIS_BOOT.Service.Impl
             this.mailservice = mailservice;
             this.crepo = crepo;
         }
-
         public bool ApprovRejRequisition(Requisition req)
         {
             try
@@ -42,7 +40,7 @@ namespace SSIS_BOOT.Service.Impl
 
                 Task.Run(async () =>
                 {
-                    EmailTemplates.ProcessedreqTemplate prt = new EmailTemplates.ProcessedreqTemplate(updatedreq,deptemp, approvedby);
+                    EmailTemplates.ProcessedreqTemplate prt = new EmailTemplates.ProcessedreqTemplate(updatedreq, deptemp, approvedby);
                     email.emailTo = deptemp.Email;
                     email.emailSubject = prt.subject;
                     email.emailBody = prt.body;
@@ -54,42 +52,37 @@ namespace SSIS_BOOT.Service.Impl
             catch (Exception m)
             {
                 throw m;
-            }         
+            }
         }
-
         public List<Employee> GetAllDeptEmployee(string deptid)
         {
-            List<Employee> emplist = erepo.findEmpByDept(deptid);
+            List<Employee> emplist = erepo.FindEmpByDept(deptid);
             return emplist;
         }
-
         public List<Requisition> DeptHeadGetdeptReqlist(string deptId)
         {
             List<Requisition> lr = rrepo.DeptHeadfindreqformByDeptID(deptId);
             return lr;
         }
-
-        public List<Requisition> getdeptdisbursementlist(string deptid)
+        public List<Requisition> GetDeptDisbursementList(string deptid)
         {
-            List<Requisition> lr = rrepo.finddisbursementByDeptID(deptid);
+            List<Requisition> lr = rrepo.FindDisbursementByDeptID(deptid);
             return lr;
         }
-
-        public Requisition getrfdetail(int reqId)
+        public Requisition GetRfDetail(int reqId)
         {
-            Requisition req = rrepo.findreqByReqId(reqId);
+            Requisition req = rrepo.FindReqByReqId(reqId);
             return req;
         }
-
         public bool AssignDelegate(Employee emp, string deptid)
         {
-            List<Employee> emplist = erepo.findEmpByDept(deptid);
-            foreach(Employee e in emplist)
+            List<Employee> emplist = erepo.FindEmpByDept(deptid);
+            foreach (Employee e in emplist)
             {
 
                 if (emp.DelegateFromDate >= e.DelegateFromDate && emp.DelegateFromDate <= e.DelegateToDate)
                 {
-                    if(emp.Id != e.Id)
+                    if (emp.Id != e.Id)
                     {
                         throw new Exception("Conflict of delegate dates with " + e.Name + ". Please try again");
                     }
@@ -105,7 +98,7 @@ namespace SSIS_BOOT.Service.Impl
             try
             {
                 Employee delegateemp = erepo.AssignDelegateDate(emp);
-                Employee depthead = erepo.findSupervisorByEmpId(delegateemp.Id);
+                Employee depthead = erepo.FindSupervisorByEmpId(delegateemp.Id);
                 EmailModel email = new EmailModel();
 
                 Task.Run(async () =>
@@ -118,25 +111,22 @@ namespace SSIS_BOOT.Service.Impl
                 });
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
-            }       
+            }
         }
-
         public bool AssignDeptRep(int empid, string deptid)
         {
             try
             {
                 drepo.AssignDeptRep(empid, deptid);
-                Employee deptrep = erepo.findempById(empid);
-                Employee depthead = erepo.findSupervisorByEmpId(deptrep.Id);
-
+                Employee deptrep = erepo.FindEmpById(empid);
+                Employee depthead = erepo.FindSupervisorByEmpId(deptrep.Id);
                 //find collectionpoint
-                Department dp = drepo.findDeptbyRepID(deptrep.Id);
-                CollectionPoint deptCP = crepo.getdeptcollectionpoint(dp); 
+                Department dp = drepo.FindDeptbyRepID(deptrep.Id);
+                CollectionPoint deptCP = crepo.GetDeptCollectionPoint(dp);
                 EmailModel email = new EmailModel();
-
                 Task.Run(async () =>
                 {
                     EmailTemplates.AssignDeptRepTemplate adt = new EmailTemplates.AssignDeptRepTemplate(deptrep, depthead, deptCP);
@@ -156,19 +146,19 @@ namespace SSIS_BOOT.Service.Impl
         public Employee GetCurrentDelegate(string deptid)
         {
             long currentdate = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            Employee del = erepo.getcurrentdelegate(currentdate, deptid);
+            Employee del = erepo.GetCurrentDelegate(currentdate, deptid);
             return del;
         }
 
         public List<Department> GetAllDepartment()
         {
-            List<Department> dlist = drepo.findalldepartment();
+            List<Department> dlist = drepo.FindAllDepartment();
             return dlist;
         }
 
         public Department FindDepartmentById(string deptid)
         {
-            return drepo.findDepartmentById(deptid);
+            return drepo.FindDepartmentById(deptid);
         }
     }
 }

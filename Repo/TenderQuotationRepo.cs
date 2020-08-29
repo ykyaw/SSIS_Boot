@@ -4,7 +4,6 @@ using SSIS_BOOT.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 
 namespace SSIS_BOOT.Repo
@@ -17,10 +16,9 @@ namespace SSIS_BOOT.Repo
             this.dbcontext = dbcontext;
         }
 
-        public List<TenderQuotation> gettop3suppliers(string pdtId)
+        public List<TenderQuotation> GetTop3Suppliers(string pdtId)
         {
-            //to insert the current timestamp and extract the year 
-            
+            //to insert the current timestamp and extract the year           
             DateTime now = DateTime.Today;
             int year = now.Year;
 
@@ -30,30 +28,10 @@ namespace SSIS_BOOT.Repo
                                               select tq).Include(m => m.Product).Include(m => m.Supplier).Take(3);
 
             List<TenderQuotation> tqlist2 = tqlist.ToList();
-
             return tqlist2;
         }
-        //public bool updatetop3supplier(List<TenderQuotation> tqlist) //ORIGINAL METHOD
-        //{
-        //    foreach(TenderQuotation tq in tqlist)
-        //    {
-        //        var original = dbcontext.TenderQuotations.Find(tq.Id);
-        //        if (original == null)
-        //        {
-        //            throw new Exception();
-        //        }
-        //        //if (tq.SupplierId == "CHEP")
-        //        //{
-        //        //    tq.Rank = 2;
 
-        //        //}
-        //        dbcontext.Entry(original).CurrentValues.SetValues(tq);
-        //        dbcontext.SaveChanges();
-        //    }
-        //    return true;
-        //}
-
-        public bool updatetop3supplier(List<TenderQuotation> tqlist, int currentyear) //IMPROVED METHOD
+        public bool UpdateTop3Supplier(List<TenderQuotation> tqlist, int currentyear)
         {
             string productIdtoUpdate = tqlist[0].ProductId;
             List<TenderQuotation> originTQList = dbcontext.TenderQuotations.Where(m => m.ProductId == productIdtoUpdate && m.Year == currentyear).ToList();
@@ -75,15 +53,13 @@ namespace SSIS_BOOT.Repo
             return true;
         }
 
-
-
-        public List<TenderQuotation> retrievesuppliers(string pdtid)
+        public List<TenderQuotation> RetrieveSuppliers(string pdtid)
         {
             List<TenderQuotation> tqlist = dbcontext.TenderQuotations.Include(m=>m.Product).Include(m => m.Supplier).Where(m => m.ProductId == pdtid).ToList();
             return tqlist;
         }
 
-        public TenderQuotation getFirstTenderbyProdutId(string ProductId)
+        public TenderQuotation GetFirstTenderbyProdutId(string ProductId)
         {
 
             DateTime now = DateTime.Today;

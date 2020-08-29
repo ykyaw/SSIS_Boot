@@ -15,11 +15,10 @@ namespace SSIS_BOOT.Repo
         {
             this.dbcontext = dbcontext;
         }
-        public RequisitionDetail updateretrievalid(RequisitionDetail rd)
+        public RequisitionDetail UpdateRetrievalId(RequisitionDetail rd)
         {
             dbcontext.RequisitionDetails.Update(rd);
             dbcontext.SaveChanges();
-            //dbcontext.RequisitionDetails.Find(rd.Id);
             return dbcontext.RequisitionDetails.Include(m => m.Requisition)
                 .Include(m => m.Product)
                 .Include(m => m.Retrieval)
@@ -28,18 +27,16 @@ namespace SSIS_BOOT.Repo
 
         public RequisitionDetail GetRequisitionDetailById(int rq_id)
         {
-
             return dbcontext.RequisitionDetails.Find(rq_id);
-
         }
 
-        public List<RequisitionDetail> retrievedisbursementlist(string deptId, long collectiondate)
+        public List<RequisitionDetail> RetrieveDisbursementList(string deptId, long collectiondate)
         {
             List<RequisitionDetail> dlist = dbcontext.RequisitionDetails.Include(m => m.Requisition).ThenInclude(m=>m.ReceivedByRep).Include(m => m.Product)
                 .Include(m => m.Retrieval).Where(m => m.Requisition.DepartmentId == deptId && m.Requisition.CollectionDate == collectiondate).ToList();
             return dlist;
         }
-        public bool updaterequsitiondetail(RequisitionDetail rd)
+        public bool UpdateRequsitionDetail(RequisitionDetail rd)
         {
             try
             {
@@ -58,14 +55,13 @@ namespace SSIS_BOOT.Repo
                 throw new Exception("Error saving Requsition Detail for " + rd.Product.Description);
             }
         }
-        public bool addreqformitem(RequisitionDetail rd)
+        public bool AddReqFormItem(RequisitionDetail rd)
         {
             dbcontext.RequisitionDetails.Add(rd);
             dbcontext.SaveChanges();
             return true;
         }
-
-        public bool deleteRequisitionDetailByRequisitionId(RequisitionDetail rd)
+        public bool DeleteRequisitionDetailByRequisitionId(RequisitionDetail rd)
         {
             RequisitionDetail original = dbcontext.RequisitionDetails.Where(m => m.RequisitionId == rd.RequisitionId).FirstOrDefault();
             if (original != null)
@@ -86,7 +82,6 @@ namespace SSIS_BOOT.Repo
             return rdl;
         }
 
-
         public bool EmpAckItemReceived(RequisitionDetail rd)
         {
             try
@@ -105,7 +100,6 @@ namespace SSIS_BOOT.Repo
             dbcontext.SaveChanges();
             return true;
         }
-
         public bool ClerkSaveRequisitionDetailRemarksOnCompletion(RequisitionDetail rd)
         {
             try
@@ -123,7 +117,6 @@ namespace SSIS_BOOT.Repo
             dbcontext.SaveChanges();
             return true;
         }
-
         public List<RequisitionDetail> GetRequisitionDetailByRequisitionId(int reqid)
         {
             List<RequisitionDetail> rdlist = dbcontext.RequisitionDetails.Where(m => m.RequisitionId == reqid).ToList();

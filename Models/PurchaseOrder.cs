@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace SSIS_BOOT.Models
 {
@@ -17,21 +14,14 @@ namespace SSIS_BOOT.Models
         public long? OrderedDate { get; set; }
         public long SupplyByDate { get; set; }
         public int? ApprovedBySupId { get; set; }
-        //public int? ReceivedByClerkId { get; set; }
-        //public long? ReceivedDate { get; set; }
         public string Status { get; set; }
         public int? CollectionPointId { get; set; }
         public CollectionPoint CollectionPoint { get; set; }
-
         public  Supplier Supplier { get; set; }
         public  Employee OrderedByClerk { get; set; }
         public  Employee ApprovedBySup { get; set; }
-        //public  Employee ReceivedByClerk { get; set; }
         public  List<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
-
-        //constructor
         public PurchaseOrder() { }
-
         public PurchaseOrder(string SupplierId, double TotalPrice, int OrderedByClerkId, long? OrderedDate, long SupplyByDate)
         {
             this.SupplierId = SupplierId;
@@ -41,8 +31,6 @@ namespace SSIS_BOOT.Models
             this.SupplyByDate = SupplyByDate;
             this.CollectionPointId = 1;//CollectionPointId=1 is store, to get location: CollectionPointId.Location
         }
-
-
         public PurchaseOrder(string SupplierId, double TotalPrice, int OrderedByClerkId, long? OrderedDate, long SupplyByDate, int? ApprovedBySupId,
             string Status)
         {
@@ -54,8 +42,6 @@ namespace SSIS_BOOT.Models
             this.ApprovedBySupId = ApprovedBySupId;
             CollectionPointId = 1;//CollectionPointId=1 is store, to get location: CollectionPointId.Location
         }
-
-
         public PurchaseOrder(string SupplierId, double TotalPrice, int OrderedByClerkId, long? OrderedDate, long SupplyByDate, int? ApprovedBySupId)
         {
             this.SupplierId = SupplierId;

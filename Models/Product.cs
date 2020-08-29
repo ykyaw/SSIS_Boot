@@ -1,10 +1,6 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace SSIS_BOOT.Models
 {
@@ -18,9 +14,7 @@ namespace SSIS_BOOT.Models
         public int ReorderQty { get; set; }
         public string Uom { get; set; }
         public  Category Category { get; set; }
-
         public ICollection<TenderQuotation> TenderQuotation { get; set; }
-
         public Product() { }
         public Product(string Id, string Description, int CategoryId)
         {

@@ -145,8 +145,6 @@ namespace SSIS_BOOT.Email.EmailTemplates
                     + System.Environment.NewLine + System.Environment.NewLine +
                     "Thank you." + System.Environment.NewLine + System.Environment.NewLine +
                    "Store Clerk " + System.Environment.NewLine + updatedprlist[0].CreatedByClerk.Name;
-                // pending the link for sup to access outstanding pr.
-
             }
         }
         public class SubmitAV
@@ -165,8 +163,6 @@ namespace SSIS_BOOT.Email.EmailTemplates
                     + System.Environment.NewLine + System.Environment.NewLine +
                     "Thank you." + System.Environment.NewLine + System.Environment.NewLine +
                    "Store Clerk " + System.Environment.NewLine + clerk.Name;
-                // pending the link for sup to access outstanding av.
-
             }
         }
 
@@ -186,8 +182,6 @@ namespace SSIS_BOOT.Email.EmailTemplates
                     + System.Environment.NewLine + System.Environment.NewLine +
                     "Thank you." + System.Environment.NewLine + System.Environment.NewLine +
                    "Department Employee" + System.Environment.NewLine + deptemp.Name;
-                // pending the link for sup to access outstanding rf.
-
             }
         }
         public class ProcessedreqTemplate
@@ -250,7 +244,6 @@ namespace SSIS_BOOT.Email.EmailTemplates
                + System.Environment.NewLine + System.Environment.NewLine +
                "Thank you." + System.Environment.NewLine + System.Environment.NewLine +
                 "Department Head" + System.Environment.NewLine + depthead.Name;
-
             }
         }
 
@@ -263,14 +256,12 @@ namespace SSIS_BOOT.Email.EmailTemplates
             {
 
                 this.subject = "Assigning of Department Representative for " + depthead.Department.Name;
-
                 this.body =
                "Dear " + deptrep.Name + System.Environment.NewLine + System.Environment.NewLine +
                "You have been assigned as the department representative for " + depthead.Department.Name + ". The current collection point is set at " + cp.Location + "."
                + System.Environment.NewLine + System.Environment.NewLine +
                "Thank you." + System.Environment.NewLine + System.Environment.NewLine +
                "Department Head" + System.Environment.NewLine + depthead.Name;
-
             }
         }
 
@@ -351,8 +342,6 @@ namespace SSIS_BOOT.Email.EmailTemplates
                     "Thank you." + System.Environment.NewLine + System.Environment.NewLine +
                     "Store supervisor" + System.Environment.NewLine + supervisor.Name;
                 }
-
-
             }
         }
         public class PendingManagerApprovalAVTemplate
@@ -366,7 +355,6 @@ namespace SSIS_BOOT.Email.EmailTemplates
                 DateTime startTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                 DateTime InitiatedDate1 = startTime.AddMilliseconds(Convert.ToDouble(InitiatedDate));
                 string InitiatedDate2 = InitiatedDate1.ToString("dd MMM yyyy");
-
                 if (av.Reason == null)
                 {
                     this.body =

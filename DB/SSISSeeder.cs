@@ -303,60 +303,6 @@ namespace SSIS_BOOT.DB
             dbcontext.SaveChanges();
 
 
-            //seed tender quotation
-            // public TenderQuotation(string SupplierId, int Year, string ProductId, string PricePerUom,int? Rank)
-            //TenderQuotation tq1 = new TenderQuotation("BANE", 2020, "P043", 1.00,"Dozen", 1); //Bane-2020-pencial with eraser head, 1,$1
-            //TenderQuotation tq2 = new TenderQuotation("ALPA", 2020, "C001", 2.00,"Dozen", 1);//ALPA-2020-Clip-1,$2
-            //TenderQuotation tq3 = new TenderQuotation("AlPA", 2020, "P043", 1.00,"Dozen", 2);
-            //TenderQuotation tq4 = new TenderQuotation("BANE", 2020, "C001", 2.20,"Dozen", 2);
-            //TenderQuotation tq5 = new TenderQuotation("CHEP", 2020, "C001", 2.50,"Dozen", 3);
-            //TenderQuotation tq6 = new TenderQuotation("CHEP", 2020, "P043", 1.20,"Dozen", 3);
-            //TenderQuotation tq7 = new TenderQuotation("OMEG", 2020, "C001", 2.75,"Dozen", null);
-            //TenderQuotation tq8 = new TenderQuotation("OMEG", 2020, "P043", 1.75,"Dozen", null);
-            //TenderQuotation tq9 = new TenderQuotation("OMEG", 2020, "D001", 10.00,"Box", 1); //diskettes ,$10
-            //TenderQuotation tq10 = new TenderQuotation("CHEP", 2020, "D001",10.10,"Box", 2);
-            //dbcontext.Add(tq1);
-            //dbcontext.Add(tq2);
-            //dbcontext.Add(tq3);
-            //dbcontext.Add(tq4);
-            //dbcontext.Add(tq5);
-            //dbcontext.Add(tq6);
-            //dbcontext.Add(tq7);
-            //dbcontext.Add(tq8);
-            //dbcontext.Add(tq9);
-            //dbcontext.Add(tq10);
-            //dbcontext.SaveChanges();
-
-
-            //TenderQuotation tq11 = new TenderQuotation("BANE", 2020, "D001", 10.20,"Box", 3);
-            //TenderQuotation tq12 = new TenderQuotation("CHEP", 2020, "E032", 1.00,"Each", 1);//exercise book,$1
-            //TenderQuotation tq13 = new TenderQuotation("ALPA", 2020, "D001", 1.05,"Box", 2);
-            //TenderQuotation tq14 = new TenderQuotation("OMEG", 2020, "D001", 1.10,"Box", 3);
-            //TenderQuotation tq15 = new TenderQuotation("ALPA", 2020, "E032", 1.05,"EACH", 2);
-            //TenderQuotation tq16 = new TenderQuotation("BANE", 2020, "E032", 1.10,"EACH", 3);
-
-            ///* TO BE KEPT */
-            //TenderQuotation tq17 = new TenderQuotation("OMEG", 2020, "H011", 10, "Box", 1);
-            //TenderQuotation tq18 = new TenderQuotation("ALPA", 2020, "H011", 10.50, "Box", 2);
-            //TenderQuotation tq19 = new TenderQuotation("BANE", 2020, "H011", 11.00, "Box", 3);
-
-            //TenderQuotation tq20 = new TenderQuotation("OMEG", 2020, "H012", 10, "Box", 1);
-            //TenderQuotation tq21 = new TenderQuotation("ALPA", 2020, "H012", 11, "Box", 2);
-            //TenderQuotation tq22 = new TenderQuotation("BANE", 2020, "H012", 12, "Box", 3);
-
-            //dbcontext.Add(tq11);
-            //dbcontext.Add(tq12);
-            //dbcontext.Add(tq13);
-            //dbcontext.Add(tq14);
-            //dbcontext.Add(tq15);
-            //dbcontext.Add(tq16);
-            //dbcontext.SaveChanges();
-
-
-
-
-
-
             //Product p1 = new Product("C001", "Clips Double 1", 1, 15, 15, "Dozen");
             TenderQuotation q1a = new TenderQuotation("OMEG", 2020, "C001", 10, "Dozen", 1);
             TenderQuotation q1b = new TenderQuotation("ALPA", 2020, "C001", 10.50, "Dozen", 2);
@@ -670,14 +616,7 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(q31b);
             dbcontext.Add(q31c);
             dbcontext.Add(q31d);
-
-
             dbcontext.SaveChanges();
-
-
-
-
-
 
             //seed transaction
             //public Transaction(string ProductId, DateTime Date, string Description, int Qty, int Balance, int UpdatedByEmpId, string? RefCode)
@@ -791,22 +730,7 @@ namespace SSIS_BOOT.DB
             dbcontext.SaveChanges();
             Transaction trans11 = new Transaction("P043", 1597060800000, "Supply to English Department", -50, 950, 16, null);//10/8/2020 @ 12:00pm (UTC)
             dbcontext.Add(trans11);
-            dbcontext.SaveChanges();
-            
-            
-
-
-            //seed retrieval(Fri)
-            //public Retrieval(int ClerkId, long? DisbursedDate, long? RetrievedDate, string Status,
-            //    string? RetrievalComment, bool? NeedAdjustment)
-
-            //Fri 17/7/2020 @2:00pm to retrieve, disbursement on 20/7, item C001 to both ENGL and CPSC
-            //(cover 2 rows in ReqDet)
-            
-            //Retrieval retr1 = new Retrieval(1, 1595237400000, 1594994400000, Status.RetrievalStatus.retrieved);
-            //dbcontext.Add(retr1);
-            //dbcontext.SaveChanges();
-            //Fri 31/7/2020 @3:00 to retrive, disbursement on 3/8,item "P043" to ENGL (cover 1 rows in ReqDet)
+            dbcontext.SaveChanges();          
 
             Retrieval retr1 = new Retrieval(1, 1596585600000, 1596412800000, Status.RetrievalStatus.retrieved);
             dbcontext.Add(retr1);
@@ -850,31 +774,12 @@ namespace SSIS_BOOT.DB
                                                1, 1597881600000,
                                                4, 1595237400000, 1, 1595237400000);
 
-            ////create date- Wednesday, 29-Jul-20 00:00:00 UTC ;receive-20/8/2020 @ 0:00am (UTC);acknowldge-03/8/2020 @ 9:30am
-            //Requisition r5 = new Requisition("ENGL", 14, 5, null, 1, 1595980800000, Status.RequsitionStatus.completed,
-            //                                   1, 1597881600000,
-            //                                   4, 1596447000000, 1, 1596447000000);
-
-            ////created-05 /8/ 2020 00:00:00 (UTC); collection-date-10/8/2020 @0:00 UTC; received and confirmed-10/8/2020  @0:00 UTC
-            //Requisition r6 = new Requisition("ENGL", 4, 5, null, 16, 1596585600000, Status.RequsitionStatus.completed,
-            //                                   1, 1597017600000,
-            //                                   4, 1597017600000, 1, 1597017600000);
-            ////created-05 /8/ 2020 00:00:00 (UTC); collection-date-10/8/2020 @0:00 UTC; received and confirmed-10/8/2020 @0:00 UTC
-            //Requisition r7 = new Requisition("CPSC", 15, 7, null, 16, 1596585600000, Status.RequsitionStatus.completed,
-            //                                   1, 1597017600000,
-            //                                   4, 1597017600000, 1, 1597017600000);
 
 
             dbcontext.Add(r3);
             dbcontext.SaveChanges();
             dbcontext.Add(r4);
             dbcontext.SaveChanges();
-            //dbcontext.Add(r5);
-            //dbcontext.SaveChanges();
-            //dbcontext.Add(r6);
-            //dbcontext.SaveChanges();
-            //dbcontext.Add(r7);
-            //dbcontext.SaveChanges();
 
             //created-22/8/2020 00:00:00 (GMT); collection-date-25/8/2020 @00:00am(GMT)
             Requisition r5 = new Requisition("ENGL", 4, 5, 1);
@@ -1258,27 +1163,6 @@ namespace SSIS_BOOT.DB
             RequisitionDetail rd25 = new RequisitionDetail(4, "C001", 15, 15, null, null, null, null, 2);
             dbcontext.Add(rd25);
             dbcontext.SaveChanges();
-            //RequisitionDetail rd3 = new RequisitionDetail(5, "C001", 10, 10, 10, null, null, null, 1);//refer to retr1
-            //dbcontext.Add(rd3);
-            //dbcontext.SaveChanges();
-            //RequisitionDetail rd4 = new RequisitionDetail(5, "C001", 50, 50, 50, null, null, null, 1);//retr1
-            //dbcontext.Add(rd4);
-            //dbcontext.SaveChanges();
-            //RequisitionDetail rd5 = new RequisitionDetail(5, "P043", 20, 20, 20, null, null, null, 2);//retr2
-            //dbcontext.Add(rd5);
-            //dbcontext.SaveChanges();
-            //RequisitionDetail rd6 = new RequisitionDetail(6, "P043", 50, 50, 50, null, null, null, 3);//retr3
-            //dbcontext.Add(rd6);
-            //dbcontext.SaveChanges();
-            //RequisitionDetail rd7 = new RequisitionDetail(6, "C001", 10, 8, 8, "only 8 left", "noted", null, 3);//retr3
-            //dbcontext.Add(rd7);
-            //dbcontext.SaveChanges();
-            //RequisitionDetail rd8 = new RequisitionDetail(7, "P043", 30, 30, 28, null, "2 spoilt during delivery", "confirmed", 3); //sub need to raise 2 in voucher
-            //dbcontext.Add(rd8);
-            //dbcontext.SaveChanges();
-            //RequisitionDetail rd9 = new RequisitionDetail(7, "C001", 10, 10, 10, null, null, null, 3);
-            //dbcontext.Add(rd9);
-            //dbcontext.SaveChanges();
 
             RequisitionDetail rd10 = new RequisitionDetail(5, "C001", 10);
             dbcontext.Add(rd10);
@@ -2330,18 +2214,10 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(po4); 
             dbcontext.SaveChanges();
 
-
-
             //seed purchase order detail
 
             //public PurchaseOrderDetail(int? PurchaseOrderId, int? PurchaseRequestDetailId, string ProductId, int QtyPurchased, int? QtyReceived,
             //double TotalPrice, int? SupplierDeliveryNo, string? Remark, string Status)
-
-            //PurchaseOrderDetail poDet1 = new PurchaseOrderDetail(1, 1, "E032", 100, null, 100.00, null, "Only 80 left in 1st supplier", Status.PurchaseOrderStatus.approved);
-            //PurchaseOrderDetail poDet2 = new PurchaseOrderDetail(1, 3, "C001", 15, null, 30.00, null, null, Status.PurchaseOrderStatus.approved);
-            //PurchaseOrderDetail poDet3 = new PurchaseOrderDetail(2, 2, "D001", 30, null, 300.00, null, null, Status.PurchaseOrderStatus.approved);
-            //PurchaseOrderDetail poDet4 = new PurchaseOrderDetail(3, 4, "C001", 15, null, 30.00, null, null, Status.PurchaseOrderStatus.approved);
-            //PurchaseOrderDetail poDet5 = new PurchaseOrderDetail(4, 5, "P043", 500, null, 500.00, null, null, Status.PurchaseOrderStatus.approved);
             PurchaseOrderDetail poDet1 = new PurchaseOrderDetail(1, 1, "E032", 100, 80, 100.00, "DO001", "Only 80 received", Status.PurchaseOrderDetailStatus.received);
             poDet1.ReceivedByClerkId = 1;
             poDet1.ReceivedDate = 1594771200000;
@@ -2361,9 +2237,6 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(poDet4);
             dbcontext.Add(poDet5);
             dbcontext.SaveChanges();
-
-
-
 
         }
     }

@@ -17,8 +17,7 @@ namespace SSIS_BOOT.Repo
         {
             this.dbcontext = dbcontext;
         }
-
-        public List<Product> findallcat()
+        public List<Product> FindAllCat()
         {
             List<Product> plist = dbcontext.Products.Include(m=>m.Category).ToList();
             return plist;

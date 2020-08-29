@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace SSIS_BOOT.Models
 {
@@ -29,14 +25,11 @@ namespace SSIS_BOOT.Models
             this.RequisitionId = RequisitionId;
             this.ProductId = ProductId;
         }
-
         public RequisitionDetail(int RequisitionId, string ProductId, int QtyNeeded) { 
             this.RequisitionId = RequisitionId;
             this.ProductId = ProductId;
             this.QtyNeeded = QtyNeeded;
         }
-
-
         public RequisitionDetail(int RequisitionId, string ProductId, int QtyNeeded, int? QtyDisbursed, int? QtyReceived, 
             string? DisburseRemark, string? RepRemark, string? ClerkRemark,int? RetrievalId)
         {
@@ -49,7 +42,6 @@ namespace SSIS_BOOT.Models
             this.RepRemark = RepRemark;
             this.ClerkRemark = ClerkRemark;
             this.RetrievalId = RetrievalId;
-
         }
     }
 }

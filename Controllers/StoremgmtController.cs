@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Service.Interfaces;
 
+/**
+ * @author Choo Teck Kian, Pei Jia En, Jade Lim
+ */
 namespace SSIS_BOOT.Controllers
 {
     public class StoremgmtController : Controller
@@ -22,26 +25,17 @@ namespace SSIS_BOOT.Controllers
         }
 
         [HttpPut]
-        //[HttpGet] //for testing
         [Route("/storemgmt/updatesupplier")]
-        public bool updatetop3supplier([FromBody] List<TenderQuotation> tqlist)
+        public bool UpdateTop3Supplier([FromBody] List<TenderQuotation> tqlist)
         {
-            //testing 
-            //List<TenderQuotation> tqlist = new List<TenderQuotation>();
-            //tqlist.Add(new TenderQuotation("CHEP", 2020, "D001", 1.20, "Dozen", 3));
-            //tqlist.Add(new TenderQuotation("BANE", 2020, "D001", 1.10, "Dozen", 1));
-            //tqlist.Add(new TenderQuotation("OMEG", 2020, "D001", 1.30, "Dozen", 2));
-            // End of Test
-
-            smservice.updatetop3supplier(tqlist);
+            smservice.UpdateTop3Supplier(tqlist);
             return true;
         }
         [HttpGet]
         [Route("/storemgmt/retrievesuppliers/{pdtid}")]
-        public List<TenderQuotation> retrievesupplierbyproductId(string pdtid)
+        public List<TenderQuotation> RetrieveSupplierByProductId(string pdtid)
         {
-            //string pdtid1 = "E032";
-            List<TenderQuotation> tqlist = smservice.retrievesuppliers(pdtid);
+            List<TenderQuotation> tqlist = smservice.RetrieveSuppliers(pdtid);
             return tqlist;
         }
 

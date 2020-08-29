@@ -31,12 +31,12 @@ namespace SSIS_BOOT.Repo
                 .Where(item => item.Email == email)
                 .FirstOrDefault();
         }
-        public Employee findempById(int empid)
+        public Employee FindEmpById(int empid)
         {
             return dbcontext.Employees.Where(item => item.Id == empid).FirstOrDefault();
         }
 
-        public Employee findSupervisorByEmpId(int empId)
+        public Employee FindSupervisorByEmpId(int empId)
         {
             Employee emp = dbcontext.Employees.FirstOrDefault(x => x.Id == empId);
             if (emp.ManagerId != null)
@@ -47,7 +47,7 @@ namespace SSIS_BOOT.Repo
             return null;
         }
 
-        public List<Employee> findEmpByDept(string deptid)
+        public List<Employee> FindEmpByDept(string deptid)
         {
             List<Employee> emplist = dbcontext.Employees.Include(m => m.Department).Include(m => m.Manager).Where(m => m.DepartmentId == deptid).ToList();
             return emplist;
@@ -70,9 +70,8 @@ namespace SSIS_BOOT.Repo
             {
                 throw new Exception("Error saving delegate dates");
             }
-
         }
-        public Employee getcurrentdelegate(long submitdate, string deptid)
+        public Employee GetCurrentDelegate(long submitdate, string deptid)
         {
             Employee e = new Employee();
             List<Employee> allempindept = dbcontext.Employees.Where(m => m.DepartmentId == deptid).ToList();
@@ -85,7 +84,6 @@ namespace SSIS_BOOT.Repo
                 }
             }
             return null;
-
         }
     }
 }

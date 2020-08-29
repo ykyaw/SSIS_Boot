@@ -4,7 +4,7 @@ using SSIS_BOOT.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace SSIS_BOOT.Repo
 {
@@ -15,13 +15,13 @@ namespace SSIS_BOOT.Repo
         {
             this.dbcontext = dbcontext;
         }
-        public List<Department> findalldepartment() 
+        public List<Department> FindAllDepartment() 
         {
             List<Department> dlist = dbcontext.Departments.ToList();
             return dlist;
         }
 
-        public Department findDepartmentById(string deptId)
+        public Department FindDepartmentById(string deptId)
         {
             return dbcontext.Departments.Include(m => m.CollectionPoint).Where(m => m.Id == deptId).FirstOrDefault();
         }
@@ -63,7 +63,7 @@ namespace SSIS_BOOT.Repo
             }
         }
 
-        public Department findDeptbyRepID(int empid)
+        public Department FindDeptbyRepID(int empid)
         {
             Department dp = dbcontext.Departments.Where(m => m.RepId == empid).FirstOrDefault();
             return dp;

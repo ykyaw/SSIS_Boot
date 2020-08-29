@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace SSIS_BOOT.Models
 {
@@ -12,7 +8,7 @@ namespace SSIS_BOOT.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Location { get; set; }
-        public string CollectionTime { get; set; } // 9:30AM, 11:00AM
+        public string CollectionTime { get; set; }
 
         public CollectionPoint() { }
         public CollectionPoint(string Location, string CollectionTime)

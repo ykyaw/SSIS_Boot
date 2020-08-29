@@ -1,13 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using SSIS_BOOT.Common;
 using SSIS_BOOT.DB;
 using SSIS_BOOT.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 
 namespace SSIS_BOOT.Repo
 {
@@ -20,7 +17,7 @@ namespace SSIS_BOOT.Repo
             this.dbcontext = dbcontext;
         }
 
-        public Retrieval genretrievalandreturn(Retrieval r1)
+        public Retrieval GenRetrievalAndReturn(Retrieval r1)
         {
             dbcontext.Retrievals.Add(r1);
             dbcontext.SaveChanges();
@@ -34,14 +31,12 @@ namespace SSIS_BOOT.Repo
             return dbcontext.Retrievals.Include(m => m.Clerk)
                 .Include(m=>m.RequisitionDetails).ThenInclude(m=>m.Product).ThenInclude(m=>m.Category)
                 .Include(m=> m.RequisitionDetails).ThenInclude(m => m.Requisition)
-                //.FirstOrDefault(x => x.DisbursedDate == date && x.ClerkId == clerkid && x.Status == created);
                 .FirstOrDefault(x => x.DisbursedDate == date && x.ClerkId == clerkid && (x.Status == created || x.Status == retrieved));
         }
         public bool UpdateRetrieval(Retrieval r1)
         {
             try
             {
-                //dbcontext.Retrievals.Update(r1);
                 var original = dbcontext.Retrievals.Find(r1.Id);
                 if(original ==null)
                 {
@@ -67,7 +62,6 @@ namespace SSIS_BOOT.Repo
             }
 
         }
-
         public Retrieval GetRetrievalById(int retrivId)
         {
             return dbcontext.Retrievals.Include(m => m.Clerk)

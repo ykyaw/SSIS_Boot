@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -62,13 +57,6 @@ namespace SSIS_BOOT
             services.AddSession();
 
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
-            //services.AddMvc(options =>
-            //{
-            //    options.Filters.Add(typeof(WebApiResultMiddleware));
-            //    options.RespectBrowserAcceptHeader = true;
-            //});
-
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(WebApiResultMiddleware));
@@ -80,9 +68,7 @@ namespace SSIS_BOOT
             services.AddDbContext<SSISContext>(opt =>
                 opt.UseLazyLoadingProxies(false)
                 .UseSqlServer(Configuration.GetConnectionString("DbConn")));
-
         }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,SSISContext dbcontext)
         {

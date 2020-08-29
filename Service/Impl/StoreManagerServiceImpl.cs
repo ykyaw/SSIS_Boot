@@ -3,10 +3,12 @@ using SSIS_BOOT.Repo;
 using SSIS_BOOT.Service.Interfaces;
 using System.Collections.Generic;
 
-
+/**
+ * @author Choo Teck Kian, Pei Jia En, Jade Lim
+ */
 namespace SSIS_BOOT.Service.Impl
 {
-    public class StoreManagerServiceImpl:IStoreManagerService
+    public class StoreManagerServiceImpl : IStoreManagerService
     {
         private TenderQuotationRepo tqrepo;
 
@@ -15,18 +17,15 @@ namespace SSIS_BOOT.Service.Impl
             this.tqrepo = tqrepo;
         }
 
-        public bool updatetop3supplier(List<TenderQuotation> tqlist)
+        public bool UpdateTop3Supplier(List<TenderQuotation> tqlist)
         {
-            //testing
-            //string prdtid = "P043";
-            //tqlist = tqrepo.gettop3suppliers(prdtid);
             int currentyear = System.DateTime.Now.Year;
-            tqrepo.updatetop3supplier(tqlist, currentyear);
+            tqrepo.UpdateTop3Supplier(tqlist, currentyear);
             return true;
         }
-        public List<TenderQuotation> retrievesuppliers(string pdtid)
+        public List<TenderQuotation> RetrieveSuppliers(string pdtid)
         {
-            List < TenderQuotation> tqlist= tqrepo.retrievesuppliers(pdtid);
+            List<TenderQuotation> tqlist = tqrepo.RetrieveSuppliers(pdtid);
             return tqlist;
         }
 

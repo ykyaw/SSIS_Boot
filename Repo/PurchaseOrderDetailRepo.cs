@@ -15,8 +15,7 @@ namespace SSIS_BOOT.Repo
         {
             this.dbcontext = dbcontext;
         }
-
-        public List<PurchaseOrderDetail> findpodetails(int poId)
+        public List<PurchaseOrderDetail> FindPoDetails(int poId)
         {
             List<PurchaseOrderDetail> podlist = dbcontext.PurchaseOrderDetails.Include(m=>m.PurchaseOrder).ThenInclude(m=>m.Supplier)
                 .Include(m => m.PurchaseOrder).ThenInclude(m=>m.CollectionPoint).Include(m => m.PurchaseOrder).ThenInclude(m => m.OrderedByClerk).Include(m=> m.PurchaseRequestDetail)
@@ -24,14 +23,13 @@ namespace SSIS_BOOT.Repo
             return podlist;
         }
 
-        public bool Updatepurchaseorderdetail(PurchaseOrderDetail pod)
+        public bool UpdatePurchaseOrderDetail(PurchaseOrderDetail pod)
         {
             var original = dbcontext.PurchaseOrderDetails.Find(pod.Id);
             if (original == null)
             {
                 throw new Exception();
             }
-            //dbcontext.Entry(original).CurrentValues.SetValues(pod);
             original.QtyReceived = pod.QtyReceived;
             original.ReceivedByClerkId = pod.ReceivedByClerkId;
             original.ReceivedDate = pod.ReceivedDate;
@@ -42,7 +40,6 @@ namespace SSIS_BOOT.Repo
             dbcontext.SaveChanges();
             return true;
         }
-
         public bool CreatePurchaseOrderDetail(PurchaseOrderDetail pod)
         {
             dbcontext.PurchaseOrderDetails.Add(pod);

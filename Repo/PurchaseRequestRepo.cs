@@ -4,7 +4,7 @@ using SSIS_BOOT.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace SSIS_BOOT.Repo
 {
@@ -15,43 +15,40 @@ namespace SSIS_BOOT.Repo
         {
             this.dbcontext = dbcontext;
         }
-
-        public List<PurchaseRequestDetail> findallpurchasereq()
+        public List<PurchaseRequestDetail> FindAllPurchaseReq()
         {
             List<PurchaseRequestDetail> purreqlist = dbcontext.PurchaseRequestDetails.Include(m=>m.Product).Include(m=>m.CreatedByClerk)
                 .Include(m => m.Supplier).Include(m => m.ApprovedBySup).ToList();
             return purreqlist;
         }
 
-        public List<PurchaseRequestDetail> findpurchasereq(long prid)
+        public List<PurchaseRequestDetail> FindPurchaseReq(long prid)
         {
             List<PurchaseRequestDetail> purreqlist = dbcontext.PurchaseRequestDetails.Include(m => m.Product).Include(m => m.CreatedByClerk)
                 .Include(m => m.Supplier).Include(m => m.ApprovedBySup).Where(m=>m.PurchaseRequestId == prid).ToList();
             return purreqlist;
         }
 
-        public bool addnewpurchaserequestdetail(PurchaseRequestDetail prd1)
+        public bool AddNewPurchaseRequestDetail(PurchaseRequestDetail prd1)
         {
             dbcontext.PurchaseRequestDetails.Add(prd1);
             dbcontext.SaveChanges();
             return true;
         }
 
-        public List<PurchaseRequestDetail> getcurrentpurchaserequest (long purchaserequestId)
+        public List<PurchaseRequestDetail> GetCurrentPurchaseRequest (long purchaserequestId)
         {
             List<PurchaseRequestDetail> prrequest = dbcontext.PurchaseRequestDetails.Include(m => m.CreatedByClerk).Include(m => m.Product)
                 .Include(m => m.Supplier).Include(m => m.ApprovedBySup).Where(m => m.PurchaseRequestId == purchaserequestId).ToList();
             return prrequest;
         }
-
-        public PurchaseRequestDetail updatepurchaserequestitem(PurchaseRequestDetail prd)
+        public PurchaseRequestDetail UpdatePurchaseRequestItem(PurchaseRequestDetail prd)
         {
             var original = dbcontext.PurchaseRequestDetails.Find(prd.Id);
             if (original == null)
             {
                 throw new Exception();
             }
-            //dbcontext.Entry(original).CurrentValues.SetValues(prd);
             original.ReorderQty = prd.ReorderQty;
             original.SupplierId = prd.SupplierId;
             original.VenderQuote = prd.VenderQuote;
@@ -62,7 +59,7 @@ namespace SSIS_BOOT.Repo
             dbcontext.SaveChanges();
             return original;
         }
-        public bool updateapprovedpritems(PurchaseRequestDetail prd, int supid, long approveddate)
+        public bool UpdateApprovedPrItems(PurchaseRequestDetail prd, int supid, long approveddate)
         {
             var original = dbcontext.PurchaseRequestDetails.Find(prd.Id);
             if (original == null)
@@ -76,7 +73,6 @@ namespace SSIS_BOOT.Repo
             dbcontext.SaveChanges();
             return true;
         }
-
         public bool DeleteCreatedPurchaseRequest(PurchaseRequestDetail prd)
         {
             PurchaseRequestDetail original = dbcontext.PurchaseRequestDetails.Where(m => m.Id == prd.Id).FirstOrDefault();
@@ -87,6 +83,5 @@ namespace SSIS_BOOT.Repo
             dbcontext.SaveChanges();
             return true;
         }
-
     }
 }

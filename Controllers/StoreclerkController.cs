@@ -7,6 +7,9 @@ using SSIS_BOOT.Common;
 using SSIS_BOOT.Models;
 using SSIS_BOOT.Service.Interfaces;
 
+/**
+ * @author Choo Teck Kian, Pei Jia En, Jade Lim, Guo Xiujuan
+ */
 namespace SSIS_BOOT.Controllers
 {
     public class StoreclerkController : Controller
@@ -21,93 +24,91 @@ namespace SSIS_BOOT.Controllers
         {
             return View();
         }
-        [HttpGet]        
+        [HttpGet]
         [Route("/storeclerk/catalogue")]
-        public List<Product> getcatalogue()
+        public List<Product> GetCatalogue()
         {
-            List<Product> pdt = scservice.getallcat();
+            List<Product> pdt = scservice.GetAllCat();
             return pdt;
         }
         [HttpGet]
         [Route("/storeclerk/glt")]
-        public List<Transaction> getlatesttransaction()
+        public List<Transaction> GetLatestTransaction()
         {
-            List<Product> pdt = scservice.getallcat();
-            List<Transaction> latesttrans = scservice.getlatesttransaction(pdt);
+            List<Product> pdt = scservice.GetAllCat();
+            List<Transaction> latesttrans = scservice.GetLatestTransaction(pdt);
             List<Transaction> sortedlatesttrans = latesttrans.OrderBy(m => m.ProductId).ToList();
             return sortedlatesttrans;
         }
 
-
         [HttpGet]
         [Route("/storeclerk/pr")]
-        public List<PurchaseRequestDetail> getallpurchasereq()
+        public List<PurchaseRequestDetail> GetAllPurchasereq()
         {
-            List<PurchaseRequestDetail> prdetails = scservice.getpurchasereq();
+            List<PurchaseRequestDetail> prdetails = scservice.GetPurchaseReq();
             return prdetails;
         }
         [HttpGet]
         [Route("/storeclerk/prdetails/{prid}")]
-        public List<PurchaseRequestDetail> getprdetails(long prid)
+        public List<PurchaseRequestDetail> GetPrDetails(long prid)
         {
-            List<PurchaseRequestDetail> prdetails = scservice.getprdetails(prid);
+            List<PurchaseRequestDetail> prdetails = scservice.GetPrDetails(prid);
             return prdetails;
         }
 
         [HttpGet]
         [Route("/storeclerk/po")]
-        public List<PurchaseOrder> getallpurchaseorder()
+        public List<PurchaseOrder> GetAllPurchaseOrder()
         {
-            List<PurchaseOrder> prorderlist = scservice.getpurchaseorders();
+            List<PurchaseOrder> prorderlist = scservice.GetPurchaseOrders();
             return prorderlist;
         }
         [HttpGet]
         [Route("/storeclerk/pod/{poId}")]
-        public List<PurchaseOrderDetail> getpodetails(int poId)
+        public List<PurchaseOrderDetail> GetPoDetails(int poId)
         {
-            List<PurchaseOrderDetail> podlist = scservice.getpoddetails(poId);
+            List<PurchaseOrderDetail> podlist = scservice.GetPodDetails(poId);
             return podlist;
         }
         [HttpGet]
         [Route("/storeclerk/rf")]
-        public List<Requisition> getallreqform()
+        public List<Requisition> GetallReqform()
         {
-            List<Requisition> reqlist = scservice.getallreqform();
+            List<Requisition> reqlist = scservice.GetAllReqForm();
             //sort by date
             List<Requisition> sortedreqlist = reqlist.OrderByDescending(m => m.CreatedDate).ToList();
             return sortedreqlist;
         }
         [HttpGet]
         [Route("/storeclerk/rf/{deptID}")]
-        public List<Requisition> getreqformByDeptId(string deptID)
+        public List<Requisition> GetReqFormByDeptId(string deptID)
         {
-            List<Requisition> reqlist = scservice.getReqformByDeptId(deptID);
+            List<Requisition> reqlist = scservice.GetReqFormByDeptId(deptID);
             //sort by date
-            List<Requisition> sortedreqlist = reqlist.OrderByDescending(m=>m.CreatedDate).ToList();
+            List<Requisition> sortedreqlist = reqlist.OrderByDescending(m => m.CreatedDate).ToList();
             return sortedreqlist;
         }
 
         [HttpGet]
         [Route("/storeclerk/rfld2/{reqId}")]
-        public Requisition getreqformByReqId(int reqId)
+        public Requisition GetReqFormByReqId(int reqId)
         {
-            Requisition req = scservice.getReqByReqId(reqId);
+            Requisition req = scservice.GetReqByReqId(reqId);
             return req;
         }
 
-        [HttpPut] //TO FOLLOW UP
+        [HttpPut]
         [Route("/storeclerk/rfld")]
-        public bool updateRequisitionCollectionTime([FromBody] Requisition r1)
+        public bool UpdateRequisitionCollectionTime([FromBody] Requisition r1)
         {
             try
             {
                 int clerkid = (int)HttpContext.Session.GetInt32("Id");
                 r1.ProcessedByClerkId = clerkid;
-                scservice.updaterequisitioncollectiontime(r1);
-                ////To be followed up. Also include email service to rep
+                scservice.UpdateRequisitionCollectionTime(r1);
                 return true;
             }
-            catch 
+            catch
             {
                 throw new Exception("Error updating collection time. Please check entry again");
             }
@@ -115,28 +116,28 @@ namespace SSIS_BOOT.Controllers
 
         [HttpGet]
         [Route("/storeclerk/sc/{productId}")]
-        public List<Transaction> retrievestockcard(string productId)
+        public List<Transaction> RetrieveStockcard(string productId)
         {
-            List<Transaction> plist = scservice.retrievestockcard(productId);
+            List<Transaction> plist = scservice.RetrieveStockcard(productId);
             return plist;
         }
 
         [Route("/storeclerk/ret/{date}")]
-        public Retrieval genretrievalform(long date)
+        public Retrieval GenRetrievalForm(long date)
         {
             int clerkid = (int)HttpContext.Session.GetInt32("Id");
-            List<Requisition> listreq = scservice.getallreqformbydateandstatus(date, clerkid, Status.RequsitionStatus.confirmed); //retrieve requisition where status is confirmed 
+            List<Requisition> listreq = scservice.GetAllReqFormByDateAndStatus(date, clerkid, Status.RequsitionStatus.confirmed); //retrieve requisition where status is confirmed 
             if (listreq == null || listreq.Count == 0)
             {
                 throw new Exception("Sorry, you currently don't have any confirmed requisition on this provided date that requires retrieval");
             }
-            Retrieval r1 = scservice.genretrievalform(date, clerkid, listreq);
+            Retrieval r1 = scservice.GenRetrievalForm(date, clerkid, listreq);
             return r1;
         }
 
         [HttpGet]
         [Route("/storeclerk/retid/{rId}")]
-        public Retrieval retrievalformdetail(int rId)
+        public Retrieval RetrievalFormDetail(int rId)
         {
             Retrieval r1 = scservice.GetRetrievalById(rId);
             return r1;
@@ -144,14 +145,14 @@ namespace SSIS_BOOT.Controllers
 
         [HttpPut]
         [Route("/storeclerk/ret")]
-        public bool updateretrieval([FromBody] Retrieval r1)
+        public bool UpdateRetrieval([FromBody] Retrieval r1)
         {
             try
             {
                 int clerkid = (int)HttpContext.Session.GetInt32("Id");
                 Retrieval r = r1;
                 r.ClerkId = clerkid;
-                scservice.updateretrieval(r);
+                scservice.UpdateRetrieval(r);
                 return true;
             }
             catch (Exception m)
@@ -163,26 +164,24 @@ namespace SSIS_BOOT.Controllers
 
         [HttpGet]
         [Route("/storeclerk/supplier/{productId}")]
-        public List<TenderQuotation> gettop3supplier(string productId)
+        public List<TenderQuotation> GetTop3supplier(string productId)
         {
-            List<TenderQuotation> slist = scservice.gettop3suppliers(productId);
+            List<TenderQuotation> slist = scservice.GetTop3Suppliers(productId);
             return slist;
         }
         [HttpPost]
         [Route("/storeclerk/disbursement")]
-        public List<RequisitionDetail> retrievedisbursementlist([FromBody]Requisition r1)
+        public List<RequisitionDetail> RetrieveDisbursementList([FromBody]Requisition r1)
         {
             string deptId = r1.DepartmentId;
             long collectiondate = (long)r1.CollectionDate;
-            List<RequisitionDetail> dlist = scservice.retrievedisbursementlist(deptId, collectiondate);
+            List<RequisitionDetail> dlist = scservice.RetrieveDisbursementList(deptId, collectiondate);
             if (dlist == null || dlist.Count == 0)
             {
                 throw new Exception("Sorry, there is no Disbursement matching the provided date for this department.");
             }
             return dlist;
         }
-
-
 
         [HttpGet]
         [Route("/storeclerk/alldis")]
@@ -193,51 +192,48 @@ namespace SSIS_BOOT.Controllers
             return alldisbursementordered;
         }
 
-
         [HttpPost]
         [Route("/storeclerk/updatesc")]
-        public bool updatestockcard([FromBody] Transaction t1)
+        public bool UpdateStockcard([FromBody] Transaction t1)
         {
             int clerkid = (int)HttpContext.Session.GetInt32("Id");
             t1.UpdatedByEmpId = clerkid;
-            t1.Date = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); //added by tk, to be able to track to the milisecond for date of transaction
-            scservice.savetransaction(t1);
+            t1.Date = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); 
+            scservice.SaveTransaction(t1);
             return true;
         }
         [HttpPost]
         [Route("/storeclerk/createpr")]
-        public List<PurchaseRequestDetail> generatepurchaserequest([FromBody]List<string> productId)
+        public List<PurchaseRequestDetail> GeneratePurchaseRequest([FromBody]List<string> productId)
         {
             int clerkid = (int)HttpContext.Session.GetInt32("Id");
-            List<PurchaseRequestDetail> prlist = scservice.addpurchaserequest(productId, clerkid);
+            List<PurchaseRequestDetail> prlist = scservice.AddPurchaseRequest(productId, clerkid);
             return prlist;
-
         }
+
         [HttpPut]
         [Route("/storeclerk/updatepr")]
-        public bool Updatepurchaserequest([FromBody] List<PurchaseRequestDetail> prdlist)
+        public bool UpdatePurchaseRequest([FromBody] List<PurchaseRequestDetail> prdlist)
         {
-            scservice.updatepurchaserequestitem(prdlist);
+            scservice.UpdatePurchaseRequestItem(prdlist);
             return true;
         }
-
 
         [HttpPost]
         [Route("/storeclerk/generatequote")]
-        public bool generatequotefrompr([FromBody] List<PurchaseRequestDetail> prdlist)
+        public bool GenerateQuoteFrompr([FromBody] List<PurchaseRequestDetail> prdlist)
         {
             int clerkid = (int)HttpContext.Session.GetInt32("Id");
-            scservice.generatequotefrompr(prdlist,clerkid);
+            scservice.GenerateQuoteFromPr(prdlist, clerkid);
             return true;
         }
 
         [HttpPut]
-        //[HttpGet] //REMEMBER TO CHANGE BACK TO [HTTPPUT] and pass in from body
         [Route("/storeclerk/updatepod")]
-        public bool updateitemreceived([FromBody]List<PurchaseOrderDetail> podlist)
+        public bool UpdateItemReceived([FromBody]List<PurchaseOrderDetail> podlist)
         {
 
-            if(podlist ==null || podlist.Count == 0)
+            if (podlist == null || podlist.Count == 0)
             {
                 throw new Exception("Error in updating item received. Please ensure all fields are completed");
             }
@@ -246,39 +242,42 @@ namespace SSIS_BOOT.Controllers
             {
                 podid.ReceivedByClerkId = clerkid;
             }
-            scservice.updatepurchaseorderdetailitem(podlist);
+            scservice.UpdatePurchaseOrderDetailItem(podlist);
             return true;
         }
 
         [HttpGet]
         [Route("/storeclerk/createav")]
-        public AdjustmentVoucher createadjustmentvoucher()
+        public AdjustmentVoucher CreateAdjustmentvoucher()
         {
-            int clerkid= (int)HttpContext.Session.GetInt32("Id");
-            AdjustmentVoucher av = scservice.createadjustmentvoucher(clerkid);
+            int clerkid = (int)HttpContext.Session.GetInt32("Id");
+            AdjustmentVoucher av = scservice.CreateAdjustmentVoucher(clerkid);
             return av;
         }
 
+
+        //@author Guo Xiujuan
         [HttpGet]
         [Route("/storeclerk/adv")]
-        public List<AdjustmentVoucher> getAllAdjustmentVoucher()
+        public List<AdjustmentVoucher> GetAllAdjustmentVoucher()
         {
-            List<AdjustmentVoucher> advlist = scservice.getAllAdjustmentVoucher();
+            List<AdjustmentVoucher> advlist = scservice.GetAllAdjustmentVoucher();
             return advlist;
         }
         [HttpGet]
         [Route("/storeclerk/retrievealldept")]
-        public List<Department> retrievedepartment()
+        public List<Department> RetrieveDepartment()
         {
-            List<Department> deptlist = scservice.getalldepartment();
+            List<Department> deptlist = scservice.GetAllDepartment();
             return deptlist;
         }
 
+        //@author Guo Xiujuan
         [HttpGet]
         [Route("/storeclerk/advdet/{advId}")]
-        public List<AdjustmentVoucherDetail> getAdvDetailsbyAdvId(string advId)
+        public List<AdjustmentVoucherDetail> GetAdvDetailsbyAdvId(string advId)
         {
-            List<AdjustmentVoucherDetail> advdetails = scservice.getAdvDetailsbyAdvId(advId);
+            List<AdjustmentVoucherDetail> advdetails = scservice.GetAdvDetailsByAdvId(advId);
             return advdetails;
         }
 
@@ -298,47 +297,49 @@ namespace SSIS_BOOT.Controllers
             }
         }
 
+        //@author Guo Xiujuan
         [HttpPut]
         [Route("/storeclerk/UpdateAdjustmentDetails/")]
         public bool UpdataeAdjustmentDetails([FromBody]List<AdjustmentVoucherDetail> voucherDetails)
         {
-
-            //int clerkid = (int)HttpContext.Session.GetInt32("Id");
-            return scservice.updateAdjustmentVoucherDeatails(voucherDetails);
+            return scservice.UpdateAdjustmentVoucherDeatails(voucherDetails);
         }
 
+        //@author Guo Xiujuan
         [HttpPut]
         [Route("/storeclerk/SubmitAdjustmentDetails/")]
         public bool SubmitAdjustmentDetails([FromBody]List<AdjustmentVoucherDetail> voucherDetails)
         {
-            //UpdataeAdjustmentDetails(voucherDetails); //Edited by TK. Controller can call service method directly, no need to call another controller to access the same service method
-            scservice.updateAdjustmentVoucherDeatails(voucherDetails);
+            scservice.UpdateAdjustmentVoucherDeatails(voucherDetails);
             string adjustmentVoucherId = voucherDetails[0].AdjustmentVoucherId;
             scservice.ClerkSubmitAdjustmentVoucher(adjustmentVoucherId);
             return true;
         }
 
+        //@author Guo Xiujuan
         [HttpGet]
         [Route("/storeclerk/findAdjustmentVoucher/{advId}")]
-        public AdjustmentVoucher findAdjustmentVoucherById(string advId)
+        public AdjustmentVoucher FindAdjustmentVoucherById(string advId)
         {
-            AdjustmentVoucher av = scservice.findAdjustmentVoucherById(advId);
+            AdjustmentVoucher av = scservice.FindAdjustmentVoucherById(advId);
             return av;
         }
 
+        //@author Guo Xiujuan
         [HttpGet]
         [Route("/storeclerk/findAdjustmentVoucherbyClerk/")]
-        public List<AdjustmentVoucher> findAdjustmentVoucherByClerkId()
+        public List<AdjustmentVoucher> FindAdjustmentVoucherByClerkId()
         {
             int clerkid = (int)HttpContext.Session.GetInt32("Id");
-            return scservice.findAdjustmentVoucherByClerkId(clerkid);
+            return scservice.FindAdjustmentVoucherByClerkId(clerkid);
         }
 
+        //@author Guo Xiujuan
         [HttpGet]
         [Route("/storeclerk/FirstTenderbyProdutId/{ProductId}")]
-        public TenderQuotation getFirstTenderbyProdutId(string ProductId)
+        public TenderQuotation GetFirstTenderbyProdutId(string ProductId)
         {
-           return scservice.getFirstTenderbyProdutId(ProductId);
+            return scservice.GetFirstTenderbyProdutId(ProductId);
         }
 
         [HttpGet]
@@ -346,7 +347,7 @@ namespace SSIS_BOOT.Controllers
         public List<Retrieval> GetRetrievalFormCommentsForAdjustmentVoucher()
         {
             List<Retrieval> retrievalwithcomments = scservice.GetRetrievalFormCommentsForAdjustmentVoucher();
-            if(retrievalwithcomments != null || retrievalwithcomments.Count !=0)
+            if (retrievalwithcomments != null || retrievalwithcomments.Count != 0)
             {
                 return retrievalwithcomments;
             }

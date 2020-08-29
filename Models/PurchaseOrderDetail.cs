@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace SSIS_BOOT.Models
 {
@@ -26,10 +22,7 @@ namespace SSIS_BOOT.Models
         public PurchaseOrder PurchaseOrder { get; set; }
         public  PurchaseRequestDetail PurchaseRequestDetail { get; set; }
         public  Product Product { get; set; }
-
-        //constructor
         public PurchaseOrderDetail() { }
-
         public PurchaseOrderDetail(int? PurchaseOrderId, int? PurchaseRequestDetailId, string ProductId, int QtyPurchased, int? QtyReceived,
             double TotalPrice) {
             this.PurchaseOrderId = PurchaseOrderId;
@@ -38,9 +31,7 @@ namespace SSIS_BOOT.Models
             this.QtyPurchased = QtyPurchased;
             this.QtyReceived = QtyReceived;
             this.TotalPrice = TotalPrice;
-
         }
-
         public PurchaseOrderDetail(int? PurchaseOrderId, int? PurchaseRequestDetailId, string ProductId, int QtyPurchased, int? QtyReceived, 
             double TotalPrice, string? SupplierDeliveryNo, string? Remark, string Status) {
             this.PurchaseOrderId = PurchaseOrderId;

@@ -95,12 +95,5 @@ namespace SSIS_BOOT.Email
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
             await smtp.SendMailAsync(message);
         }
-
-
-
-
-
-
-
     }
 }

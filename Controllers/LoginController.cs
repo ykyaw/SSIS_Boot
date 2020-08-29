@@ -2,14 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SSIS_BOOT.Common;
-using SSIS_BOOT.Components;
 using SSIS_BOOT.Components.JWT.Interfaces;
 using SSIS_BOOT.Models;
-using SSIS_BOOT.Service.Impl;
 using SSIS_BOOT.Service.Interfaces;
 
 namespace SSIS_BOOT.Controllers

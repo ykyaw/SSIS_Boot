@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace SSIS_BOOT.Models
 {
@@ -12,24 +9,18 @@ namespace SSIS_BOOT.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string? DepartmentId { get; set; }
-        //[ForeignKey("ReqByEmp")]
         public int ReqByEmpId { get; set; }
         public long? SubmittedDate { get; set; }
-        //[ForeignKey("ApprovedBy")]
         public int? ApprovedById { get; set; }
         public long? ApprovalDate { get; set; }
         public string? Remarks { get; set; }
-
-        //[ForeignKey("ProcessedByClerk")]
         public int? ProcessedByClerkId { get; set; }
         public long CreatedDate { get; set; }
         public string Status { get; set; }
         public int? CollectionPointId { get; set; }
         public long? CollectionDate { get; set; }
-        //[ForeignKey("ReceivedByRep")]
         public int? ReceivedByRepId { get; set; }
         public long? ReceivedDate { get; set; }
-        //[ForeignKey("AckByClerk")]
         public int? AckByClerkId { get; set; }
         public long? AckDate { get; set; }
         public  Department Department { get; set; }
@@ -40,9 +31,7 @@ namespace SSIS_BOOT.Models
         public  Employee AckByClerk { get; set; }
         public  CollectionPoint CollectionPoint { get; set; }
         public  List<RequisitionDetail> RequisitionDetails { get; set; }
-
         public Requisition() { }
-
         public Requisition(string DepartmentId, int ReqByEmpId, string Status)
         {
             this.DepartmentId = DepartmentId;
