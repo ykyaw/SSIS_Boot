@@ -740,7 +740,7 @@ namespace SSIS_BOOT.DB
             dbcontext.Add(retr2);
             dbcontext.SaveChanges();
 
-            Retrieval retr3 = new Retrieval(1, 1599091200000, 1598918400000, Status.RetrievalStatus.retrieved, "P011 only 9 items left, spoilt", true);
+            Retrieval retr3 = new Retrieval(1, 1599091200000, 1598572800000, Status.RetrievalStatus.retrieved, "P011 only 9 items left, spoilt", true);
             dbcontext.Add(retr3);
             dbcontext.SaveChanges();
 
